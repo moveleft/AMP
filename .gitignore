@@ -1,0 +1,6 @@
+/bin
+/_CoqProject
+.project
+CoqoonMakefile
+CoqoonMakefile.vars
+CoqoonMakefile.vars.template

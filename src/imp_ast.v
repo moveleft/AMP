@@ -37,4 +37,15 @@ Inductive com : Type :=
   | CSeq : com -> com -> com
   | CIf : bexp -> com -> com -> com
   | CWhile : bexp -> com -> com
-  | CCall : id -> id -> list nat -> com.
+  | CCall : id -> id -> list aexp -> com.
+  
+Notation "'SKIP'" :=
+  CSkip.
+Notation "X '::=' a" :=
+  (CAss X a) (at level 60).
+Notation "c1 ;; c2" :=
+  (CSeq c1 c2) (at level 80, right associativity).
+Notation "'IFB' e1 'THEN' e2 'ELSE' e3 'FI'" :=
+  (CIf e1 e2 e3) (at level 80, right associativity).
+Notation "'WHILE' b 'DO' c 'END'" :=
+  (CWhile b c) (at level 80, right associativity).
