@@ -1,1 +1,61 @@
 \subsection{Operational Semantics}
+
+\begin{equation}
+\frac{}{SKIP, \sigma \Downarrow \sigma}
+\end{equation}
+
+\begin{equation}
+\frac{a, \sigma \Downarrow n \qquad \sigma[\sfrac{X}{n}] = \sigma'}{(X ::= a), \sigma \Downarrow \sigma'}
+\end{equation}
+
+\begin{equation}
+\frac{b, \sigma \Downarrow true \qquad c_1, \sigma \Downarrow \sigma'}{(IFB\; b\; THEN\; c_1\; ELSE\; c_2\; FI), \sigma \Downarrow \sigma'}
+\end{equation}
+
+\begin{equation}
+\frac{b, \sigma \Downarrow false \qquad c_2, \sigma \Downarrow \sigma'}{(IFB\; b\; THEN\; c_1\; ELSE\; c_2\; FI), \sigma \Downarrow \sigma'}
+\end{equation}
+
+\begin{equation}
+\frac{c_1, \sigma \Downarrow \sigma' \qquad c_2, \sigma' \Downarrow \sigma''}{(c_1\; ;;\; c_2), \sigma \Downarrow \sigma''}
+\end{equation}
+
+\begin{equation}
+\frac{b, \sigma \Downarrow false}{(WHILE\; b\; DO\; c\; END), \sigma \Downarrow \sigma}
+\end{equation}
+
+\begin{equation}
+\frac{b, \sigma \Downarrow true \qquad c, \sigma \Downarrow \sigma' \qquad (WHILE\; b\; DO\; c\; END), \sigma' \Downarrow \sigma'')}{(WHILE\; b\; DO\; c\; END), \sigma \Downarrow \sigma''}
+\end{equation}
+
+\begin{equation}
+\frac{\tilde{a}, \sigma \Downarrow \tilde{n}}{(THROW\; e,\; \tilde{a}), \sigma \Downarrow \sigma, (e, \tilde{n})}
+\end{equation}
+
+\begin{equation}
+\frac{c_1, \sigma \Downarrow \sigma'}{(TRY\; c_1\; CATCH\; e,\; \tilde{X}\; DO\; c_2\; END), \sigma \Downarrow \sigma'}
+\end{equation}
+
+\begin{equation}
+\frac{c_1, \sigma \Downarrow \sigma', (e, \tilde{n}) \qquad c_2, \sigma[\sfrac{\tilde{X}}{\tilde{n}}] \Downarrow \sigma''}{(TRY\; c_1\; CATCH\; e,\; \tilde{X}\; DO\; c_2\; END), \sigma \Downarrow \sigma''}
+\end{equation}
+
+\begin{equation}
+\frac{c_1, \sigma \Downarrow \sigma', \epsilon}{(c_1\; ;;\; c_2), \sigma \Downarrow \sigma', \epsilon}
+\end{equation}
+
+\begin{equation}
+\frac{c_1, \sigma \Downarrow \sigma' \qquad c_2, \sigma' \Downarrow \sigma'', \epsilon}{(c_1\; ;;\; c_2), \sigma \Downarrow \sigma'', \epsilon}
+\end{equation}
+
+\begin{equation}
+\frac{b, \sigma \Downarrow true \qquad c, \sigma \Downarrow \sigma', \epsilon}{(WHILE\; b\; DO\; c\; END), \sigma \Downarrow \sigma', \epsilon}
+\end{equation}
+
+\begin{equation}
+\frac{e \neq e' \qquad c_1, \sigma \Downarrow \sigma', (e, \tilde{n})}{(TRY\; c_1\; CATCH\; e',\; \tilde{X}\; DO\; c_2\; END), \sigma \Downarrow \sigma', (e, \tilde{n})}
+\end{equation}
+
+\begin{equation}
+\frac{c_1, \sigma \Downarrow \sigma', (e, \tilde{n}) \qquad c_2, \sigma[\sfrac{\tilde{X}}{\tilde{n}}] \Downarrow \sigma'', \epsilon}{(TRY\; c_1\; CATCH\; e,\; \tilde{X}\; DO\; c_2\; END), \sigma \Downarrow \sigma'', \epsilon}
+\end{equation}
