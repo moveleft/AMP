@@ -1,5 +1,4 @@
 Require Export imp_state.
-Require Export Logic.
 
 Definition X : id := Id 0.
 Definition Y : id := Id 1.
@@ -9,92 +8,133 @@ Definition F : id := Id 3.
 Definition G : id := Id 4.
 Definition H : id := Id 5.
 
-Definition RET : id := Id 6.
-
+Definition T := ExId 1.
+Definition U := ExId 2.
+Definition V := ExId 3.
 
 Fixpoint aeval (st : state) (a : aexp) : nat :=
   match a with
-  | ANum n => n
-  | AId x => st x
-  | APlus a1 a2 =>
-      (aeval st a1) + (aeval st a2)
-  | AMinus a1 a2  =>
-      (aeval st a1) - (aeval st a2)
-  | AMult a1 a2 =>
-      (aeval st a1) * (aeval st a2)
+    | ANum n        => n
+    | AId x         => st x
+    | APlus a1 a2   => (aeval st a1) + (aeval st a2)
+    | AMinus a1 a2  => (aeval st a1) - (aeval st a2)
+    | AMult a1 a2   => (aeval st a1) * (aeval st a2)
   end.
 
 Fixpoint beval (st : state) (b : bexp) : bool :=
   match b with
-  | BTrue       => true
-  | BFalse      => false
-  | BEq a1 a2   =>
-      beq_nat (aeval st a1) (aeval st a2)
-  | BLe a1 a2   =>
-      ble_nat (aeval  st a1) (aeval st a2)
-  | BNot b1     =>
-      negb (beval st b1)
-  | BAnd b1 b2  =>
-      andb (beval st b1) (beval st b2)
-  end.  
-  
-Fixpoint zip_state (st : state) (ids : list id) (vs : list nat) : state :=
+    | BTrue       => true
+    | BFalse      => false
+    | BEq a1 a2   => beq_nat (aeval st a1) (aeval st a2)
+    | BLe a1 a2   => ble_nat (aeval  st a1) (aeval st a2)
+    | BNot b1     => negb (beval st b1)
+    | BAnd b1 b2  => andb (beval st b1) (beval st b2)
+  end.
+
+Fixpoint zip_state (steval st : state) (ids : list id) (vs : list aexp) : state :=
   match ids with
   | i::ids' => 
   	match vs with
   	| v::vs' =>
-  		let st' := update st i v in
-  		zip_state st' ids' vs'
+  		let st' := update st i (aeval steval v) in
+  		zip_state steval st' ids' vs'
   	| [] => st
   	end
   | [] => st
   end.
-
-Reserved Notation "c1 '/' st '||' s '/' st'"
-                  (at level 40, st, s at level 39).
   
-Inductive ceval' : com -> state -> status -> state -> Prop :=
+Fixpoint assigned_vars (c : com) (vars : list id): list id :=
+	match c with
+	| CAss i _ =>
+		i::vars
+	| CSeq c1 c2
+	| CIf _ c1 c2 =>
+		let vars' := assigned_vars c1 vars in
+		assigned_vars c2 vars'
+	| CWhile _ c' =>
+		assigned_vars c' vars
+	| _ => vars
+	end.
+  
+Inductive ls_disjoint : list id -> list id -> Prop :=
+  | LSD_n: forall ys, ls_disjoint [] ys
+  | LSD_S: forall x xs ys, ls_disjoint xs ys ->
+              not (Exists (fun x' => x = x') ys) -> 
+              ls_disjoint (x::xs) ys.
+
+Inductive list_unique_items {T : Type} : (list T) -> Prop :=
+  | LUI_n: list_unique_items []
+  | LUI_S: forall xs x, Exists (fun x' => x = x') xs = False -> list_unique_items (x::xs). 
+
+Reserved Notation "c1 '/' st '||' st'"
+                  (at level 40, st at level 39).
+
+Inductive ceval : com -> program -> state -> state -> option exn -> Prop :=
   | E_Skip : forall st,
-      CSkip / st || SContinue / st
-  | E_Break: forall st,
-      CBreak / st || SBreak / st
+      CSkip / st || st
   | E_Ass : forall st st' ident a n,
       aeval st a = n ->
       update st ident n = st' ->
-      CAss ident a / st || SContinue / st'
-  | E_If_True : forall st st' b status c1 c2,
+      CAss ident a / st || st'
+  | E_If_True : forall st st' ex b c1 c2 env,
       beval st b = true ->
-      c1 / st || status / st' ->
-      CIf b c1 c2 / st || status / st'
-  | E_If_False : forall st st' b status c1 c2,
+      ceval c1 env st st' ex ->
+      ceval (CIf b c1 c2) env st st' ex
+  | E_If_False : forall st st' ex b c1 c2 env,
       beval st b = false ->
-      c2 / st || status / st' ->
-      CIf b c1 c2 / st || status / st'
-  | E_Seq : forall st st' st'' c1 c2 status,
-      c1 / st || SContinue / st' ->
-      c2 / st' || status / st'' ->
-      CSeq c1 c2 / st || status / st''
-  | E_Seq_Break : forall st st' c1 c2,
-      c1 / st || SBreak / st' ->
-      CSeq c1 c2 / st || SBreak / st'
-  | E_While_Break : forall st st' b c,
-      beval st b = true ->
-      c / st || SBreak / st' ->
-      CWhile b c / st || SContinue / st'
+      ceval c2 env st st' ex ->
+      ceval (CIf b c1 c2) env st st' ex
+  | E_Seq : forall st st' st'' c1 c2,
+      c1 / st || st' ->
+      c2 / st' || st'' ->
+      CSeq c1 c2 / st || st''
   | E_While_False : forall st b c,
       beval st b = false ->
-      CWhile b c / st || SContinue / st
+      CWhile b c / st || st
   | E_While_True : forall st st' st'' b c,
       beval st b = true ->
-      c / st || SContinue / st' ->
-      CWhile b c / st' || SContinue / st'' ->
-      CWhile b c / st || SContinue / st''
-  | E_Call : forall st st' st'' ident status p program c rexp params args entry_st,
-      program p = (c, params, rexp) ->
+      c / st || st' ->
+      CWhile b c / st' || st'' ->
+      CWhile b c / st || st''
+(* Evidence for throwing and catching exceptions. *)
+  | E_Throw : forall st e aexps ns env,
+      map (fun a => aeval st a) aexps = ns ->
+      ceval (CThrow e aexps) env st st (Some (Exn (e, ns)))
+  | E_Try : forall c1 c2 st st' e ids env,
+      ceval c1 env st st' None ->
+      ceval (CTry c1 e ids c2) env st st' None
+  | E_Catch : forall c1 c2 st st' st'' e ns ids env,
+      ceval c1 env st st' (Some (Exn (e, ns))) ->
+      ceval c2 env (update_many st ids ns) st'' None ->
+      ceval (CTry c1 e ids c2) env st st'' None
+(* Evidence for propagating exceptions out of previously declared constructions. *)
+  | E_Seq1_Exn : forall st st' c1 c2 ex env,
+      ceval c1 env st st' (Some ex) ->
+      ceval (CSeq c1 c2) env st st' (Some ex)
+  | E_Seq2_Exn : forall st st' st'' c1 c2 ex env,
+      c1 / st || st' ->
+      ceval c2 env st' st'' (Some ex) ->
+      ceval (CSeq c1 c2) env st st'' (Some ex)
+  | E_While_Exn : forall st st' b c ex env,
+      beval st b = true ->
+      ceval c env st st' (Some ex) ->
+      ceval (CWhile b c) env st st' (Some ex)
+  | E_Try_Exn : forall c1 c2 st st' e e' ns ids env,
+      e <> e' ->
+      ceval c1 env st st' (Some (Exn (e, ns))) ->
+      ceval (CTry c1 e' ids c2) env st st' (Some (Exn (e, ns)))
+  | E_Catch_Exn : forall c1 c2 st st' st'' e ns ids ex env,
+      ceval c1 env st st' (Some (Exn (e, ns))) ->
+      ceval c2 env (update_many st ids ns) st'' (Some ex) ->
+      ceval (CTry c1 e ids c2) env st st'' (Some ex)
+  | E_Call : forall st st' st'' entry_st f (env : program) body params args X ex rexp,
+      env f = (body, params, rexp) ->
+      list_unique_items params ->
+      list_unique_items args ->
       length params = length args ->
-      entry_st = zip_state empty_state params args ->
-      c / entry_st || status / st ->
-      st'' = update st' ident (aeval st rexp) ->
-      CCall ident p args / st' || SContinue / st''
-
-  where "c1 '/' st '||' s '/' st'" := (ceval' c1 st s st').
+      ls_disjoint params (assigned_vars body []) ->
+      entry_st = zip_state st empty_state params args -> 
+      ceval body env entry_st st'' ex ->
+      st' = update st X (aeval st'' rexp) ->
+      ceval (CCall f X args) env st st' ex
+  where "c1 '/' st '||' st'" := (forall env, (ceval c1 env st st' None)).

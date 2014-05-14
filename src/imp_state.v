@@ -1,8 +1,7 @@
 Require Export imp_ast.
 
 Definition state := id -> nat.
-
-Definition program := id -> com.
+Definition program := id -> com * list  id * aexp.
 
 Inductive status : Type :=
   | SContinue : status
@@ -10,9 +9,12 @@ Inductive status : Type :=
 
 Definition empty_state : state :=
   fun _ => 0.
-  
+
 Definition update (st : state) (x : id) (n : nat) : state :=
   fun x' => if eq_id_dec x x' then n else st x'.
+
+Definition update_many st (ids : list id) (ns : list nat) :=
+  fold_left (fun st' p => update st' (fst p) (snd p)) (combine ids ns) st.
 
 Theorem update_shadow : forall n1 n2 x1 x2 (st : state),
    (update (update st x2 n1) x2 n2) x1 = (update st x2 n2) x1.
