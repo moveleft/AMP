@@ -4,3 +4,5 @@
 CoqoonMakefile
 CoqoonMakefile.vars
 CoqoonMakefile.vars.template
+
+.DS_Store
