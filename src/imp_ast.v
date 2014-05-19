@@ -56,6 +56,10 @@ Inductive com : Type :=
   | CThrow : exid -> list aexp -> com
   | CTry : com -> exid -> list id -> com -> com
   | CCall : id -> id -> list aexp -> com.
+  | CAlloc : id ->com
+  | CRead : id -> aexp -> com
+  | CWrite : aexp -> aexp -> com
+  | CFree : id -> com.
 
 Notation "'SKIP'" :=
   CSkip.
@@ -71,3 +75,11 @@ Notation "'THROW' ex ',' aexps" :=
   (CThrow ex aexps) (at level 60).
 Notation "'TRY' c1 'CATCH' ex ',' ids 'DO' c2 'END'" :=
   (CTry c1 ex ids c2) (at level 80, right associativity).
+Notation "x <-# 'ALLOC'" :=
+  (CAlloc x) (at level 40).
+Notation "x '<-*' '[' a ']'" :=
+  (CRead x a) (at level 40).
+Notation "'[' a ']' '<-@' b" :=
+  (CWrite a b) (at level 40).
+Notation "'FREE' a" :=
+  (CFree a) (at level 40).
