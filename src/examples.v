@@ -9,9 +9,9 @@ Definition body : com :=
 
 Definition env : program :=
   fun id =>
-    if eq_id_dec F id
-    then (body, [X], (APlus (AId X) (ANum 1)))
-    else (CSkip, [], ANum 0)
+    if eq_funid_dec F id
+    then (body, cons X nil, (APlus (AId X) (ANum 1)))
+    else (CSkip, nil, ANum 0)
     .
 
 Lemma body_p : forall X Y,
@@ -186,17 +186,17 @@ Proof.
   unfold Y, X, not; intro; congruence.
 Qed. *)
 
-( *******************
- * EXAMPLE 3       *
- ******************* )
+(**********************
+ * EXCEPTION EXAMPLES *
+ **********************)
 
 Definition example1 : com :=
   X ::= ANum 3;;
   TRY
     X ::= ANum 4;;
-    THROW T, [AMinus (ANum 21) (AId X)];; (* Demonstrating the hoare_seq rule. *)
-    THROW U, [] (* Demonstrating the hoare_seq_exn rule. *)
-  CATCH T, [Y] DO (* Demonstrating the hoare_try_exn rule. *)
+    THROW T, cons (AMinus (ANum 21) (AId X)) nil;; (* Demonstrating the hoare_seq rule. *)
+    THROW U, nil (* Demonstrating the hoare_seq_exn rule. *)
+  CATCH T, cons Y nil DO (* Demonstrating the hoare_try_exn rule. *)
     X ::= APlus (AId X) (AId Y)
   END. (* {X = 20 /\ Y = 17} *)
 
@@ -204,7 +204,7 @@ Definition example2 : com :=
   X ::= ANum 2;;
   TRY
     X ::= ANum 18
-  CATCH T, [Y] DO (* Demonstrating the hoare_try rule. *)
+  CATCH T, cons Y nil DO (* Demonstrating the hoare_try rule. *)
     X ::= AId Y
   END. (* {X = 18} *)
 
@@ -212,20 +212,20 @@ Definition example3 : com :=
   X ::= ANum 2;;
   TRY
     X ::= ANum 18;;
-    THROW T, [ANum 4; ANum 3]
-  CATCH U, [Y; Z] DO (* Demonstrating the hoare_try rule with propagated exception. *)
+    THROW T, cons (ANum 4) (cons (ANum 3) nil)
+  CATCH U, cons Y (cons Z nil) DO (* Demonstrating the hoare_try rule with propagated exception. *)
     X ::= APlus (AId Y) (AId Z)
   END. (* {X = 2 /\ ex = Some (Exn (T, [4; 3]))} *)
 
 Theorem example1_correct :
   {{fun ex st => True}}
     example1
-  {{fun ex st => st X = 20 /\ st Y = 17}}.
+  {{fun ex st => st X = 20 /\ st Y = 17}} env.
 Proof.
   unfold example1.
   eapply hoare_consequence_pre.
   apply hoare_seq with (Q:=fun ex st => st X = 3).
-  apply hoare_try_exn with (ns:=[17]).
+  apply hoare_try_exn with (ns:=cons 17 nil).
   apply hoare_consequence_post with (fun ex st => (st X = 20 /\ st Y = 17) /\ ex = None).
   eapply hoare_consequence_pre. apply hoare_asgn.
   intros ex st P.
