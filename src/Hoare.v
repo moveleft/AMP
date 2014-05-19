@@ -15,13 +15,13 @@ Open Scope hoare_spec_scope.
 Notation "P <<->> Q" :=
   (P ->> Q /\ Q ->> P) (at level 80) : hoare_spec_scope.
   
-(*Definition hoare_triple
-           (P:Assertion) (c:com) (Q:Assertion) : program -> Prop :=
-  fun env =>
-    forall st st' ex,
-         safe c st h /\ forall st' h', ceval c env st h st' h' ex ->
-         P None st h->
-         Q ex st' h'.*)
+(*
+Definition hoare_triple (P:Assertion) (c:com) (Q:Assertion) : Prop :=
+  forall st h,
+  P st h ->
+  safe c st h /\ forall st' h', ceval c st h st' h' ->
+  Q st' h'.
+  *)
 
 Definition hoare_triple
            (P:Assertion) (c:com) (Q:Assertion) : program -> Prop :=
@@ -34,6 +34,27 @@ Definition hoare_triple
 Notation "{{ P }}  c  {{ Q }}" :=
   (hoare_triple P c Q) (at level 90, c at next level)
   : hoare_spec_scope.
+
+Definition emp : Assertion :=
+  fun st h => Empty h.
+
+Definition point_to_val (x : id)(v : aexp) : Assertion :=
+  fun st h => find (st x) h = Some (aeval st v) /\ forall l l', st x = l' -> l' <> l -> find l h = None.
+
+Definition look_up_val (e v : aexp) : Assertion :=
+  fun st h => find (aeval st e) h = Some (aeval st v).
+  
+Definition ass_val (x:id)(v:aexp) : Assertion :=
+  fun st h => st x = (aeval st v).
+  
+Notation "x '|->' v" :=
+  (point_to_val x v) (at level 80).
+  
+Notation "e '|~>' v" := 
+  (look_up_val e v) (at level 80).
+
+Notation "x '|*~>' v" :=
+  (ass_val x v) (at level 80).
 
 Theorem hoare_consequence_pre : forall (P P' Q : Assertion) c env,
   {{P'}} c {{Q}} env ->
