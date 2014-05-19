@@ -1,1 +1,40 @@
 \subsection{Hoare Rules}
+
+\begin{equation}
+\frac{}{\vdash \{Q[\sfrac{X}{a}]\} \; (X ::= a) \; \{\lambda \varepsilon \sigma. Q(\varepsilon, \sigma) \wedge \varepsilon = \bot\}}
+\end{equation}
+
+\begin{equation}
+\frac{\vdash \{P\} \; c_1 \; \{\lambda \varepsilon \sigma. Q(\varepsilon, \sigma) \wedge \varepsilon = \bot\} \qquad \vdash \{Q\} \; c_2 \; \{R\}}{\vdash \{P\} \; (c_1\; ;;\; c_2) \; \{R\}}
+\end{equation}
+
+\begin{equation}
+\frac{\vdash \{P\} \; c_1 \; \{\lambda \varepsilon \sigma. Q(\varepsilon, \sigma) \wedge \varepsilon \neq \bot\}}{\vdash \{P\} \; (c_1\; ;;\; c_2) \; \{R\}}
+\end{equation}
+
+\begin{equation}
+\frac{\vdash \{P \wedge b=true\} \; c_1 \; \{Q\} \qquad \vdash \{P \wedge b=false\} \; c_2 \; \{Q\}}{\vdash \{P\} \; (IFB\; b\; THEN\; c_1\; ELSE\; c_2\; FI) \; \{Q\}}
+\end{equation}
+
+\begin{equation}
+\frac{\vdash \{P \wedge b = true\} \; c \; \{P\}}{\vdash \{P\} \; (WHILE\; b\; DO\; c\; END) \; \{P \wedge b = false\}}
+\end{equation}
+
+\begin{equation}
+\frac{\tilde{a}, \sigma \Downarrow \tilde{n}}{\vdash \{P\} \; (THROW\; e, \tilde{a}) \; \{\lambda \varepsilon \sigma. P (\bot, \sigma) \wedge \varepsilon = (e, \tilde{n})\}}
+\end{equation}
+
+\begin{equation}
+disjoint(\varepsilon, e) = \begin{cases}
+\top & \mbox{if} \; \varepsilon = \bot \\
+e \neq e' & \mbox{if} \; \varepsilon = (e', \_)
+\end{cases}
+\end{equation}
+
+\begin{equation}
+\frac{\vdash \{P\} \; c_1 \; \{\lambda \varepsilon \sigma. Q(\varepsilon, \sigma) \wedge disjoint(\varepsilon, e)\}}{\vdash \{P\} \; (TRY\; c_1\; CATCH\; e, \tilde{X}\; DO\; c_2\; END) \; \{Q\}}
+\end{equation}
+
+\begin{equation}
+\frac{\vdash \{P\} \; c_1 \; \{\lambda \varepsilon \sigma. \varepsilon = (e, \tilde{n})\} \qquad \vdash \{\lambda \varepsilon \sigma. \exists \sigma'. (P(\varepsilon, \sigma') \wedge \sigma = \sigma'[\sfrac{\tilde{X}}{\tilde{n}}])\} \; c_2 \; \{Q\}}{\vdash \{P\} \; (TRY\; c_1\; CATCH\; e, \tilde{X}\; DO\; c_2\; END) \; \{Q\}}
+\end{equation}
