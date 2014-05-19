@@ -1,0 +1,7 @@
+To reason about a program we will introduce hoare triples and a specification logic.
+
+An assertion, $\alpha$, is a function $\omega \rightarrow \epsilon \rightarrow \sigma \rightarrow \verb|Prop|$ 
+
+A hoare triple is define as $\{P\}\;c\;\{Q\}$ where $P,\;Q : \alpha$ and $c : \verb|com|$
+
+To be able to reason about function calls we introduce program, $\rho$, a function space $\verb|funid| \rightarrow \verb|com| \;\times\; [\verb|id|] $. And, we create a specification logic, $f \vdash \{P\} \; c \; \{Q\}$.

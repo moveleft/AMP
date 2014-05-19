@@ -4,9 +4,9 @@ Definition X : id := Id 0.
 Definition Y : id := Id 1.
 Definition Z : id := Id 2.
 
-Definition F : id := Id 3.
-Definition G : id := Id 4.
-Definition H : id := Id 5.
+Definition F := FunId 1.
+Definition G := FunId 2.
+Definition H := FunId 3.
 
 Definition T := ExId 1.
 Definition U := ExId 2.

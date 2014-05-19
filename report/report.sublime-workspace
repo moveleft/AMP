@@ -1,0 +1,1421 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"ser",
+				"serie"
+			],
+			[
+				"sea",
+				"searchTerm"
+			],
+			[
+				"rol",
+				"roles"
+			],
+			[
+				"me",
+				"Medicin"
+			],
+			[
+				"a",
+				"alt	Attr"
+			],
+			[
+				"ma",
+				"margin-bottom"
+			],
+			[
+				"assoc",
+				"associated"
+			],
+			[
+				"el",
+				"else"
+			],
+			[
+				"comm",
+				"CouchDbUserCommon"
+			],
+			[
+				"re",
+				"return"
+			],
+			[
+				"pate",
+				"patientRest"
+			],
+			[
+				"pat",
+				"patient"
+			],
+			[
+				"sta",
+				"staff"
+			],
+			[
+				"va",
+				"var_dump"
+			],
+			[
+				"s",
+				"scope"
+			],
+			[
+				"fu",
+				"function"
+			],
+			[
+				"u",
+				"updatedStaff"
+			],
+			[
+				"p",
+				"promise"
+			],
+			[
+				"create",
+				"createRestResponse"
+			],
+			[
+				"th",
+				"this"
+			],
+			[
+				"opt",
+				"option	Tag"
+			],
+			[
+				"st",
+				"staffQuery"
+			],
+			[
+				"ret",
+				"return"
+			],
+			[
+				"em",
+				"emittedKeyName"
+			],
+			[
+				"activi",
+				"activity_data"
+			],
+			[
+				"emitK",
+				"emitKey2"
+			],
+			[
+				"emit",
+				"emitKeyValue"
+			],
+			[
+				"outgoingCall",
+				"outgoingCallDetails"
+			],
+			[
+				"pa",
+				"patientId"
+			],
+			[
+				"cou",
+				"couch_user"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "report.tex",
+			"settings":
+			{
+				"buffer_size": 952,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "\\subsubsection{Function Calls}\n\nCreating even moderately complex programs requires a way to structure the code. In programming languages functions are used to structure the code. In turn the functions often are organised through the usage of classes, modules or similar concepts.\n\nExtending IMP with function calls allows a program to be structured into small pieces of code, with a single purpose. To implement function calls we introduce scope, such that each function can only read and write to its own state. This is similar to the widely used stack frames, but differ in that the state of a function is not a stack but a set of key-value pairs.\n\nWhen a function is called, its body is executed in a state which contains only the parameters and their values. The body of the function may create new entries in the state. When the function has executed the state is discarded.\n",
+			"file": "content/ci-function-calls.tex",
+			"file_size": 886,
+			"file_write_time": 130448343484123717,
+			"settings":
+			{
+				"buffer_size": 880,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/Simon/AppData/Roaming/Sublime Text 3/Packages/LaTeXTools/Default (Windows).sublime-keymap",
+			"settings":
+			{
+				"buffer_size": 13858,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 357.0,
+		"selected_items":
+		[
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"push",
+				"Git: Push"
+			],
+			[
+				"status",
+				"Git: Status"
+			],
+			[
+				"pull",
+				"Git: Pull"
+			],
+			[
+				"di",
+				"Git: Diff Current File"
+			],
+			[
+				"pus",
+				"Git: Push"
+			],
+			[
+				"stat",
+				"Git: Status"
+			],
+			[
+				"diff",
+				"Git: Diff Current File"
+			],
+			[
+				"rest",
+				"Xdebug: Restore Layout"
+			],
+			[
+				"sto",
+				"Xdebug: Stop Debugging"
+			],
+			[
+				"sta",
+				"Xdebug: Start Debugging"
+			],
+			[
+				"che",
+				"Git: Checkout Current File"
+			],
+			[
+				"st",
+				"Xdebug: Stop Debugging"
+			],
+			[
+				"pu",
+				"Git: Push"
+			],
+			[
+				"star",
+				"Xdebug: Start Debugging"
+			],
+			[
+				"brea",
+				"Xdebug: Clear All Breakpoints"
+			],
+			[
+				"statu",
+				"Git: Status"
+			],
+			[
+				"ch",
+				"Git: Checkout Current File"
+			],
+			[
+				"wa",
+				"Xdebug: Set Watch Expression"
+			],
+			[
+				"res",
+				"Xdebug: Restart Session"
+			],
+			[
+				"x",
+				"Xdebug: Start Debugging"
+			],
+			[
+				"wat",
+				"Xdebug: Set Watch Expression"
+			],
+			[
+				"start",
+				"Xdebug: Start Debugging"
+			],
+			[
+				"re",
+				"Xdebug: Restart Session"
+			],
+			[
+				"git push",
+				"Git: Push"
+			],
+			[
+				"stop",
+				"Xdebug: Stop Debugging"
+			],
+			[
+				"xde",
+				"Xdebug: Start Debugging"
+			],
+			[
+				"xdeb",
+				"Preferences: Xdebug Settings – User"
+			],
+			[
+				"xdebugw",
+				"Xdebug: Set Watch Expression"
+			],
+			[
+				"git stasu",
+				"Git: Status"
+			],
+			[
+				"ssjas",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"check",
+				"Git: Checkout Current File"
+			],
+			[
+				"chec",
+				"Git: Checkout Current File"
+			],
+			[
+				"xrl",
+				"Xdebug: Restore Layout"
+			],
+			[
+				"START",
+				"Xdebug: Start Debugging"
+			],
+			[
+				"xde rl",
+				"Xdebug: Restore Layout"
+			],
+			[
+				"restart",
+				"Xdebug: Restart Session"
+			],
+			[
+				"restar",
+				"Xdebug: Restart Session"
+			],
+			[
+				"sser",
+				"Set Syntax: Erlang"
+			],
+			[
+				"deb",
+				"Xdebug: Start Debugging"
+			],
+			[
+				"debug",
+				"Xdebug: Start Debugging"
+			],
+			[
+				"xdebug",
+				"Xdebug: Session - Status"
+			],
+			[
+				"xdebug ",
+				"Xdebug: Start Debugging"
+			],
+			[
+				"clear",
+				"Xdebug: Clear All Breakpoints"
+			],
+			[
+				"break",
+				"Xdebug: Clear All Breakpoints"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"brow",
+				"Preferences: Browse Packages"
+			],
+			[
+				"uu",
+				"Generate UUID v4"
+			]
+		],
+		"width": 400.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"window.get_layout()",
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by) "
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/C/Users/Simon/AppData/Roaming/Sublime Text 3/Packages/User/LaTeXTools.sublime-settings",
+		"/D/projects/AMP/report/content/ci-exception-handling.tex",
+		"/D/projects/AMP/report/report.sublime-project",
+		"/D/projects/AMP/report/content/operational-semantics.tex",
+		"/D/projects/AMP/report/content/ci-function-calls.tex",
+		"/C/Users/Simon/AppData/Roaming/Sublime Text 3/Packages/LaTeXTools/README.markdown",
+		"/C/Users/Simon/Downloads/Esohead.lua",
+		"/C/Users/Simon/Downloads/Esohead (1).lua",
+		"/C/Users/Simon/Documents/Elder Scrolls Online/liveeu/AddOns/Esohead/Esohead.lua",
+		"/D/projects/Monsenso/Webapp/public/patient-charts/charts.htm",
+		"/D/projects/Monsenso/Webapp/docs/theme/toc.html",
+		"/D/projects/Monsenso/Webapp/public/triggers/triggers.js",
+		"/D/projects/Monsenso/Webapp/public/plugins/html5shiv/test/jquery-1.7.1/unit/traversing.js",
+		"/D/projects/Monsenso/Webapp/app/assets/couchDb/documents/charts.json",
+		"/D/projects/Monsenso/Webapp/app/library/sag/CouchDb.php",
+		"/D/projects/Monsenso/Webapp/public/patient-charts/patient-charts.js",
+		"/D/projects/Monsenso/Webapp/Monsenso-webapp.sublime-project",
+		"/D/projects/Monsenso/Webapp/app/commands/CouchSeeder.php",
+		"/D/projects/Monsenso/Webapp/app/assets/couchDb/documents/general_actions_da.json",
+		"/D/projects/Monsenso/Webapp/app/commands/CouchInitializer.php",
+		"/D/projects/Monsenso/Webapp/docs/index.md",
+		"/D/projects/Monsenso/Webapp/_ide_helper.php",
+		"/D/projects/Monsenso/Webapp/app/database/seeds/DatabaseSeeder.php",
+		"/D/projects/Monsenso/Webapp/app/database/seeds/UserTableSeeder.php",
+		"/D/projects/Monsenso/Webapp/app/database/seeds/RoleAndPermissionTableSeeder.php",
+		"/D/projects/Monsenso/Webapp/app/library/sag/Sag.php",
+		"/D/projects/Monsenso/Webapp/app/config/simon_tgen8/couch.php",
+		"/D/projects/Monsenso/Webapp/app/config/couch.php",
+		"/D/projects/Monsenso/Webapp/CONTRIBUTING.md",
+		"/D/projects/Monsenso/Webapp/app/commands/CouchExtracter.php",
+		"/D/projects/Monsenso/Webapp/app/commands/ComposerPostUpdateCommand.php",
+		"/D/projects/Monsenso/Webapp/public/js/patient-charts.js",
+		"/D/projects/Monsenso/Webapp/public/js/chosen.js",
+		"/D/projects/Monsenso/Webapp/public/css/chosen-spinner.css",
+		"/D/projects/Monsenso/Webapp/app/views/patient/create.blade.php",
+		"/D/projects/Monsenso/Webapp/public/lang/da.json",
+		"/D/projects/Monsenso/Webapp/app/lang/da/patient/create.php",
+		"/D/projects/Monsenso/Webapp/app/lang/en-us/patient/create.php",
+		"/F/supersurvey/build.sh",
+		"/D/projects/supersurvey/packages/FSPowerPack.Community.3.0.0.0/Tools/fsyacc.exe.config",
+		"/D/projects/supersurvey/build.fsx",
+		"/F/supersurvey/tools/FAKE/tools/FAKE.exe.config",
+		"/F/supersurvey/README.md",
+		"/D/projects/Monsenso/Webapp/public/medicine/medicine-list.htm",
+		"/D/projects/Monsenso/Webapp/app/views/partial/navigation.blade.php",
+		"/D/projects/Monsenso/Webapp/public/medicine/medicine.js",
+		"/D/projects/Monsenso/Webapp/app/controllers/StaffController.php",
+		"/D/projects/Monsenso/Webapp/public/medicine/medicine-template.htm",
+		"/D/projects/Monsenso/Webapp/app/routes.php",
+		"/D/projects/Monsenso/Webapp/public/patient-overview/patient-overview.htm",
+		"/D/projects/Monsenso/Webapp/public/lang/en-us.json",
+		"/D/projects/Monsenso/Webapp/app/controllers/PatientDataController.php",
+		"/D/projects/Monsenso/Webapp/app/views/patient/search.blade.php",
+		"/D/projects/Monsenso/Webapp/public/search/search.js",
+		"/D/projects/Monsenso/Webapp/public/search/search.htm",
+		"/D/projects/Monsenso/Webapp/public/patient-details/patient-details.htm",
+		"/D/projects/Monsenso/Webapp/public/medicine/medicine-modal.htm",
+		"/D/projects/Monsenso/Webapp/app/views/partial/patient-navbar-item.blade.php",
+		"/D/projects/Monsenso/Webapp/app/lang/en-us/patient/details.php",
+		"/D/projects/Monsenso/Webapp/docs/theme/nav.html",
+		"/D/projects/Monsenso/Webapp/app/lang/en-us/navigation.php",
+		"/D/projects/Monsenso/Webapp/app/lang/da/navigation.php",
+		"/D/projects/Monsenso/Webapp/app/controllers/PatientSearchController.php",
+		"/D/projects/Monsenso/Webapp/app/services/validators/TriggerValidator.php",
+		"/D/projects/Monsenso/Webapp/app/models/User.php",
+		"/D/projects/Monsenso/Webapp/app/controllers/PhoneController.php",
+		"/D/projects/Monsenso/Webapp/app/controllers/PatientMedicineController.php",
+		"/D/projects/Monsenso/Webapp/app/views/layouts/master.blade.php",
+		"/D/projects/Monsenso/Webapp/app/tests/ExampleTest.php",
+		"/D/projects/Monsenso/Webapp/app/database/migrations/2013_11_04_114715_entrust_setup_tables.php",
+		"/D/projects/Monsenso/Webapp/app/lang/en-us/home.php",
+		"/D/projects/Monsenso/Webapp/app/database/migrations/2014_04_08_010832_add_fulltext_index_on_name_user_table.php",
+		"/D/projects/Monsenso/Webapp/app/views/patient/overview.blade.php",
+		"/D/projects/Monsenso/Webapp/app/library/sag/NOTICE",
+		"/D/projects/Monsenso/Webapp/app/controllers/PatientDetailsController.php",
+		"/D/projects/Monsenso/Webapp/app/views/patient/details.blade.php",
+		"/D/projects/Monsenso/Webapp/public/patient-details/patient-details.js",
+		"/D/projects/Monsenso/Webapp/app/views/patient/partial/medication.blade.php",
+		"/D/projects/Monsenso/Webapp/README.md",
+		"/D/projects/Monsenso/Webapp/app/controllers/PatientController.php",
+		"/D/projects/Monsenso/Webapp/docs/rest-api/patient-details.md",
+		"/D/projects/Monsenso/Webapp/app/views/partial/footer.blade.php",
+		"/D/projects/Monsenso/Webapp/public/fonts/FontAwesome.otf",
+		"/D/projects/Monsenso/Webapp/app/views/partial/header.blade.php",
+		"/D/projects/Monsenso/Webapp/app/lang/en-us/patient/partial/medication.blade.php",
+		"/D/projects/Monsenso/Webapp/app/views/patient/medicine.blade.php",
+		"/D/projects/Monsenso/Webapp/docs/rest-api/patient-data.md",
+		"/D/projects/Monsenso/Webapp/public/general-actions/general-actions-disorder-list.htm",
+		"/D/projects/Monsenso/Webapp/docs/rest-api/overview-data.md",
+		"/D/projects/Monsenso/Webapp/app/lang/da/patient/overview.php",
+		"/D/projects/Monsenso/Webapp/public/staff/staff-overview.htm",
+		"/D/projects/Monsenso/Webapp/public/staff/staff.js",
+		"/D/projects/Monsenso/Webapp/public/plugins/html5shiv/test/jquery-1.7.1/unit/manipulation.js",
+		"/D/projects/Monsenso/Webapp/docs/rest-api/overview.md",
+		"/D/projects/Monsenso/Webapp/public/plugins/html5shiv/test/jquery-1.7.1/data/versioncheck.js",
+		"/D/projects/Monsenso/Webapp/app/ValidatorExtensions.php",
+		"/D/projects/Monsenso/Webapp/public/js/angular-locale_en-us.js",
+		"/D/projects/Monsenso/Webapp/app/lang/en-us/admin/general_actions.php",
+		"/D/projects/Monsenso/Webapp/public/js/angular-translate.min.js",
+		"/D/projects/Monsenso/Webapp/public/js/angular-route.min.js",
+		"/D/projects/Monsenso/Webapp/public/js/angular-locale_da.js",
+		"/D/projects/Monsenso/Webapp/app/library/sag/httpAdapters/SagNativeHTTPAdapter.php",
+		"/D/projects/Monsenso/Webapp/app/controllers/GeneralActionsActionController.php",
+		"/D/projects/Monsenso/Webapp/app/views/auth/login.blade.php",
+		"/D/projects/Monsenso/Webapp/app/services/validators/DisorderCategoryActionValidator.php",
+		"/D/projects/Monsenso/Webapp/app/lang/en-us/patient/overview.php",
+		"/D/projects/Monsenso/Webapp/app/views/admin/staff.blade.php",
+		"/D/projects/Monsenso/Webapp/public/patient-details/patient-details-modal.htm",
+		"/D/projects/Monsenso/Webapp/app/tests/TestCase.php",
+		"/D/projects/Monsenso/Webapp/app/controllers/GeneralActionsCategoryController.php",
+		"/D/projects/Monsenso/Webapp/public/staff/edit-staff-modal.htm",
+		"/D/projects/Monsenso/Webapp/public/plugins/animate/source/tada.css",
+		"/D/projects/Monsenso/Webapp/app/assets/couchDb/design_documents/master-aggregated_user_db.json",
+		"/D/projects/Monsenso/Webapp/app/models/Permission.php",
+		"/D/projects/Monsenso/Webapp/app/views/partial/contact_us.blade.php",
+		"/D/projects/Monsenso/Webapp/app/config/simon_mac/couch.php",
+		"/D/projects/Monsenso/Webapp/public/css/custom-style.css",
+		"/D/projects/Monsenso/Webapp/public/staff/new-staff-modal.htm",
+		"/D/projects/Monsenso/Webapp/app/controllers/AuthController.php",
+		"/D/projects/Monsenso/Webapp/app/services/validators/NewMedicineValidator.php",
+		"/D/projects/Monsenso/Webapp/app/services/validators/NewUserValidator.php",
+		"/D/projects/Monsenso/Webapp/app/filters.php",
+		"/D/projects/Monsenso/Webapp/app/controllers/BaseController.php",
+		"/D/projects/Monsenso/Webapp/app/services/validators/PrescribedMedicineDocumentValidator.php",
+		"/D/projects/Monsenso/Webapp/app/views/admin/general-actions.blade.php",
+		"/D/projects/Monsenso/Webapp/public/general-actions/disorder-modal.htm",
+		"/D/projects/Monsenso/Webapp/public/general-actions/action-modal.htm",
+		"/D/projects/Monsenso/Webapp/public/plugins/animate/source/rotateOut.css"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"maptr",
+			"patient/overview.",
+			"Comments",
+			"”",
+			"“",
+			".footer",
+			"footer",
+			"\\d",
+			"verify",
+			"use",
+			">\n",
+			"couch.truecode",
+			"monsenso",
+			"errors->all(",
+			"error->all(",
+			"all(",
+			"all",
+			"error",
+			"textField",
+			"$translate(",
+			"$q.",
+			"$q",
+			"bd",
+			"3",
+			"acc",
+			"	",
+			"000",
+			"	",
+			"acce",
+			"scree",
+			"cell",
+			"cell_tower",
+			"\n                else if(chartProp == 'Phone activity')\n                    d = createPhoneActivityData(data);",
+			"prop",
+			"map",
+			"warning_",
+			"translate",
+			"nan",
+			"charts",
+			"endDate",
+			"accelerometer",
+			"Emit(",
+			"put2",
+			"post2",
+			"site",
+			"log",
+			"php",
+			"PHP",
+			"php",
+			"PHP",
+			"php",
+			"PHP",
+			"php",
+			"ICouchDbUser",
+			"couch",
+			"/**"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"\"",
+			"couchdb.monsenso",
+			"$translate.instant(",
+			"        ",
+			"    ",
+			""
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "report.tex",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 952,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								490,
+								490
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/LaTeX/LaTeX.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "content/ci-function-calls.tex",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 880,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								880,
+								880
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/LaTeX/LaTeX.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/Users/Simon/AppData/Roaming/Sublime Text 3/Packages/LaTeXTools/Default (Windows).sublime-keymap",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 13858,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JSON.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3240.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 100.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.git":
+	{
+		"height": 100.0
+	},
+	"output.git-commit":
+	{
+		"height": 100.0
+	},
+	"output.git-pull":
+	{
+		"height": 100.0
+	},
+	"output.git-push":
+	{
+		"height": 100.0
+	},
+	"output.xdebug":
+	{
+		"height": 94.0
+	},
+	"project": "report.sublime-project",
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"charts",
+				"public\\patient-charts\\patient-charts.js"
+			],
+			[
+				"init",
+				"app\\commands\\CouchInitializer.php"
+			],
+			[
+				"seeder",
+				"app\\commands\\CouchSeeder.php"
+			],
+			[
+				"couchdb",
+				"app\\library\\sag\\CouchDb.php"
+			],
+			[
+				"chartsjs",
+				"public\\patient-charts\\patient-charts.js"
+			],
+			[
+				"cha",
+				"public\\patient-charts\\charts.htm"
+			],
+			[
+				"create",
+				"app\\lang\\da\\patient\\create.php"
+			],
+			[
+				"creat",
+				"app\\views\\patient\\create.blade.php"
+			],
+			[
+				"da",
+				"public\\lang\\da.json"
+			],
+			[
+				"detahtm",
+				"public\\patient-details\\patient-details.htm"
+			],
+			[
+				"nav",
+				"app\\views\\partial\\patient-navbar-item.blade.php"
+			],
+			[
+				"navig",
+				"app\\views\\partial\\navigation.blade.php"
+			],
+			[
+				"navi",
+				"app\\lang\\da\\navigation.php"
+			],
+			[
+				"usee",
+				"app\\database\\seeds\\UserTableSeeder.php"
+			],
+			[
+				"perms",
+				"app\\database\\seeds\\RoleAndPermissionTableSeeder.php"
+			],
+			[
+				"en",
+				"public\\lang\\en-us.json"
+			],
+			[
+				"medi",
+				"public\\medicine\\medicine-modal.htm"
+			],
+			[
+				"overv",
+				"public\\patient-overview\\patient-overview.htm"
+			],
+			[
+				"rout",
+				"app\\routes.php"
+			],
+			[
+				"detaht",
+				"public\\patient-details\\patient-details.htm"
+			],
+			[
+				"medjs",
+				"public\\medicine\\medicine.js"
+			],
+			[
+				"staff",
+				"app\\controllers\\StaffController.php"
+			],
+			[
+				"debla",
+				"app\\views\\patient\\details.blade.php"
+			],
+			[
+				"patidecon",
+				"app\\controllers\\PatientDetailsController.php"
+			],
+			[
+				"patide",
+				"public\\patient-details\\patient-details.js"
+			],
+			[
+				"metemth",
+				"public\\medicine\\medicine-template.htm"
+			],
+			[
+				"medthm",
+				"public\\medicine\\medicine-list.htm"
+			],
+			[
+				"detathm",
+				"public\\patient-details\\patient-details.htm"
+			],
+			[
+				"medica",
+				"public\\medicine\\medicine-template.htm"
+			],
+			[
+				"pada",
+				"app\\controllers\\PatientDataController.php"
+			],
+			[
+				"overwth",
+				"public\\patient-overview\\patient-overview.htm"
+			],
+			[
+				"foot",
+				"app\\views\\partial\\footer.blade.php"
+			],
+			[
+				"mast",
+				"app\\views\\layouts\\master.blade.php"
+			],
+			[
+				"route",
+				"app\\routes.php"
+			],
+			[
+				"verwhtm",
+				"public\\patient-overview\\patient-overview.htm"
+			],
+			[
+				"lang",
+				"public\\lang\\da.json"
+			],
+			[
+				"user",
+				"app\\models\\User.php"
+			],
+			[
+				"decon",
+				"app\\controllers\\PatientDetailsController.php"
+			],
+			[
+				"detabla",
+				"app\\views\\patient\\details.blade.php"
+			],
+			[
+				"padetbla",
+				"app\\views\\patient\\details.blade.php"
+			],
+			[
+				"staffba",
+				"app\\views\\admin\\staff.blade.php"
+			],
+			[
+				"pade",
+				"public\\patient-details\\patient-details.js"
+			],
+			[
+				"details",
+				"public\\patient-details\\patient-details.htm"
+			],
+			[
+				"deta",
+				"app\\lang\\en-us\\patient\\details.php"
+			],
+			[
+				"permsee",
+				"app\\database\\seeds\\RoleAndPermissionTableSeeder.php"
+			],
+			[
+				"seed",
+				"app\\database\\seeds\\UserTableSeeder.php"
+			],
+			[
+				"cou",
+				"app\\config\\couch.php"
+			],
+			[
+				"newm",
+				"public\\staff\\new-staff-modal.htm"
+			],
+			[
+				"sta",
+				"app\\controllers\\StaffController.php"
+			],
+			[
+				"couc",
+				"app\\config\\couch.php"
+			],
+			[
+				"filte",
+				"app\\filters.php"
+			],
+			[
+				"padac",
+				"app\\controllers\\PatientDataController.php"
+			],
+			[
+				"detal",
+				"app\\views\\patient\\details.blade.php"
+			],
+			[
+				"medc",
+				"app\\controllers\\PatientMedicineController.php"
+			],
+			[
+				"authcon",
+				"app\\controllers\\AuthController.php"
+			],
+			[
+				"login",
+				"app\\views\\auth\\login.blade.php"
+			],
+			[
+				"hea",
+				"app\\views\\partial\\header.blade.php"
+			],
+			[
+				"ro",
+				"app\\routes.php"
+			],
+			[
+				"stjs",
+				"public\\staff\\staff.js"
+			],
+			[
+				"detajs",
+				"public\\patient-details\\patient-details.js"
+			],
+			[
+				"detacon",
+				"app\\controllers\\PatientDetailsController.php"
+			],
+			[
+				"detalth",
+				"public\\patient-details\\patient-details-modal.htm"
+			],
+			[
+				"upval",
+				"app\\services\\validators\\UserUpdateInputValidator.php"
+			],
+			[
+				"newva",
+				"app\\services\\validators\\NewUserValidator.php"
+			],
+			[
+				"staffjs",
+				"public\\staff\\staff.js"
+			],
+			[
+				"usse",
+				"app\\database\\seeds\\UserTableSeeder.php"
+			],
+			[
+				"stamod",
+				"public\\staff\\new-staff-modal.htm"
+			],
+			[
+				"rseed",
+				"app\\database\\seeds\\RoleAndPermissionTableSeeder.php"
+			],
+			[
+				"userupdateinputvalidator",
+				"app\\services\\validators\\UserUpdateInputValidator.php"
+			],
+			[
+				"filter",
+				"app\\filters.php"
+			],
+			[
+				"head",
+				"app\\views\\partial\\header.blade.php"
+			],
+			[
+				"cus",
+				"public\\css\\custom-style.css"
+			],
+			[
+				"overwht",
+				"public\\patient-overview\\patient-overview.htm"
+			],
+			[
+				"na",
+				"docs\\theme\\nav.html"
+			],
+			[
+				"over",
+				"app\\views\\patient\\overview.blade.php"
+			],
+			[
+				"overview",
+				"public\\patient-overview\\patient-overview.htm"
+			],
+			[
+				"dajs",
+				"public\\lang\\da.json"
+			],
+			[
+				"homeb",
+				"app\\views\\home\\index.blade.php"
+			],
+			[
+				"crea",
+				"app\\lang\\en-us\\patient\\create.php"
+			],
+			[
+				"couch",
+				"app\\config\\simon_tgen8\\couch.php"
+			],
+			[
+				"uts",
+				"app\\database\\seeds\\UserTableSeeder.php"
+			],
+			[
+				"pachac",
+				"app\\controllers\\PatientChartDataController.php"
+			],
+			[
+				"patientcon",
+				"app\\controllers\\PatientController.php"
+			],
+			[
+				"discont",
+				"app\\controllers\\GeneralActionsDisorderController.php"
+			],
+			[
+				"sa",
+				"app\\library\\sag\\Sag.php"
+			],
+			[
+				"ph",
+				"app\\controllers\\PhoneController.php"
+			],
+			[
+				"pacont",
+				"app\\controllers\\PatientController.php"
+			],
+			[
+				"pati",
+				"app\\controllers\\PatientController.php"
+			],
+			[
+				"htt",
+				"app\\library\\sag\\httpAdapters\\SagHTTPAdapter.php"
+			],
+			[
+				"mon",
+				"public\\js\\Monsenso.js"
+			],
+			[
+				"see",
+				"app\\database\\seeds\\UserTableSeeder.php"
+			],
+			[
+				"pho",
+				"app\\controllers\\PhoneController.php"
+			],
+			[
+				"stcon",
+				"app\\controllers\\StaffController.php"
+			],
+			[
+				"geneah",
+				"public\\general-actions\\general-actions-list.htm"
+			],
+			[
+				"overht",
+				"public\\patient-overview\\patient-overview.htm"
+			],
+			[
+				"patda",
+				"app\\controllers\\PatientDataController.php"
+			],
+			[
+				"geneactions",
+				"public\\js\\general_actions.js"
+			],
+			[
+				"pagenecon",
+				"app\\controllers\\PatientGeneralActionsController.php"
+			],
+			[
+				"ma",
+				"app\\views\\layouts\\master.blade.php"
+			],
+			[
+				"view",
+				"app\\services\\Couch\\Views.php"
+			],
+			[
+				"coudb",
+				"app\\library\\sag\\CouchDb.php"
+			],
+			[
+				"patcon",
+				"app\\controllers\\PatientController.php"
+			],
+			[
+				"patiencrea",
+				"app\\views\\patient\\create.blade.php"
+			],
+			[
+				"patiencon",
+				"app\\controllers\\PatientController.php"
+			],
+			[
+				"geneatmothm",
+				"public\\general-actions\\action-modal.htm"
+			],
+			[
+				"geneacthm",
+				"public\\general-actions\\general-actions-list.htm"
+			],
+			[
+				"geneacon",
+				"app\\controllers\\GeneralActionsDisorderController.php"
+			],
+			[
+				"cust",
+				"public\\css\\custom-style.css"
+			],
+			[
+				"staffb",
+				"app\\views\\admin\\staff.blade.php"
+			],
+			[
+				"u",
+				"app\\models\\User.php"
+			],
+			[
+				"stacon",
+				"app\\controllers\\StaffController.php"
+			],
+			[
+				"wa",
+				"public\\warning-signs\\warning-signs.js"
+			],
+			[
+				"upva",
+				"app\\services\\validators\\UserUpdateInputValidator.php"
+			],
+			[
+				"geneactionhtm",
+				"public\\general-actions\\general-actions-list.htm"
+			],
+			[
+				"pacon",
+				"app\\controllers\\PatientController.php"
+			],
+			[
+				"genacthm",
+				"public\\general-actions\\general-actions-list.htm"
+			],
+			[
+				"detailm",
+				"public\\patient-details\\patient-details-modal.htm"
+			],
+			[
+				"maste",
+				"app\\views\\layouts\\master.blade.php"
+			],
+			[
+				"stac",
+				"app\\controllers\\StaffController.php"
+			],
+			[
+				"genachtm",
+				"public\\general-actions\\general-actions-disorder-list.htm"
+			],
+			[
+				"monsens",
+				"public\\js\\Monsenso.js"
+			],
+			[
+				"staffc",
+				"app\\controllers\\StaffController.php"
+			],
+			[
+				"padem",
+				"public\\patient-details\\patient-details-modal.htm"
+			],
+			[
+				"new",
+				"app\\services\\validators\\NewUserValidator.php"
+			],
+			[
+				"patientdetailsvalidator",
+				"app\\services\\validators\\PatientDetailsValidator.php"
+			],
+			[
+				"patdec",
+				"app\\controllers\\PatientDetailsController.php"
+			],
+			[
+				"patientdetails",
+				"public\\patient-details\\patient-details.js"
+			],
+			[
+				"pat",
+				"docs\\rest-api\\patient-details.md"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 392.0,
+		"selected_items":
+		[
+		],
+		"width": 512.0
+	},
+	"settings":
+	{
+		"xdebug":
+		{
+			"hide_conflict": false,
+			"restore_index":
+			{
+				"389":
+				{
+					"group": 2,
+					"index": 0
+				},
+				"466":
+				{
+					"group": 0,
+					"index": 0
+				},
+				"470":
+				{
+					"group": 1,
+					"index": 0
+				},
+				"489":
+				{
+					"group": 1,
+					"index": 1
+				},
+				"490":
+				{
+					"group": 2,
+					"index": 1
+				},
+				"493":
+				{
+					"group": 2,
+					"index": 2
+				},
+				"495":
+				{
+					"group": 2,
+					"index": 3
+				},
+				"497":
+				{
+					"group": 0,
+					"index": 1
+				},
+				"503":
+				{
+					"group": 1,
+					"index": 2
+				},
+				"508":
+				{
+					"group": 1,
+					"index": 5
+				},
+				"526":
+				{
+					"group": 1,
+					"index": 3
+				},
+				"530":
+				{
+					"group": 2,
+					"index": 4
+				},
+				"535":
+				{
+					"group": 1,
+					"index": 4
+				},
+				"570":
+				{
+					"group": 0,
+					"index": 2
+				}
+			},
+			"restore_layout":
+			{
+				"cells":
+				[
+					[
+						0,
+						0,
+						1,
+						1
+					],
+					[
+						1,
+						0,
+						2,
+						1
+					],
+					[
+						2,
+						0,
+						3,
+						1
+					]
+				],
+				"cols":
+				[
+					0.0,
+					0.33,
+					0.66,
+					1.0
+				],
+				"rows":
+				[
+					0.0,
+					1.0
+				]
+			}
+		}
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 277.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
