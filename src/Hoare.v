@@ -1,10 +1,12 @@
 Require Export imp.
 Require Import FunctionalExtensionality.
 
-Definition Assertion := option exn -> state -> Prop.
+Definition Assertion := option exn -> state -> heap -> Prop.
 
 Definition assert_implies (P Q : Assertion) : Prop :=
   forall ex st, P ex st -> Q ex st.
+
+Definition safe c st h := ~ (ceval c st h empty_state h). 
 
 Notation "P ->> Q" :=
   (assert_implies P Q) (at level 80) : hoare_spec_scope.
@@ -17,9 +19,9 @@ Definition hoare_triple
            (P:Assertion) (c:com) (Q:Assertion) : program -> Prop :=
   fun env =>
     forall st st' ex,
-         ceval c env st st' ex ->
-         P None st ->
-         Q ex st'.
+         safe c st h /\ forall st' h', ceval c env st h st' h' ex ->
+         P None st h->
+         Q ex st' h'.
   
 Notation "{{ P }}  c  {{ Q }}" :=
   (hoare_triple P c Q) (at level 90, c at next level)
@@ -281,6 +283,166 @@ Proof.
   apply (H0 st'''' st'').
   assumption.
   assumption.
+Qed.
+
+Theorem hoare_alloc : forall x,
+  {{ emp }} x <-# ALLOC {{ x |-> ANum 0 }}.
+Proof.
+  split.
+  unfold safe.
+  unfold not.
+  intros.
+  inversion H0.
+  assert (not_in_add : forall (m:heap) (a e :nat),
+  ~ In a (add a e m) -> False).
+  admit.
+  apply not_in_add in H5.
+  apply H5.
+  intros.
+  unfold point_to_val.
+  split.
+  inversion H0. 
+  subst.
+  rewrite add_eq_o.
+  simpl. 
+  reflexivity.
+  unfold update.
+  rewrite eq_id.
+  reflexivity.
+  intros.
+  inversion H0.
+  subst.
+  unfold update in H2.
+  rewrite eq_id in H2.
+  assert (diff_addr : forall (m:heap) (a b e :nat), a<>b -> find b (add a e m) = None).
+  admit.
+  rewrite diff_addr.
+  reflexivity.
+  apply H2.
+Qed.
+
+Theorem hoare_read : forall e v x,
+  {{ e |~> v }} x <-* [ e ] {{ x |*~> v }}.
+Proof.
+  intros.
+  split.
+  unfold safe.
+  unfold not.
+  intros.
+  inversion H0.
+  assert (update_val : forall (m:heap) (a v:nat) st (x:id), 
+  update st x v = empty_state -> False).
+  admit.
+  apply update_val in H3.
+  apply H3.
+  apply h.
+  apply addr.
+  unfold look_up_val in H.
+  rewrite <- H6 in H3.
+  rewrite H3 in H.
+  assert (find_exsit : forall (m:heap)(a v:nat),
+  find a m = Some v -> ~ In a m -> False).
+  admit.
+  apply find_exsit in H.
+  apply H.
+  apply H8.
+  intros.
+  unfold ass_val.
+  inversion H0.
+  unfold look_up_val in H.
+  rewrite H3 in H.
+  rewrite <-H7 in H8.
+  rewrite H in H8.
+  assert (same_val : forall st v v', Some(aeval st v) = Some(aeval st v') -> v=v').
+  admit.
+  apply same_val in H8.
+  rewrite <- H8 in H6.
+  rewrite <- H8.
+  rewrite H6.
+  assert (update_stack : forall st st' v, update st x (aeval st v) = st' -> st' x = (aeval st' v)).
+  admit.
+  apply update_stack in H6.
+  apply H6.
+  subst.
+  assert (current_stack : forall st x v, st x = aeval st v).
+  admit.
+  apply current_stack.
+Qed.
+
+Theorem hoare_write : forall e v v',
+  {{ e |~> v }} [ e ] <-@ v' {{ e |~> v' }}.
+Proof.
+  intros.
+  split.
+  unfold safe.
+  unfold not.
+  intros.
+  inversion H0.
+  assert (not_change_st : forall st,
+  st = empty_state -> False).
+  admit.
+  apply not_change_st in H7.
+  apply H7.
+  intros.
+  unfold look_up_val.
+  inversion H0.
+  subst.
+  assert (add_remove : forall (m:heap) (e v :nat), 
+  find e (add e v (remove e m)) = Some v).
+  admit.
+  rewrite add_remove.
+  reflexivity.
+Qed.
+ 
+Theorem hoare_free : forall x v,
+  {{ x |-> v }} FREE x {{ emp }}.
+Proof.
+  intros.
+  split.
+  unfold safe.
+  unfold not.
+  intros.
+  inversion H0.
+  assert (remove_false : forall (m:heap) (e v : nat),
+  find e (remove e h) = Some v -> False).
+  admit.
+  apply remove_false in H3.
+  apply H3.
+  apply h.
+  assert (not_addr : forall (x:id)(e:nat),
+  empty_state x = e -> False).
+  admit.
+  apply not_addr in H2.
+  apply H2.
+  intros.
+  unfold emp.
+  unfold Empty.
+  unfold not.
+  intros.
+  inversion H0.
+  subst.
+  unfold point_to_val in H.
+  inversion H.
+  apply remove_mapsto_iff in H1.
+  inversion H1.
+  apply H3 in H5.
+  assert (not_mapsto_in_iff : forall (m:heap) (x e:nat), find x m = None -> MapsTo x e m -> False).
+  admit.
+  apply not_mapsto_in_iff in H6.
+  apply H6.
+  apply H5.
+  reflexivity.
+  assert (not_mapsto_in_iff : forall (m:heap) (x e:nat), find x m = None -> MapsTo x e m -> False).
+  admit.
+  apply not_mapsto_in_iff in H1.
+  apply H1.
+  assert (empty_find_in : forall (m:heap) (a:nat), find a m = None -> is_empty m = true).
+  admit.
+  apply empty_find_in in H4.
+  assert (empty_map : forall (m:heap) (a:nat), is_empty m = true -> find a m = None).
+  admit.
+  apply empty_map.
+  apply H4.
 Qed.
 
 (*******************
