@@ -1,0 +1,18 @@
+{
+	"folders":
+	[
+		{
+			"follow_symlinks": true,
+			"path": ".",
+			"file_exclude_patterns": [
+				"report.synctex.gz",
+				"*.pdf",
+				"*.log",
+				"*.aux",
+				"*.sty",
+				"llncs.*",
+				"readme.txt"
+			]
+		}
+	]
+}

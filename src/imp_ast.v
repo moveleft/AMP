@@ -3,6 +3,9 @@ Require Import Coq.Arith.Peano_dec.
 
 Inductive id : Type :=
   | Id : nat -> id.
+  
+Inductive funid : Type :=
+  | FunId : nat -> funid.
 
 Inductive exid : Type :=
   | ExId : nat -> exid.
@@ -11,6 +14,17 @@ Inductive exn : Type :=
   | Exn : exid * list nat -> exn.
 
 Theorem eq_id_dec : forall id1 id2 : id, {id1 = id2} + {id1 <> id2}.
+Proof.
+   intros id1 id2.
+   destruct id1 as [n1]. destruct id2 as [n2].
+   destruct (eq_nat_dec n1 n2) as [Heq | Hneq].
+   Case "n1 = n2".
+     left. rewrite Heq. reflexivity.
+   Case "n1 <> n2".
+     right. intros contra. inversion contra. apply Hneq. apply H0.
+Defined.
+
+Theorem eq_funid_dec : forall id1 id2 : funid, {id1 = id2} + {id1 <> id2}.
 Proof.
    intros id1 id2.
    destruct id1 as [n1]. destruct id2 as [n2].
@@ -55,7 +69,7 @@ Inductive com : Type :=
   | CWhile : bexp -> com -> com
   | CThrow : exid -> list aexp -> com
   | CTry : com -> exid -> list id -> com -> com
-  | CCall : id -> id -> list aexp -> com.
+  | CCall : funid -> id -> list aexp -> com.
 
 Notation "'SKIP'" :=
   CSkip.
@@ -71,3 +85,5 @@ Notation "'THROW' ex ',' aexps" :=
   (CThrow ex aexps) (at level 60).
 Notation "'TRY' c1 'CATCH' ex ',' ids 'DO' c2 'END'" :=
   (CTry c1 ex ids c2) (at level 80, right associativity).
+Notation "'Call' f x args" :=
+  (CCall f x args) (at level 80, right associativity).

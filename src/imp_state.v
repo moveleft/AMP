@@ -1,7 +1,7 @@
 Require Export imp_ast.
 
 Definition state := id -> nat.
-Definition program := id -> com * list  id * aexp.
+Definition program := funid -> com * list  id * aexp.
 
 Inductive status : Type :=
   | SContinue : status

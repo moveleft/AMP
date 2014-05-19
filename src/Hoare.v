@@ -292,7 +292,7 @@ Definition body : com :=
   
 Definition env : program :=
   fun id =>
-    if eq_id_dec F id
+    if eq_funid_dec F id
     then (body, [X], (APlus (AId X) (ANum 1)))
     else (CSkip, [], ANum 0)
     .
