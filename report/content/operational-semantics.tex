@@ -55,3 +55,9 @@
 \begin{equation}
 \frac{e \neq e' \qquad (c_1, \rho, \sigma) \Downarrow (\sigma', (e, \tilde{n}))}{((TRY\; c_1\; CATCH\; e',\; \tilde{X}\; DO\; c_2\; END), \rho, \sigma) \Downarrow (\sigma', (e, \tilde{n}))}
 \end{equation}
+
+\begin{equation}
+\frac
+{(\tilde{a},\rho,\sigma) \Downarrow \tilde{v} \quad \sigma''= emp[\sfrac{\tilde{v}}{\tilde{p}}] \quad (c, \rho, \sigma'') \Downarrow \sigma''' \quad (r,\rho,\sigma''') \Downarrow w \quad \sigma' = \sigma[\sfrac{x}{w}] \quad \rho(f) = (c, \tilde{p}, r)}
+{((CALL\; F \; X  \; \tilde{a}), \rho, \sigma) \Downarrow \sigma'}
+\end{equation}
