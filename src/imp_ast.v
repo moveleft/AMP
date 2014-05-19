@@ -55,7 +55,7 @@ Inductive com : Type :=
   | CWhile : bexp -> com -> com
   | CThrow : exid -> list aexp -> com
   | CTry : com -> exid -> list id -> com -> com
-  | CCall : id -> id -> list aexp -> com.
+  | CCall : id -> id -> list aexp -> com
   | CAlloc : id ->com
   | CRead : id -> aexp -> com
   | CWrite : aexp -> aexp -> com

@@ -3,7 +3,7 @@ Require Import MapInterface.
 
 Definition state := id -> nat.
 Definition program := id -> com * list  id * aexp.
-Definition heap := Map [nat, nat].
+(*Definition heap := Map [nat, nat].*)
 
 Inductive status : Type :=
   | SContinue : status
