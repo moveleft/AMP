@@ -1,5 +1,5 @@
 \subsection{Hoare Logic}
-To reason about a code block we introduce Hoare logic. To this end we define an \verb|assertion| to be a predicate, $P$, which take a state, an exceptional state, and a heap.
+To reason about a code block we introduce Hoare logic. To this end we define an \verb|assertion| to be a predicate, $P$, which takes a state, an exception, and a heap.
 
 Hoare triples are the core of Hoare logic, it allows us to describe the effects of executing a piece of code. It has the form $\{P\}\;c\;\{Q\}$ where $P,Q : \verb|assertion|$ and $c : \verb|com|$.
 Equation \ref{eqn:hoare_triple_def} defines the Hoare triple.
@@ -13,19 +13,21 @@ Equation \ref{eqn:hoare_triple_def} defines the Hoare triple.
 \end{alignedat}
 \end{equation}
 
-\begin{lstlisting}
-{A[]}}
+Listing \ref{lst:hoare_ex_asgn}
+
+\begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:hoare_ex_asgn,caption=A simple code block proven using Hoare triples.]
+{ 1 = 1           }
+X ::= 1
+{ X = 1           }
+{ X = 1 $\wedge$ 10 = 10 }
+Y ::= X * 10
+{ X = 1 $\wedge$  Y = 10 }
 \end{lstlisting}
 
 \subsection{Specification Logic}
-Let $\rho$ be a function space, 
-$\verb|funid| \rightharpoonup \verb|func|$, 
-such that 
-$\rho = \{ id_i \rightarrow f_i | id_i : \verb|funid| \wedge f_i:\verb|func| \}$, 
-where $id_i$ is the identifier for the function $f_i$ in a program.
-The separation logic allows us to reason about functions and function calls. We introduce this logic by extending the Hoare logic.
+The specification logic allows us to reason about functions and function calls. We introduce this logic by extending the Hoare logic.
 
-The \verb|assertion| is extended such that it takes $\rho$ as an additional parameter. And, The Hoare triple is extended such that it is a function from $\rho$ to the Hoare triple defined in equation \ref{eqn:hoare_triple_def}.
+The \verb|assertion| is extended such that it takes $\rho$ as an additional parameter. The Hoare triple is extended such that it is a function from $\rho$ to the Hoare triple defined in equation \ref{eqn:hoare_triple_def}.
 \begin{equation}
 \begin{alignedat}{2}
 \{P\}\;c\;\{Q\} \triangleq \forall \sigma \: \sigma' \: \omega \: \omega' \: \epsilon .\\
