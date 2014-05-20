@@ -43,14 +43,20 @@ The \verb|assertion| is extended such that it takes $\rho$ as an additional para
 \end{alignedat}
 \end{equation}
 
-\begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:spec_ex,caption=.]
-{ 3 = 3               }
-Z := X + Y
-{ X = 3               }
+Listing \ref{lst:spec-ex-body} through \ref{lst:spec-ex-prog} is an example of a program which calls a function and assigns the return value to a variable in the local state.
+
+\begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:spec-ex-body,caption=The body of the function F]
+{ X + Y = X + Y }
+{Z := X + Y}
+{ Z = X + Y     }
 \end{lstlisting}
 
-\begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:spec_ex,caption=.]
-{ 3 = 3               }
+\begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:spec-ex-env,caption=A partial function space containing the function F.]
+$\rho$ = $\{$F $\rightarrow$ (Z := X + Y, [X,Y], Z)$\}$
+\end{lstlisting}
+
+\begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:spec-ex-prog,caption=A program which call the function F and stores the result in X]
+{ 3 = 3 }
 CALL F X [1;2]
-{ X = 3               }
+{ X = 3 }
 \end{lstlisting}
