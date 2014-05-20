@@ -1,1 +1,11 @@
 \section{Introduction}
+The purpose of this project has been to extend the language IMP, as implemented during the exercise chapters found in Software Foundations, with three new features, a language we will refer to as IMP+ for the remainder of this report. Furthermore, to provide the necessary formal constructs for validating programs written in IMP+.
+
+The three features we have implemented in IMP+ are:
+\begin{itemize}
+\item A memory heap, realized through the introduction of a separation logic to the current implementation of IMP
+\item Function calls, i.e. self-contained pieces of code with a local state that can be run with a dedicated command from inside itself or other pieces of code
+\item Exception handling, which allows try-catch statements to “save” the program from an exceptional state that has occurred as the result of the throw command
+\end{itemize}
+
+The version of IMP we have built upon is implemented inside the formal proof management language Coq. We have extended this implementation, and as such our final product takes the form of a number of Coq source files.
