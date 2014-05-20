@@ -1,17 +1,40 @@
 \section{Types and Commands}
 
-We introduce three concepts to IMP: exceptional state, heap and functions.
+Arithmetic expressions, boolean expressions and commands in IMP are given by the types \verb|aexp|, \verb|bexp| and \verb|com|, respectively. In addition, we have introduced three new concepts to IMP: exceptions, heap and functions.
 
-An exceptional state
+Below follows the definitions of arithmetic and boolean expressions, as well as all commands, including the ones we have added for IMP+.
 
+\begin{equation}
+\verb|aexp| \triangleq \mathbb{N} \;|\; \verb|id| \;|\; \verb|aexp| + \verb|aexp| \;|\;  \verb|aexp| - \verb|aexp| \;|\;  \verb|aexp| * \verb|aexp|
+\end{equation}
 
+\begin{equation}
+\verb|bexp| \triangleq True \;|\; False \;|\; \verb|aexp| = \verb|aexp| \;|\; \verb|aexp| \leq \verb|aexp| \;|\; \neg\verb|bexp| \;|\; \verb|bexp| \wedge \verb|bexp|
+\end{equation}
 
-Variables, exceptions, and functions are identified by instances of the types \verb|id|, \verb|exid|, and \verb|funid|, respectively.
+\begin{equation}
+\begin{alignedat}{2}
+\verb|com| \triangleq & SKIP \;|\; & skip \\&
+	\verb|id| ::= \verb|aexp| \;|\; & assignment \\&
+	\verb|com|\; ;;\; \verb|com| \;|\; & sequence \\&
+	IFB\; \verb|bexp|\; THEN\; \verb|com|\; ELSE\; \verb|com|\; FI \;|\; & if-then-else \\&
+	WHILE\; \verb|bexp|\; DO\; \verb|com|\; END\; \;|\; & while-loop \\&
+	THROW\; \verb|exid|, \tilde{aexp} \;|\; & throw \\&
+	TRY\; \verb|com|\; CATCH\; \verb|exid|, \tilde{id}\; DO\; \verb|com|\; END \;|\; & try-catch \\&
+	CALL\; \verb|funid|\; \verb|id|\; \tilde{aexp} \;|\; & call \\&
+	\verb|id|\leftarrow\#\;ALLOC \;|\; & allocate \\&
+	\verb|id|\leftarrow*\;[\verb|aexp|] \;|\; & read \\&
+	[\verb|aexp|]\leftarrow@\;\verb|aexp| \;|\; & write \\&
+	FREE\;\verb|id| & free
+\end{alignedat}
+\end{equation}
 
-A state, $\sigma$, is a function space $\verb|id| \rightarrow \mathbb{N}$
+Variables, exceptions, and functions are identified by instances of the types \verb|id|, \verb|exid| and \verb|funid|, respectively. Values are given as all natural numbers $v\in\mathbb{N}$. A tilde above a symbol indicates a list.
 
-A heap, $omega$, is a function space $\verb|id| \rightarrow \mathbb{N}$
+A state $\sigma$ is a function space $\verb|id| \rightarrow \mathbb{N}$
 
-An exception state, $\epsilon$, is define as $(\verb|exid|\times[\mathbb{N}])_\bot$
+A heap $\omega$ is a partial function space $\mathbb{N} \rightharpoonup \mathbb{N}$
 
-A function is represented by the triple $\verb|func|: \verb|com| \; \times \; [id] \; \times \; \verb|aexp|$
+An exception $\varepsilon$ is defined as the disjoint union $(\verb|exid|\times\tilde{\mathbb{N}})\uplus\bot$
+
+A function is represented by the triple $\verb|func|: \verb|com| \; \times \; \tilde{id} \; \times \; \verb|aexp|$
