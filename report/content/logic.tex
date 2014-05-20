@@ -13,15 +13,20 @@ Equation \ref{eqn:hoare_triple_def} defines the Hoare triple.
 \end{alignedat}
 \end{equation}
 
-Listing \ref{lst:hoare_ex_asgn}
+Listing \ref{lst:hoare_ex_asgn} shows an example of using Hoare logic to verify a simple program in IMP.
 
 \begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:hoare_ex_asgn,caption=A simple code block proven using Hoare triples.]
-{ 1 = 1           }
-X ::= 1
-{ X = 1           }
-{ X = 1 $\wedge$ 10 = 10 }
-Y ::= X * 10
-{ X = 1 $\wedge$  Y = 10 }
+{ 1 = 1               } $\text{This is trivially true, but necessary due to }$
+                        $\text{how the assignment Hoare rule (\ref{eqn:hoare-assign}) work}$
+X ::= 1                 $\text{Updates the state with X = 1 per the}$
+                        $\text{operational semantics for assignment (\ref{eqn:op-assign})}$
+{ X = 1               } $\text{Trivially true; the state has just been updated}$
+                        $\text{such that X = 1}$
+{ X = 1 $\wedge$ X $\cdot$ 10 = 10 } $\text{The right operand of the conjunction is}$
+                        $\text{introduced to conform to the assignment Hoare rule}$
+Y ::= X $\cdot$ 10
+{ X = 1 $\wedge$      Y = 10 } $\text{True; the state has jst been updated such}$
+                        $\text{that Y = 10}$
 \end{lstlisting}
 
 \subsection{Specification Logic}
@@ -37,3 +42,15 @@ The \verb|assertion| is extended such that it takes $\rho$ as an additional para
 && Q(\rho,\sigma',\epsilon,\omega'))
 \end{alignedat}
 \end{equation}
+
+\begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:spec_ex,caption=.]
+{ 3 = 3               }
+Z := X + Y
+{ X = 3               }
+\end{lstlisting}
+
+\begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:spec_ex,caption=.]
+{ 3 = 3               }
+CALL F X [1;2]
+{ X = 3               }
+\end{lstlisting}
