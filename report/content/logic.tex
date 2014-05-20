@@ -1,33 +1,33 @@
 \subsection{Hoare Logic}
-
-
-To reason about a code block we introduce Hoare logic. To this end we define an \verb|assertion| to be a predicate which take a state, an exceptional state, and a heap ($P(\sigma,\epsilon,\omega)$).
+To reason about a code block we introduce Hoare logic. To this end we define an \verb|assertion| to be a predicate, $P$, which take a state, an exceptional state, and a heap.
 
 Hoare triples are the core of Hoare logic, it allows us to describe the effects of executing a piece of code. It has the form $\{P\}\;c\;\{Q\}$ where $P,Q : \verb|assertion|$ and $c : \verb|com|$.
 Equation \ref{eqn:hoare_triple_def} defines the Hoare triple.
 
 \begin{equation}\label{eqn:hoare_triple_def}
-\begin{split}
-\{P\}\;c\;\{Q\} \triangleq
-& \forall c.\; c / (\rho,\sigma,\omega) \Downarrow (\sigma', \epsilon, \omega') \Rightarrow\\
+\begin{alignedat}{1}
+\{P\}\;c\;\{Q\} \triangleq &\forall \sigma \: \sigma' \: \omega \: \omega' \: \epsilon .\\
+& (c,\sigma,\omega) \Downarrow (\sigma', \epsilon, \omega') \Rightarrow\\
 & P(\sigma,\bot,\omega) \Rightarrow\\
 & Q(\sigma',\epsilon,\omega')
-\end{split}
+\end{alignedat}
 \end{equation}
-
-\begin{equation}\label{eqn:alpha-type}
-\alpha: \omega \rightarrow \epsilon \rightarrow \sigma \rightarrow \verb|Prop|
-\end{equation}
-
 
 \subsection{Specification Logic}
 Let $\rho$ be a function space, 
-$\verb|funid| \rightarrow \verb|func|$, 
+$\verb|funid| \rightharpoonup \verb|func|$, 
 such that 
 $\rho = \{ id_i \rightarrow f_i | id_i : \verb|funid| \wedge f_i:\verb|func| \}$, 
 where $id_i$ is the identifier for the function $f_i$ in a program.
+The separation logic allows us to reason about functions and function calls. We introduce this logic by extending the Hoare logic.
 
-We extend the Hoare triple such that for $F_i = \rho(i)$
+The \verb|assertion| is extended such that it takes $\rho$ as an additional parameter. And, The Hoare triple is extended such that it is a function from $\rho$ to the Hoare triple defined in equation \ref{eqn:hoare_triple_def}.
 \begin{equation}
-F_i \rightarrowtail \{P\}\;\_\;\{Q\}
+\begin{alignedat}{2}
+\{P\}\;c\;\{Q\} \triangleq \forall \sigma \: \sigma' \: \omega \: \omega' \: \epsilon .\\
+ \lambda\rho.(
+  && (c,\rho,\sigma,\omega) \Downarrow (\sigma', \epsilon, \omega') \Rightarrow\\
+&& P(\rho,\sigma,\bot,\omega) \Rightarrow\\
+&& Q(\rho,\sigma',\epsilon,\omega'))
+\end{alignedat}
 \end{equation}

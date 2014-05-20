@@ -121,7 +121,7 @@ Inductive ceval : com -> program -> state -> heap -> state -> heap -> option exn
       ceval (CTry c1 e' ids c2) env st h st' h' (Some (Exn (e, ns)))
 (* Function calls *)
   | E_Call : forall st st' st'' entry_st f (env : program) body params args X ex rexp h h',
-      env f = (body, params, rexp) ->
+      env f = Some (body, params, rexp) ->
       list_unique_items params ->
       list_unique_items args ->
       length params = length args ->
