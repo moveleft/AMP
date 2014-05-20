@@ -2,6 +2,16 @@
 
 Arithmetic expressions, boolean expressions and commands in IMP are given by the types \verb|aexp|, \verb|bexp| and \verb|com|, respectively. In addition, we have introduced three new concepts to IMP: exceptions, heap and functions.
 
+Variables, exceptions, and functions are identified by instances of the types \verb|id|, \verb|exid| and \verb|funid|, respectively. Values are given as all natural numbers $v\in\mathbb{N}$. A tilde above a symbol indicates a list.
+
+A state $\sigma$ is a function space $\verb|id| \rightarrow \mathbb{N}$
+
+A heap $\omega$ is a partial function space $\mathbb{N} \rightharpoonup \mathbb{N}$
+
+An exception $\varepsilon$ is defined as the disjoint union $(\verb|exid|\times\tilde{\mathbb{N}})\uplus\bot$
+
+A function is represented by the triple $\verb|func|: \verb|com| \; \times \; \tilde{id} \; \times \; \verb|aexp|$
+
 Below follows the definitions of arithmetic and boolean expressions, as well as all commands, including the ones we have added for IMP+.
 
 \begin{equation}
@@ -14,27 +24,17 @@ Below follows the definitions of arithmetic and boolean expressions, as well as 
 
 \begin{equation}
 \begin{alignedat}{2}
-\verb|com| \triangleq & SKIP \;|\; & skip \\&
-	\verb|id| ::= \verb|aexp| \;|\; & assignment \\&
-	\verb|com|\; ;;\; \verb|com| \;|\; & sequence \\&
-	IFB\; \verb|bexp|\; THEN\; \verb|com|\; ELSE\; \verb|com|\; FI \;|\; & if-then-else \\&
-	WHILE\; \verb|bexp|\; DO\; \verb|com|\; END\; \;|\; & while-loop \\&
-	THROW\; \verb|exid|, \tilde{aexp} \;|\; & throw \\&
-	TRY\; \verb|com|\; CATCH\; \verb|exid|, \tilde{id}\; DO\; \verb|com|\; END \;|\; & try-catch \\&
-	CALL\; \verb|funid|\; \verb|id|\; \tilde{aexp} \;|\; & call \\&
-	\verb|id|\leftarrow\#\;ALLOC \;|\; & allocate \\&
-	\verb|id|\leftarrow*\;[\verb|aexp|] \;|\; & read \\&
-	[\verb|aexp|]\leftarrow@\;\verb|aexp| \;|\; & write \\&
-	FREE\;\verb|id| & free
+\verb|com| \triangleq & \textbf{SKIP} \;|\; & (skip) \\&
+	\verb|id| ::= \verb|aexp| \;|\; & (assignment) \\&
+	\verb|com|\; ;;\; \verb|com| \;|\; & (sequence) \\&
+	\textbf{IFB}\; \verb|bexp|\; \textbf{THEN}\; \verb|com|\; \textbf{ELSE}\; \verb|com|\; \textbf{FI} \;|\; & (if-then-else) \\&
+	\textbf{WHILE}\; \verb|bexp|\; \textbf{DO}\; \verb|com|\; \textbf{END}\; \;|\; & (while-loop) \\&
+	\textbf{THROW}\; \verb|exid|, \tilde{aexp} \;|\; & (throw) \\&
+	\textbf{TRY}\; \verb|com|\; \textbf{CATCH}\; \verb|exid|, \tilde{id}\; \textbf{DO}\; \verb|com|\; \textbf{END} \;|\; & (try-catch) \\&
+	\textbf{CALL}\; \verb|funid|\; \verb|id|\; \tilde{aexp} \;|\; & (call) \\&
+	\verb|id|\leftarrow\#\;\textbf{ALLOC} \;|\; & (allocate) \\&
+	\verb|id|\leftarrow*\;[\verb|aexp|] \;|\; & (read) \\&
+	[\verb|aexp|]\leftarrow@\;\verb|aexp| \;|\; & (write) \\&
+	\textbf{FREE}\;\verb|id| & (free)
 \end{alignedat}
 \end{equation}
-
-Variables, exceptions, and functions are identified by instances of the types \verb|id|, \verb|exid| and \verb|funid|, respectively. Values are given as all natural numbers $v\in\mathbb{N}$. A tilde above a symbol indicates a list.
-
-A state $\sigma$ is a function space $\verb|id| \rightarrow \mathbb{N}$
-
-A heap $\omega$ is a partial function space $\mathbb{N} \rightharpoonup \mathbb{N}$
-
-An exception $\varepsilon$ is defined as the disjoint union $(\verb|exid|\times\tilde{\mathbb{N}})\uplus\bot$
-
-A function is represented by the triple $\verb|func|: \verb|com| \; \times \; \tilde{id} \; \times \; \verb|aexp|$
