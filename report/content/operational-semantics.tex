@@ -1,7 +1,7 @@
 \section{Operational Semantics}
 
 \begin{notation}
-Let $c$ be a command and $\sigma',\epsilon, and \omega'$ be the state, exceptional state, and heap after the execution of $c$ in $\rho$, $\sigma$ and $\omega$.
+Let $c$ be a command and $\sigma'$, $\varepsilon$ and $\omega'$ be the state, exception and heap after the execution of $c$ in $\rho$, $\sigma$ and $\omega$.
 
 This is written:
 \begin{equation}
@@ -27,64 +27,66 @@ This is written:
 \end{equation}
 \end{notation}
 
+Below follows the operational semantics for all commands in IMP+.
+
 \begin{equation}
-\frac{}{(SKIP, \rho, \sigma) \Downarrow (\sigma, \bot)}
+\frac{}{(\textbf{SKIP}, \rho, \sigma, \omega) \Downarrow (\sigma, \bot, \omega)}
 \end{equation}
 
 \begin{equation}
-\frac{(a, \sigma) \Downarrow n \qquad \sigma[\sfrac{X}{n}] = \sigma'}{((X ::= a), \rho, \sigma) \Downarrow (\sigma', \bot)}
+\frac{(a, \sigma) \Downarrow n \qquad \sigma' = \sigma[\sfrac{X}{n}]}{((X ::= a), \rho, \sigma, \omega) \Downarrow (\sigma', \bot, \omega)}
 \end{equation}
 
 \begin{equation}
-\frac{(b, \sigma) \Downarrow true \qquad (c_1, \rho, \sigma) \Downarrow (\sigma', \varepsilon)}{((IFB\; b\; THEN\; c_1\; ELSE\; c_2\; FI), \rho, \sigma) \Downarrow (\sigma', \varepsilon)}
+\frac{(b, \sigma) \Downarrow true \qquad (c_1, \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega')}{((\textbf{IFB}\; b\; \textbf{THEN}\; c_1\; \textbf{ELSE}\; c_2\; \textbf{FI}), \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega')}
 \end{equation}
 
 \begin{equation}
-\frac{(b, \sigma) \Downarrow false \qquad (c_2, \rho, \sigma) \Downarrow (\sigma', \varepsilon)}{((IFB\; b\; THEN\; c_1\; ELSE\; c_2\; FI), \rho, \sigma) \Downarrow (\sigma', \varepsilon)}
+\frac{(b, \sigma) \Downarrow false \qquad (c_2, \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega')}{((\textbf{IFB}\; b\; \textbf{THEN}\; c_1\; \textbf{ELSE}\; c_2\; \textbf{FI}), \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega')}
 \end{equation}
 
 \begin{equation}
-\frac{(c_1, \rho, \sigma) \Downarrow (\sigma', \bot) \qquad (c_2, \rho, \sigma') \Downarrow (\sigma'', \bot)}{((c_1\; ;;\; c_2), \rho, \sigma) \Downarrow (\sigma'', \bot)}
+\frac{(c_1, \rho, \sigma, \omega) \Downarrow (\sigma', \bot, \omega') \qquad (c_2, \rho, \sigma', \omega') \Downarrow (\sigma'', \bot, \omega'')}{((c_1\; ;;\; c_2), \rho, \sigma, \omega) \Downarrow (\sigma'', \bot, \omega'')}
 \end{equation}
 
 \begin{equation}
-\frac{(c_1, \rho, \sigma) \Downarrow (\sigma', \bot) \qquad (c_2, \rho, \sigma') \Downarrow (\sigma'', \varepsilon) \qquad \varepsilon \neq \bot}{((c_1\; ;;\; c_2), \rho, \sigma) \Downarrow (\sigma'', \varepsilon)}
+\frac{(c_1, \rho, \sigma, \omega) \Downarrow (\sigma', \bot, \omega') \qquad (c_2, \rho, \sigma', \omega') \Downarrow (\sigma'', \varepsilon, \omega'') \qquad \varepsilon \neq \bot}{((c_1\; ;;\; c_2), \rho, \sigma, \omega) \Downarrow (\sigma'', \varepsilon, \omega'')}
 \end{equation}
 
 \begin{equation}
-\frac{(c_1, \rho, \sigma) \Downarrow (\sigma', \varepsilon) \qquad \varepsilon \neq \bot}{((c_1\; ;;\; c_2), \rho, \sigma) \Downarrow (\sigma', \varepsilon)}
+\frac{(c_1, \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega') \qquad \varepsilon \neq \bot}{((c_1\; ;;\; c_2), \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega')}
 \end{equation}
 
 \begin{equation}
-\frac{(b, \sigma) \Downarrow false}{((WHILE\; b\; DO\; c\; END), \rho, \sigma) \Downarrow (\sigma, \bot)}
+\frac{(b, \sigma) \Downarrow false}{((\textbf{WHILE}\; b\; \textbf{DO}\; c\; \textbf{END}), \rho, \sigma, \omega) \Downarrow (\sigma, \bot, \omega)}
 \end{equation}
 
 \begin{equation}
-\frac{(b, \sigma) \Downarrow true \qquad (c, \rho, \sigma) \Downarrow (\sigma', \bot) \qquad ((WHILE\; b\; DO\; c\; END), \rho, \sigma') \Downarrow (\sigma'', \bot)}{((WHILE\; b\; DO\; c\; END), \rho, \sigma) \Downarrow (\sigma'', \bot)}
+\frac{(b, \sigma) \Downarrow true \qquad (c, \rho, \sigma, \omega) \Downarrow (\sigma', \bot, \omega') \qquad ((\textbf{WHILE}\; b\; \textbf{DO}\; c\; \textbf{END}), \rho, \sigma', \omega') \Downarrow (\sigma'', \bot, \omega'')}{((\textbf{WHILE}\; b\; \textbf{DO}\; c\; \textbf{END}), \rho, \sigma, \omega) \Downarrow (\sigma'', \bot, \omega'')}
 \end{equation}
 
 \begin{equation}
-\frac{(b, \sigma) \Downarrow true \qquad (c, \rho, \sigma) \Downarrow (\sigma', \varepsilon) \qquad \varepsilon \neq \bot}{((WHILE\; b\; DO\; c\; END), \rho, \sigma) \Downarrow (\sigma', \varepsilon)}
+\frac{(b, \sigma) \Downarrow true \qquad (c, \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega') \qquad \varepsilon \neq \bot}{((\textbf{WHILE}\; b\; \textbf{DO}\; c\; \textbf{END}), \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega')}
 \end{equation}
 
 \begin{equation}
-\frac{(\tilde{a}, \sigma) \Downarrow \tilde{n}}{((THROW\; e,\; \tilde{a}), \rho, \sigma) \Downarrow (\sigma, (e, \tilde{n}))}
+\frac{(\tilde{a}, \sigma) \Downarrow \tilde{n}}{((\textbf{THROW}\; e,\; \tilde{a}), \rho, \sigma, \omega) \Downarrow (\sigma, (e, \tilde{n}), \omega)}
 \end{equation}
 
 \begin{equation}
-\frac{(c_1, \rho, \sigma) \Downarrow (\sigma', \bot)}{((TRY\; c_1\; CATCH\; e,\; \tilde{X}\; DO\; c_2\; END), \rho, \sigma) \Downarrow (\sigma', \bot)}
+\frac{(c_1, \rho, \sigma, \omega) \Downarrow (\sigma', \bot, \omega')}{((\textbf{TRY}\; c_1\; \textbf{CATCH}\; e,\; \tilde{X}\; \textbf{DO}\; c_2\; \textbf{END}), \rho, \sigma, \omega) \Downarrow (\sigma', \bot, \omega')}
 \end{equation}
 
 \begin{equation}
-\frac{(c_1, \rho, \sigma) \Downarrow (\sigma', (e, \tilde{n})) \qquad (c_2, \rho, \sigma[\sfrac{\tilde{X}}{\tilde{n}}]) \Downarrow (\sigma'', \varepsilon)}{((TRY\; c_1\; CATCH\; e,\; \tilde{X}\; DO\; c_2\; END), \rho, \sigma) \Downarrow (\sigma'', \varepsilon)}
+\frac{(c_1, \rho, \sigma, \omega) \Downarrow (\sigma', (e, \tilde{n}), \omega') \qquad (c_2, \rho, \sigma[\sfrac{\tilde{X}}{\tilde{n}}], \omega) \Downarrow (\sigma'', \varepsilon, \omega'')}{((\textbf{TRY}\; c_1\; \textbf{CATCH}\; e,\; \tilde{X}\; \textbf{DO}\; c_2\; \textbf{END}), \rho, \sigma, \omega) \Downarrow (\sigma'', \varepsilon, \omega'')}
 \end{equation}
 
 \begin{equation}
-\frac{e \neq e' \qquad (c_1, \rho, \sigma) \Downarrow (\sigma', (e, \tilde{n}))}{((TRY\; c_1\; CATCH\; e',\; \tilde{X}\; DO\; c_2\; END), \rho, \sigma) \Downarrow (\sigma', (e, \tilde{n}))}
+\frac{e \neq e' \qquad (c_1, \rho, \sigma, \omega) \Downarrow (\sigma', (e, \tilde{n}), \omega')}{((\textbf{TRY}\; c_1\; \textbf{CATCH}\; e',\; \tilde{X}\; \textbf{DO}\; c_2\; \textbf{END}), \rho, \sigma, \omega) \Downarrow (\sigma', (e, \tilde{n}), \omega')}
 \end{equation}
 
 \begin{equation}
 \frac
-{(\tilde{a},\rho,\sigma) \Downarrow \tilde{v} \quad \sigma''= emp[\sfrac{\tilde{v}}{\tilde{p}}] \quad (c, \rho, \sigma'') \Downarrow \sigma''' \quad (r,\rho,\sigma''') \Downarrow w \quad \sigma' = \sigma[\sfrac{x}{w}] \quad \rho(f) = (c, \tilde{p}, r)}
-{((CALL\; F \; X  \; \tilde{a}), \rho, \sigma) \Downarrow \sigma'}
+{(\tilde{a},\sigma) \Downarrow \tilde{v} \quad \sigma''= emp[\sfrac{\tilde{v}}{\tilde{p}}] \quad (c, \rho, \sigma'', \omega) \Downarrow (\sigma''', \varepsilon, \omega') \quad (r,\sigma''') \Downarrow w \quad \sigma' = \sigma[\sfrac{X}{w}] \quad \rho(f) = (c, \tilde{p}, r)}
+{((\textbf{CALL}\; F \; X  \; \tilde{a}), \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega')}
 \end{equation}
