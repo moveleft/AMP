@@ -31,6 +31,17 @@ This is written:
 \end{equation}
 \end{notation}
 
+\begin{definition}
+Let $\sigma'$ be the state which is the result of updating the state $\sigma$ with $X = n$, where $X$ is an identifier and $n$ a natural number. It holds that
+
+\begin{equation}
+\begin{split}
+\sigma' = \sigma[\sfrac{X}{n}] =>\\
+\sigma'(X) = n \wedge (\forall Y.\; Y \neq X => \sigma'(Y) = \sigma(Y))
+\end{split}
+\end{equation}
+\end{definition}
+
 Below follows the operational semantics for all commands in IMP+, with explanatory text where it is relevant.
 
 \begin{equation}
@@ -59,7 +70,7 @@ The operational semantics for $sequence$ are largely the same as in IMP, althoug
 \frac{(c_1, \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega') \qquad \varepsilon \neq \bot}{((c_1\; ;;\; c_2), \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega')}
 \end{equation}
 
-The operational semantics for the while-loop have been extended with a case (\ref{eqn:op-while-exn}) for breaking out of the loop if the inner code block results in an exception. The semantics simply state that if the condition is true, and the inner code block results in a state and some exception, the entire statement results in that state and exception. This is the same behaviour as for the $break$ command that was implemented in IMP during one exercise session.
+The operational semantics for the while-loop have been extended with a case (\ref{eqn:op-while-exn}) for breaking out of the loop if the inner code block results in an exception. The semantics simply state that if the condition is true, and the inner code block results in a state and some exception, the entire statement results in that state and exception. This is the same behavior as for the $break$ command that was implemented in IMP during one exercise session.
 
 \begin{equation}
 \frac{(b, \sigma) \Downarrow false}{((\textbf{WHILE}\; b\; \textbf{DO}\; c\; \textbf{END}), \rho, \sigma, \omega) \Downarrow (\sigma, \bot, \omega)}
@@ -90,6 +101,14 @@ The last case (\ref{eqn:op-catch}) for $try-catch$ is the interesting one. The c
 \begin{equation}\label{eqn:op-catch}
 \frac{(c_1, \rho, \sigma, \omega) \Downarrow (\sigma', (e, \tilde{n}), \omega') \qquad (c_2, \rho, \sigma[\sfrac{\tilde{X}}{\tilde{n}}], \omega) \Downarrow (\sigma'', \varepsilon, \omega'')}{((\textbf{TRY}\; c_1\; \textbf{CATCH}\; e,\; \tilde{X}\; \textbf{DO}\; c_2\; \textbf{END}), \rho, \sigma, \omega) \Downarrow (\sigma'', \varepsilon, \omega'')}
 \end{equation}
+
+A call consists of two identifiers, one for the function to call and one for the variable the return value is stored in, and a list of arithmetic expressions which are the arguments to the function.
+
+As previously stated, a function is defined by a triple containing a code block, the body, a list of identifiers for the parameters, and an arithmetic expression, the return expression, which calculates the return value.
+
+When a function is called, the arguments of the call are evaluated and a new state is constructed by assigning the argument values to the parameters (in linear order) of the function, in the empty state. The body is executed in the constructed state. The return expression is evaluated in the state the execution of the body terminates in. The return value are stored in the variable for the same scope(state) of the call.
+
+Note, the return expression is evaluated and stored in the specified variable regardless of whether an exception was the reason for the termination of the body or not. However, if the body terminates with an exception, then the call terminates in the same exception.
 
 \begin{equation}
 \frac
