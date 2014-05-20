@@ -383,11 +383,9 @@ Proof.
   admit.
   apply not_mapsto_in_iff in H1.
   apply H1.
-  assert (empty_find_in : forall (m:heap) (a:nat), find a m = None -> is_empty m = true).
+  assert (empty_find_in : forall (m:heap) (a:nat), find a m = None <-> is_empty m = true).
   admit.
   apply empty_find_in in H4.
-  assert (empty_map : forall (m:heap) (a:nat), is_empty m = true -> find a m = None).
-  admit.
-  apply empty_map.
+  apply empty_find_in.
   apply H4.
 Qed.
