@@ -1,4 +1,4 @@
-\section{Operational Semantics}
+\section{Operational Semantics}\label{sec:opsem}
 
 \begin{notation}
 Let $c$ be a command and $\sigma'$, $\varepsilon$ and $\omega'$ be the state, exception and heap after the execution of $c$ in $\rho$, $\sigma$ and $\omega$.
@@ -7,6 +7,10 @@ This is written:
 \begin{equation}
 (c,\rho,\sigma,\omega) \Downarrow (\sigma',\epsilon,\omega')
 \end{equation}
+
+Of note is the fact that the environment $\rho$ remains constant before and after execution, so it is only present on the left-hand side of the evaluation.
+
+Additionally, a program cannot begin execution in an exceptional state, but it can end in one. Thus, the exception $\varepsilon$ is only present on the right-hand side of the evaluation. Conceptually speaking, an individual command \emph{can} begin its execution in an exceptional state (and thus be skipped), but semantically this is modelled by the operational semantics of the $sequence$ command, and not directly in the evaluation relation.
 \end{notation}
 
 \begin{notation}
@@ -27,13 +31,13 @@ This is written:
 \end{equation}
 \end{notation}
 
-Below follows the operational semantics for all commands in IMP+.
+Below follows the operational semantics for all commands in IMP+, with explanatory text where it is relevant.
 
 \begin{equation}
 \frac{}{(\textbf{SKIP}, \rho, \sigma, \omega) \Downarrow (\sigma, \bot, \omega)}
 \end{equation}
 
-\begin{equation}
+\begin{equation}\label{eqn:op-assign}
 \frac{(a, \sigma) \Downarrow n \qquad \sigma' = \sigma[\sfrac{X}{n}]}{((X ::= a), \rho, \sigma, \omega) \Downarrow (\sigma', \bot, \omega)}
 \end{equation}
 
@@ -45,17 +49,17 @@ Below follows the operational semantics for all commands in IMP+.
 \frac{(b, \sigma) \Downarrow false \qquad (c_2, \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega')}{((\textbf{IFB}\; b\; \textbf{THEN}\; c_1\; \textbf{ELSE}\; c_2\; \textbf{FI}), \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega')}
 \end{equation}
 
-\begin{equation}
-\frac{(c_1, \rho, \sigma, \omega) \Downarrow (\sigma', \bot, \omega') \qquad (c_2, \rho, \sigma', \omega') \Downarrow (\sigma'', \bot, \omega'')}{((c_1\; ;;\; c_2), \rho, \sigma, \omega) \Downarrow (\sigma'', \bot, \omega'')}
+The operational semantics for $sequence$ are largely the same as in IMP, although one additional case has been added. The original case (\ref{eqn:op-seq}) is the same, except for ending in an arbitrary exception, as with the if-statements. The second case (\ref{eqn:op-seq-exn}), however, is central to the handling of exceptions in IMP+. It is through this that commands which "begin" in an exceptional state, by virtue of the first leg of the sequence ending in one, are skipped.
+
+\begin{equation}\label{eqn:op-seq}
+\frac{(c_1, \rho, \sigma, \omega) \Downarrow (\sigma', \bot, \omega') \qquad (c_2, \rho, \sigma', \omega') \Downarrow (\sigma'', \varepsilon, \omega'')}{((c_1\; ;;\; c_2), \rho, \sigma, \omega) \Downarrow (\sigma'', \varepsilon, \omega'')}
 \end{equation}
 
-\begin{equation}
-\frac{(c_1, \rho, \sigma, \omega) \Downarrow (\sigma', \bot, \omega') \qquad (c_2, \rho, \sigma', \omega') \Downarrow (\sigma'', \varepsilon, \omega'') \qquad \varepsilon \neq \bot}{((c_1\; ;;\; c_2), \rho, \sigma, \omega) \Downarrow (\sigma'', \varepsilon, \omega'')}
-\end{equation}
-
-\begin{equation}
+\begin{equation}\label{eqn:op-seq-exn}
 \frac{(c_1, \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega') \qquad \varepsilon \neq \bot}{((c_1\; ;;\; c_2), \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega')}
 \end{equation}
+
+The operational semantics for the while-loop have been extended with a case (\ref{eqn:op-while-exn}) for breaking out of the loop if the inner code block results in an exception. The semantics simply state that if the condition is true, and the inner code block results in a state and some exception, the entire statement results in that state and exception. This is the same behaviour as for the $break$ command that was implemented in IMP during one exercise session.
 
 \begin{equation}
 \frac{(b, \sigma) \Downarrow false}{((\textbf{WHILE}\; b\; \textbf{DO}\; c\; \textbf{END}), \rho, \sigma, \omega) \Downarrow (\sigma, \bot, \omega)}
@@ -65,7 +69,7 @@ Below follows the operational semantics for all commands in IMP+.
 \frac{(b, \sigma) \Downarrow true \qquad (c, \rho, \sigma, \omega) \Downarrow (\sigma', \bot, \omega') \qquad ((\textbf{WHILE}\; b\; \textbf{DO}\; c\; \textbf{END}), \rho, \sigma', \omega') \Downarrow (\sigma'', \bot, \omega'')}{((\textbf{WHILE}\; b\; \textbf{DO}\; c\; \textbf{END}), \rho, \sigma, \omega) \Downarrow (\sigma'', \bot, \omega'')}
 \end{equation}
 
-\begin{equation}
+\begin{equation}\label{eqn:op-while-exn}
 \frac{(b, \sigma) \Downarrow true \qquad (c, \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega') \qquad \varepsilon \neq \bot}{((\textbf{WHILE}\; b\; \textbf{DO}\; c\; \textbf{END}), \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega')}
 \end{equation}
 
@@ -73,16 +77,18 @@ Below follows the operational semantics for all commands in IMP+.
 \frac{(\tilde{a}, \sigma) \Downarrow \tilde{n}}{((\textbf{THROW}\; e,\; \tilde{a}), \rho, \sigma, \omega) \Downarrow (\sigma, (e, \tilde{n}), \omega)}
 \end{equation}
 
-\begin{equation}
+The last case (\ref{eqn:op-catch}) for $try-catch$ is the interesting one. The catch clause contains the name of an exception and a list of variable names. If an exception with a matching name is thrown within the first code block, the values associated with the exception are assigned (in linear order) to the variable names in the list and the second block is executed from this updated version of the original state. Otherwise, the second code block is skipped (case \ref{eqn:op-try} and \ref{eqn:op-try-exn}).
+
+\begin{equation}\label{eqn:op-try}
 \frac{(c_1, \rho, \sigma, \omega) \Downarrow (\sigma', \bot, \omega')}{((\textbf{TRY}\; c_1\; \textbf{CATCH}\; e,\; \tilde{X}\; \textbf{DO}\; c_2\; \textbf{END}), \rho, \sigma, \omega) \Downarrow (\sigma', \bot, \omega')}
 \end{equation}
 
-\begin{equation}
-\frac{(c_1, \rho, \sigma, \omega) \Downarrow (\sigma', (e, \tilde{n}), \omega') \qquad (c_2, \rho, \sigma[\sfrac{\tilde{X}}{\tilde{n}}], \omega) \Downarrow (\sigma'', \varepsilon, \omega'')}{((\textbf{TRY}\; c_1\; \textbf{CATCH}\; e,\; \tilde{X}\; \textbf{DO}\; c_2\; \textbf{END}), \rho, \sigma, \omega) \Downarrow (\sigma'', \varepsilon, \omega'')}
+\begin{equation}\label{eqn:op-try-exn}
+\frac{e \neq e' \qquad (c_1, \rho, \sigma, \omega) \Downarrow (\sigma', (e, \tilde{n}), \omega')}{((\textbf{TRY}\; c_1\; \textbf{CATCH}\; e',\; \tilde{X}\; \textbf{DO}\; c_2\; \textbf{END}), \rho, \sigma, \omega) \Downarrow (\sigma', (e, \tilde{n}), \omega')}
 \end{equation}
 
-\begin{equation}
-\frac{e \neq e' \qquad (c_1, \rho, \sigma, \omega) \Downarrow (\sigma', (e, \tilde{n}), \omega')}{((\textbf{TRY}\; c_1\; \textbf{CATCH}\; e',\; \tilde{X}\; \textbf{DO}\; c_2\; \textbf{END}), \rho, \sigma, \omega) \Downarrow (\sigma', (e, \tilde{n}), \omega')}
+\begin{equation}\label{eqn:op-catch}
+\frac{(c_1, \rho, \sigma, \omega) \Downarrow (\sigma', (e, \tilde{n}), \omega') \qquad (c_2, \rho, \sigma[\sfrac{\tilde{X}}{\tilde{n}}], \omega) \Downarrow (\sigma'', \varepsilon, \omega'')}{((\textbf{TRY}\; c_1\; \textbf{CATCH}\; e,\; \tilde{X}\; \textbf{DO}\; c_2\; \textbf{END}), \rho, \sigma, \omega) \Downarrow (\sigma'', \varepsilon, \omega'')}
 \end{equation}
 
 \begin{equation}

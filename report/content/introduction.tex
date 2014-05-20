@@ -14,3 +14,21 @@ The version of IMP we have built upon is implemented inside the formal proof man
 IMP is a Turing-complete imperative language. The version of it that we are concerned with is the one implemented in Coq as part of the exercise chapters in Software Foundations. It consists of two types of expressions, arithmetic and boolean, in addition to commands (i.e. statements). Arithmetic and boolean expressions are evaluated recursively, and commands are evaluated with an inductive relation.
 
 Formal definitions of arithmetic and boolean expressions can be found in appendix X. Definitions of the various commands as well as the operational semantics for the entirety of IMP+ follow in a later chapter, which will shed more light on the details of how each individual command is evaluated.
+
+\subsection{Function calls}
+
+Creating even moderately complex programs requires a way to structure the code. In programming languages, functions serve this purpose. In addition, functions are often organised through the usage of class or module constructs and libraries.
+
+Extending IMP with function calls allows a program to be structured into small pieces of code with a single purpose. To implement function calls we introduce scope, such that each function can only read and write to its own state. This is similar to the widely used stack frames, but differ in that the state of a function is not a stack but a set of key-value pairs.
+
+When a function is called, its body is executed in a state which contains only the parameters and their values. The body of the function may create new entries in the state. When the function has executed, the local state is discarded, and only its return value is put into the state of the calling code block.
+
+\subsection{Exception handling}
+
+The benefit of extending IMP with exception handling lies in allowing the program to raise and respond to exceptional events during execution. These exceptions are intended to be used in response to events that typically require special processing outside the normal flow of the program’s execution.
+
+To this end, we introduce two concepts: the throwing of exceptions, as well as its inverse, catching them again. We also introduce the concept of an exceptional state. The program enters an exceptional state the moment an exception is thrown, and leaves it only when that exact type of exception is caught again.
+
+When the program is in an exceptional state, all commands are semantically identical to \verb|SKIP|. This means that a control block such as a loop, if-statement or function is immediately exited upon encountering an exception (at least conceptually, see section \ref{sec:opsem} \nameref{sec:opsem} for details). The exception escapes through all such constructs until it is either caught or the program exits in this exceptional state.
+
+When an exception is thrown, it can be associated with a list of arithmetic expressions that will be evaluated in the state of the program at the time of the exception. The resulting list of values will be passed on to where the exception is caught, where they can be assigned to a list of variables and used in the handling logic. This is useful for transmitting information about the exceptional event itself, as the handling logic will otherwise execute from the state that the program was in \emph{before} the code block that threw the exception.
