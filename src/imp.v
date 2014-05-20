@@ -38,9 +38,9 @@ Fixpoint zip_state (steval st : state) (ids : list id) (vs : list aexp) : state 
   	| v::vs' =>
   		let st' := update st i (aeval steval v) in
   		zip_state steval st' ids' vs'
-  	| [] => st
+  	| nil => st
   	end
-  | [] => st
+  | nil => st
   end.
   
 Fixpoint assigned_vars (c : com) (vars : list id): list id :=
@@ -84,10 +84,10 @@ Inductive ceval : com -> program -> state -> state -> option exn -> Prop :=
       beval st b = false ->
       ceval c2 env st st' ex ->
       ceval (CIf b c1 c2) env st st' ex
-  | E_Seq : forall st st' st'' c1 c2,
+  | E_Seq : forall st st' st'' c1 c2 ex env,
       c1 / st || st' ->
-      c2 / st' || st'' ->
-      CSeq c1 c2 / st || st''
+      ceval c2 env st' st'' ex ->
+      ceval (CSeq c1 c2) env st st'' ex
   | E_While_False : forall st b c,
       beval st b = false ->
       CWhile b c / st || st
@@ -103,18 +103,14 @@ Inductive ceval : com -> program -> state -> state -> option exn -> Prop :=
   | E_Try : forall c1 c2 st st' e ids env,
       ceval c1 env st st' None ->
       ceval (CTry c1 e ids c2) env st st' None
-  | E_Catch : forall c1 c2 st st' st'' e ns ids env,
+  | E_Catch : forall c1 c2 st st' st'' e ns ids ex env,
       ceval c1 env st st' (Some (Exn (e, ns))) ->
-      ceval c2 env (update_many st ids ns) st'' None ->
-      ceval (CTry c1 e ids c2) env st st'' None
+      ceval c2 env (update_many st ids ns) st'' ex ->
+      ceval (CTry c1 e ids c2) env st st'' ex
 (* Evidence for propagating exceptions out of previously declared constructions. *)
-  | E_Seq1_Exn : forall st st' c1 c2 ex env,
+  | E_Seq_Exn : forall st st' c1 c2 ex env,
       ceval c1 env st st' (Some ex) ->
       ceval (CSeq c1 c2) env st st' (Some ex)
-  | E_Seq2_Exn : forall st st' st'' c1 c2 ex env,
-      c1 / st || st' ->
-      ceval c2 env st' st'' (Some ex) ->
-      ceval (CSeq c1 c2) env st st'' (Some ex)
   | E_While_Exn : forall st st' b c ex env,
       beval st b = true ->
       ceval c env st st' (Some ex) ->
@@ -123,10 +119,6 @@ Inductive ceval : com -> program -> state -> state -> option exn -> Prop :=
       e <> e' ->
       ceval c1 env st st' (Some (Exn (e, ns))) ->
       ceval (CTry c1 e' ids c2) env st st' (Some (Exn (e, ns)))
-  | E_Catch_Exn : forall c1 c2 st st' st'' e ns ids ex env,
-      ceval c1 env st st' (Some (Exn (e, ns))) ->
-      ceval c2 env (update_many st ids ns) st'' (Some ex) ->
-      ceval (CTry c1 e ids c2) env st st'' (Some ex)
   | E_Call : forall st st' st'' entry_st f (env : program) body params args X ex rexp,
       env f = (body, params, rexp) ->
       list_unique_items params ->
