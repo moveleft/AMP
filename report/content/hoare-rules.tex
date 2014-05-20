@@ -1,5 +1,13 @@
 \section{Hoare Rules}
 
+\begin{equation}\label{eqn:hoare-cons-pre}
+\frac{\vdash\{P'\} \; c \; \{Q\} \qquad P \Rightarrow P'}{\vdash\{P\} \; c \; \{Q\}}
+\end{equation}
+
+\begin{equation}\label{eqn:hoare-cons-post}
+\frac{\vdash\{P\} \; c \; \{Q'\} \qquad Q \Rightarrow Q'}{\vdash\{P\} \; c \; \{Q\}}
+\end{equation}
+
 \begin{equation}\label{eqn:hoare-assign}
 \frac{}{\vdash \{Q[\sfrac{X}{a}]\} \; (X ::= a) \; \{Q \wedge \lambda \varepsilon\:\sigma\:\omega. \varepsilon = \bot\}}
 \end{equation}
