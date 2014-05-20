@@ -73,7 +73,7 @@ The operational semantics for the while-loop have been extended with a case (\re
 \frac{(b, \sigma) \Downarrow true \qquad (c, \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega') \qquad \varepsilon \neq \bot}{((\textbf{WHILE}\; b\; \textbf{DO}\; c\; \textbf{END}), \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega')}
 \end{equation}
 
-\begin{equation}
+\begin{equation}\label{eqn:op-throw}
 \frac{(\tilde{a}, \sigma) \Downarrow \tilde{n}}{((\textbf{THROW}\; e,\; \tilde{a}), \rho, \sigma, \omega) \Downarrow (\sigma, (e, \tilde{n}), \omega)}
 \end{equation}
 
@@ -95,4 +95,20 @@ The last case (\ref{eqn:op-catch}) for $try-catch$ is the interesting one. The c
 \frac
 {(\tilde{a},\sigma) \Downarrow \tilde{v} \quad \sigma''= emp[\sfrac{\tilde{v}}{\tilde{p}}] \quad (c, \rho, \sigma'', \omega) \Downarrow (\sigma''', \varepsilon, \omega') \quad (r,\sigma''') \Downarrow w \quad \sigma' = \sigma[\sfrac{X}{w}] \quad \rho(f) = (c, \tilde{p}, r)}
 {((\textbf{CALL}\; F \; X  \; \tilde{a}), \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega')}
+\end{equation}
+
+\begin{equation}
+\frac{\omega(m)=\bot \qquad \omega'=\omega\cup\{m \rightarrow 0\} \qquad \sigma' = \sigma[\sfrac{X}{m}]}{((\textbf{ALLOC}\;X), \rho, \sigma, \omega) \Downarrow (\sigma', \bot, \omega')}
+\end{equation}
+
+\begin{equation}
+\frac{(a,\sigma) \Downarrow m \qquad \omega(m)=v \qquad \sigma'=\sigma[\sfrac{X}{v}]}{((X\leftarrow*\;a), \rho, \sigma, \omega) \Downarrow (\sigma', \bot, \omega)}
+\end{equation}
+
+\begin{equation}
+\frac{(a,\sigma)\Downarrow m \qquad (a',\sigma)\Downarrow v \qquad \omega'=(\omega\backslash\{m\rightarrow\omega(m)\})\cup\{m\rightarrow v\}}{((a\leftarrow@\;a'), \rho, \sigma, \omega) \Downarrow (\sigma, \bot, \omega')}
+\end{equation}
+
+\begin{equation}
+\frac{\sigma(X)=m \qquad \omega(m)\neq\bot \qquad \omega'=\omega\backslash\{m\rightarrow\omega(m)\}}{((\textbf{FREE}\;X), \rho, \sigma, \omega) \Downarrow (\sigma, \bot, \omega')}
 \end{equation}
