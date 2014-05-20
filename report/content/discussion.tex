@@ -1,0 +1,49 @@
+\section{Discussion}
+
+\subsection{Design Choices}
+The operational semantics for SEQUENCE carries the entire burden of propagating exceptions from one command to the next, in case the post-state of one, and thus the implicit pre-state of the next is exceptional. There are a few reasons for doing it this way:
+
+\begin{itemize}
+\item It simplifies the evaluation relation, since there is no need to explicitly model the concept of an exceptional pre-state
+\item We avoid having to add an additional rule for every command that makes it explicitly behave as SKIP in the presence of an exception
+\end{itemize}
+
+This way, any command that can be put in a sequence will implicitly be skipped if the post-state of the first command is exceptional.
+
+\subsection{Verified Examples}
+
+\subsubsection{Caught and Propagated Exception}
+
+\begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:hoare_ex_asgn,caption=A small program demonstrating a try-catch statement.]
+{ 3 = 3                         }      $\text{This is trivially true, but necessary due to}$
+                                       $\text{how the assignment Hoare rule (\ref{eqn:hoare-assign}) works.}$
+X ::= 3;;                              $\text{Updates the state with X = 3 per the}$
+                                       $\text{operational semantics for assignment (\ref{eqn:op-assign}).}$
+{ X = 3 $\wedge\quad\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon=\bot$            }      $\text{Trivially true; the state has just been updated}$
+                                       $\text{such that X = 3.}$
+TRY
+  { X = 3 $\wedge\quad\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon=\bot$          } $\Rightarrow$   $\text{Precondition as per the catch Hoare rule (\ref{eqn:hoare-catch}).}$
+  { 4 = 4 $\wedge\quad\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon=\bot$          }      $\text{Implies this by rule of consequence, which is}$
+                                       $\text{trivially true.}$
+X ::= 4;;                              $\text{Updates the state with X = 4 per the}$
+                                       $\text{operational semantics for assignment (\ref{eqn:op-assign}).}$
+  { X = 4 $\wedge\quad\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon=\bot$          }
+  THROW T, [21 - X];;                  $\text{Puts the program in an exceptional state as}$
+                                       $\text{per the operational semantics for throw (\ref{eqn:op-throw}).}$
+  { $\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon$ = (T, [17])          }      $\text{Follows from the Hoare rule for throw (\ref{eqn:hoare-throw}).}$
+  THROW U, []                          $\text{This statement is skipped by way of the}$
+                                       $\text{exception sequence Hoare rule (\ref{eqn:hoare-seq-exn}).}$
+  { $\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon$ = (T, [17])          }      $\text{I.e. the exception from before is propagated.}$
+CATCH T, [Y] DO
+  { $\lambda \varepsilon\:\sigma\:\omega.\:\exists \sigma'.(\sigma(X)=3\wedge\sigma=\sigma'[\sfrac{Y}{17}])$ } $\Rightarrow$    $\text{Follows from the catch Hoare rule (\ref{eqn:hoare-catch}).}$
+                                       $\text{Any state in which it holds that X = 3}$
+                                       $\text{will do as a witness for the existential}$
+                                       $\text{quantifier.}$
+  { X = 3 $\wedge$ Y = 17              } $\Rightarrow$    $\text{The rule of consequence leads us to this.}$
+  { X + Y = 20 $\wedge$ Y = 17         }       $\text{Per the assignment Hoare rule (\ref{eqn:hoare-assign}).}$
+  X ::= X + Y                           $\text{Updates the state with X = 20}$
+  { X = 20 $\wedge$ Y = 17 $\wedge\quad\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon=\bot$}
+END
+{ X = 20 $\wedge$ Y = 17 $\wedge\quad\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon=\bot$  }      $\text{Follows from the catch Hoare rule (\ref{eqn:hoare-catch}).}$
+                                        $\text{This is our desired end state.}$
+\end{lstlisting}

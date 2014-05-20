@@ -1,14 +1,22 @@
 \section{Hoare Rules}
 
+\begin{equation}\label{eqn:hoare-cons-pre}
+\frac{\vdash\{P'\} \; c \; \{Q\} \qquad P \Rightarrow P'}{\vdash\{P\} \; c \; \{Q\}}
+\end{equation}
+
+\begin{equation}\label{eqn:hoare-cons-post}
+\frac{\vdash\{P\} \; c \; \{Q'\} \qquad Q \Rightarrow Q'}{\vdash\{P\} \; c \; \{Q\}}
+\end{equation}
+
 \begin{equation}\label{eqn:hoare-assign}
 \frac{}{\vdash \{Q[\sfrac{X}{a}]\} \; (X ::= a) \; \{Q \wedge \lambda \varepsilon\:\sigma\:\omega. \varepsilon = \bot\}}
 \end{equation}
 
-\begin{equation}
+\begin{equation}\label{eqn:hoare-seq}
 \frac{\vdash \{P\} \; c_1 \; \{Q \wedge \lambda \varepsilon\:\sigma\:\omega. \varepsilon = \bot\} \qquad \vdash \{Q\} \; c_2 \; \{R\}}{\vdash \{P\} \; (c_1\; ;;\; c_2) \; \{R\}}
 \end{equation}
 
-\begin{equation}
+\begin{equation}\label{eqn:hoare-seq-exn}
 \frac{\vdash \{P\} \; c_1 \; \{Q \wedge \lambda \varepsilon\:\sigma\:\omega. \varepsilon \neq \bot\}}{\vdash \{P\} \; (c_1\; ;;\; c_2) \; \{R\}}
 \end{equation}
 
@@ -17,10 +25,10 @@
 \end{equation}
 
 \begin{equation}
-\frac{\vdash \{P \wedge b = true\} \; c \; \{P\}}{\vdash \{P\} \; (\textbf{WHILE}\; b\; \textbf{DO}\; c\; \textbf{END}) \; \{P \wedge \lambda \varepsilon\:\sigma\:\omega.((\varepsilon = \bot) \rightarrow (b = false))\}}
+\frac{\vdash \{P \wedge b = true\} \; c \; \{P\}}{\vdash \{P\} \; (\textbf{WHILE}\; b\; \textbf{DO}\; c\; \textbf{END}) \; \{P \wedge \lambda \varepsilon\:\sigma\:\omega.((\varepsilon = \bot) \Rightarrow (b = false))\}}
 \end{equation}
 
-\begin{equation}
+\begin{equation}\label{eqn:hoare-throw}
 \frac{\tilde{a}, \sigma \Downarrow \tilde{n}}{\vdash \{P\} \; (\textbf{THROW}\; e, \tilde{a}) \; \{P \wedge \lambda \varepsilon\:\sigma\:\omega. \varepsilon = (e, \tilde{n})\}}
 \end{equation}
 
@@ -31,11 +39,11 @@ e \neq e' & \mbox{if} \; \varepsilon = (e', \_)
 \end{cases}
 \end{equation}
 
-\begin{equation}
+\begin{equation}\label{eqn:hoare-try}
 \frac{\vdash \{P\} \; c_1 \; \{Q \wedge \lambda \varepsilon\:\sigma\:\omega. disjoint(\varepsilon, e)\}}{\vdash \{P\} \; (\textbf{TRY}\; c_1\; \textbf{CATCH}\; e, \tilde{X}\; \textbf{DO}\; c_2\; \textbf{END}) \; \{Q\}}
 \end{equation}
 
-\begin{equation}
+\begin{equation}\label{eqn:hoare-catch}
 \frac{\vdash \{P\} \; c_1 \; \{\lambda \varepsilon\:\sigma\:\omega. \varepsilon = (e, \tilde{n})\} \qquad \vdash \{\lambda \varepsilon\:\sigma\:\omega. \exists \sigma'. (P(\varepsilon, \sigma', \omega) \wedge \sigma = \sigma'[\sfrac{\tilde{X}}{\tilde{n}}])\} \; c_2 \; \{Q\}}{\vdash \{P\} \; (\textbf{TRY}\; c_1\; \textbf{CATCH}\; e, \tilde{X}\; \textbf{DO}\; c_2\; \textbf{END}) \; \{Q\}}
 \end{equation}
 

@@ -21,7 +21,7 @@ $\verb|funid| \rightharpoonup \verb|func|$,
 such that 
 $\rho = \{ id_i \rightarrow f_i | id_i : \verb|funid| \wedge f_i:\verb|func| \}$.
 
-Below follows the definitions of arithmetic and boolean expressions, as well as all commands, including the ones we have added for IMP+.
+Below follows the definitions of arithmetic and boolean expressions, as well as all commands, including the ones we have added for IMP+\footnote{The notation for $allocate$, $read$ and $write$ differs slightly from the syntax in the code.}.
 
 \begin{equation}
 \verb|aexp| \triangleq \mathbb{N} \;|\; \verb|id| \;|\; \verb|aexp| + \verb|aexp| \;|\;  \verb|aexp| - \verb|aexp| \;|\;  \verb|aexp| * \verb|aexp|
@@ -41,9 +41,9 @@ Below follows the definitions of arithmetic and boolean expressions, as well as 
 	\textbf{THROW}\; \verb|exid|, \tilde{aexp} \;|\; & (throw) \\&
 	\textbf{TRY}\; \verb|com|\; \textbf{CATCH}\; \verb|exid|, \tilde{id}\; \textbf{DO}\; \verb|com|\; \textbf{END} \;|\; & (try-catch) \\&
 	\textbf{CALL}\; \verb|funid|\; \verb|id|\; \tilde{aexp} \;|\; & (call) \\&
-	\verb|id|\leftarrow\#\;\textbf{ALLOC} \;|\; & (allocate) \\&
-	\verb|id|\leftarrow*\;[\verb|aexp|] \;|\; & (read) \\&
-	[\verb|aexp|]\leftarrow@\;\verb|aexp| \;|\; & (write) \\&
+	\textbf{ALLOC}\;\verb|id| \;|\; & (allocate) \\&
+	\verb|id|\leftarrow*\;\verb|aexp| \;|\; & (read) \\&
+	\verb|aexp|\leftarrow@\;\verb|aexp| \;|\; & (write) \\&
 	\textbf{FREE}\;\verb|id| & (free)
 \end{alignedat}
 \end{equation}
