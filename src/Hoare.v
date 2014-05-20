@@ -12,7 +12,7 @@ Open Scope hoare_spec_scope.
 
 Notation "P <<->> Q" :=
   (P ->> Q /\ Q ->> P) (at level 80) : hoare_spec_scope.
-  
+
 Definition hoare_triple
            (P:Assertion) (c:com) (Q:Assertion) : program -> Prop :=
   fun env =>
@@ -27,22 +27,16 @@ Notation "{{ P }}  c  {{ Q }}" :=
 
 Definition emp : Assertion :=
   fun ex st h => Empty h.
-
 Definition point_to_val (x : id)(v : aexp) : Assertion :=
   fun ex st h => find (st x) h = Some (aeval st v) /\ forall l l', st x = l' -> l' <> l -> find l h = None.
-
 Definition look_up_val (e v : aexp) : Assertion :=
   fun ex st h => find (aeval st e) h = Some (aeval st v).
-
 Definition ass_val (x:id)(v:aexp) : Assertion :=
   fun ex st h => st x = (aeval st v).
-
 Notation "x '|->' v" :=
   (point_to_val x v) (at level 80).
-
 Notation "e '|~>' v" := 
   (look_up_val e v) (at level 80).
-
 Notation "x '|*~>' v" :=
   (ass_val x v) (at level 80).
 

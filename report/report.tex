@@ -5,11 +5,24 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
-\usepackage{amsmath,xfrac}
+\let\proof\relax
+\usepackage{amsmath,xfrac,amssymb}
+\let\endproof\relax
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem*{notation}{Notation}
+
+\theoremstyle{notation}
+
+% The type command.
+\newcommand{\type}[1] {
+	\texttt{#1}
+}
 
 \bibliographystyle{splncs}
 
-\title{SASP F2014}
+\title{SAMP F2014}
 
 \titlerunning{}
 
@@ -35,9 +48,13 @@
 \input{content/ci-exception-handling}
 
 \subsection{Types and Commands}
+\input{content/types-and-commands}
 \input{content/tc-heap}
 \input{content/tc-function-calls}
 \input{content/tc-exception-handling}
+
+\section{Logic}
+\input{content/logic}
 
 \section{Formal Specification}
 \input{content/operational-semantics}

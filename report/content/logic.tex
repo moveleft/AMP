@@ -1,7 +1,40 @@
-To reason about a program we will introduce hoare triples and a specification logic.
+\subsection{Hoare Logic}
+To reason about a code block we introduce Hoare logic. To this end we define an \verb|assertion| to be a predicate which take a state, an exceptional state, and a heap ($P(\sigma,\epsilon,\omega)$).
 
-An assertion, $\alpha$, is a function $\omega \rightarrow \epsilon \rightarrow \sigma \rightarrow \verb|Prop|$ 
+Hoare triples are the core of Hoare logic, it allows us to describe the effects of executing a piece of code. It has the form $\{P\}\;c\;\{Q\}$ where $P,Q : \verb|assertion|$ and $c : \verb|com|$.
+Equation \ref{eqn:hoare_triple_def} defines the Hoare triple.
 
-A hoare triple is define as $\{P\}\;c\;\{Q\}$ where $P,\;Q : \alpha$ and $c : \verb|com|$
+\begin{equation}\label{eqn:hoare_triple_def}
+\begin{split}
+\{P\}\;c\;\{Q\} \triangleq
+& \forall c.\; c / (\rho,\sigma,\omega) \Downarrow (\sigma', \epsilon, \omega') \Rightarrow\\
+& P(\sigma,\bot,\omega) \Rightarrow\\
+& Q(\sigma',\epsilon,\omega')
+\end{split}
+\end{equation}
 
-To be able to reason about function calls we introduce program, $\rho$, a function space $\verb|funid| \rightarrow \verb|com| \;\times\; [\verb|id|] $. And, we create a specification logic, $f \vdash \{P\} \; c \; \{Q\}$.
+\begin{equation}\label{eqn:alpha-type}
+\alpha: \omega \rightarrow \epsilon \rightarrow \sigma \rightarrow \verb|Prop|
+\end{equation}
+
+
+\subsection{Specification Logic}
+Let $\rho$ be a function space, 
+$\verb|funid| \rightarrow \verb|func|$, 
+such that 
+$\rho = \{ id_i \rightarrow f_i | id_i : \verb|funid| \wedge f_i:\verb|func| \}$, 
+where $id_i$ is the identifier for the function $f_i$ in a program.
+
+We extend the Hoare triple such that for $F_i = \rho(i)$
+\begin{equation}
+F_i \rightarrowtail \{P\}\;\_\;\{Q\}
+\end{equation}
+
+\begin{notation}
+Let $c$ be a command and $\sigma',\epsilon, and \omega'$ be the state, exceptional state, and heap after the execution of $c$ in $\rho$, $\sigma$ and $\omega$.
+
+This is written:
+\begin{equation}
+(c,\rho,\sigma,\omega) \Downarrow (\sigma',\epsilon,\omega')
+\end{equation}
+\end{notation}
