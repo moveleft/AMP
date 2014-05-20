@@ -1,5 +1,32 @@
 \subsection{Operational Semantics}
 
+\begin{notation}
+Let $c$ be a command and $\sigma',\epsilon, and \omega'$ be the state, exceptional state, and heap after the execution of $c$ in $\rho$, $\sigma$ and $\omega$.
+
+This is written:
+\begin{equation}
+(c,\rho,\sigma,\omega) \Downarrow (\sigma',\epsilon,\omega')
+\end{equation}
+\end{notation}
+
+\begin{notation}
+Let $a$ be an arithmetic expression and $n\in\mathbb{N}$ be the result of evaluating $a$ in $\sigma$.
+
+This is written:
+\begin{equation}
+(a,\sigma) \Downarrow n
+\end{equation}
+\end{notation}
+
+\begin{notation}
+Let $b$ be a boolean expression and $\beta$ the boolean result of evaluating $b$ in $\sigma$.
+
+This is written:
+\begin{equation}
+(b,\sigma) \Downarrow \beta
+\end{equation}
+\end{notation}
+
 \begin{equation}
 \frac{}{(SKIP, \rho, \sigma) \Downarrow (\sigma, \bot)}
 \end{equation}
