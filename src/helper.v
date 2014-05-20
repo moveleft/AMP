@@ -45,3 +45,10 @@ Fixpoint ble_nat (n m : nat) : bool :=
       | S m' => ble_nat n' m'
       end
   end.
+
+Theorem ex_falso_quodlibet : forall (P:Prop),
+  False -> P.
+Proof.
+  intros P contra.
+  inversion contra.
+Qed.

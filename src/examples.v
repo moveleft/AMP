@@ -15,12 +15,12 @@ Definition env : program :=
     .
 
 Lemma body_p : forall X Y,
-  {{ (fun e st => st Y = st X + 1)[Y |-> (APlus (AId X) (ANum 1))] }}
+  {{ assn_sub Y ((APlus (AId X) (ANum 1))) (fun e st h => st Y = st X + 1) }}
     Y ::= APlus (AId X) (ANum 1)
-  {{ (fun e st => st Y = st X + 1) }} env.
+  {{ (fun e st h => st Y = st X + 1) }} env.
 Proof.
   intros X Y.
-  apply hoare_consequence_post with (Q' := fun e st => st Y = st X + 1 /\ e = None).
+  apply hoare_consequence_post with (Q' := fun e st h => st Y = st X + 1 /\ e = None).
   eapply hoare_asgn.
   intro; intros.
   destruct H; assumption.
@@ -191,14 +191,27 @@ Qed. *)
  **********************)
 
 Definition example1 : com :=
+	(* { True } -> *)
+	(* { 3 = 3 } *)
   X ::= ANum 3;;
+	(* { X = 3 } *)
   TRY
+	(* { X = 3 } -> *)
+	(* { 4 = 4 } *)
     X ::= ANum 4;;
+	(* { X = 4 } *)
     THROW T, cons (AMinus (ANum 21) (AId X)) nil;; (* Demonstrating the hoare_seq rule. *)
+	(* { fun ex st h => ex = Some (Exn (T, [17])) } *)
     THROW U, nil (* Demonstrating the hoare_seq_exn rule. *)
+	(* { fun ex st h => ex = Some (Exn (T, [17])) } *)
   CATCH T, cons Y nil DO (* Demonstrating the hoare_try_exn rule. *)
+	(* { fun ex st h => exists st', st' X = 3 /\ st = st'[Y |-> 17]} -> *)
+	(* { X = 3 /\ Y = 17 } -> *)
+	(* { X + Y = 20 /\ Y = 17 } *)
     X ::= APlus (AId X) (AId Y)
-  END. (* {X = 20 /\ Y = 17} *)
+	(* {X = 20 /\ Y = 17} *)
+  END.
+	(* {X = 20 /\ Y = 17} *)
 
 Definition example2 : com :=
   X ::= ANum 2;;
@@ -218,17 +231,17 @@ Definition example3 : com :=
   END. (* {X = 2 /\ ex = Some (Exn (T, [4; 3]))} *)
 
 Theorem example1_correct :
-  {{fun ex st => True}}
+  {{fun ex st h => True}}
     example1
-  {{fun ex st => st X = 20 /\ st Y = 17}} env.
+  {{fun ex st h => st X = 20 /\ st Y = 17}} env.
 Proof.
   unfold example1.
   eapply hoare_consequence_pre.
-  apply hoare_seq with (Q:=fun ex st => st X = 3).
+  apply hoare_seq with (Q:=fun ex st h => st X = 3).
   apply hoare_try_exn with (ns:=cons 17 nil).
-  apply hoare_consequence_post with (fun ex st => (st X = 20 /\ st Y = 17) /\ ex = None).
+  apply hoare_consequence_post with (fun ex st h => (st X = 20 /\ st Y = 17) /\ ex = None).
   eapply hoare_consequence_pre. apply hoare_asgn.
-  intros ex st P.
+  intros ex st h P.
   unfold assn_sub. unfold aeval. unfold update.
   inversion P. inversion H. clear H. split.
   destruct (eq_id_dec X X).
@@ -244,17 +257,17 @@ Proof.
     destruct (eq_id_dec Y Y); congruence.
     rewrite H1. unfold update_many. simpl. unfold update.
     destruct (eq_id_dec Y Y). reflexivity. congruence.
-  intros ex st P. omega.
-  apply hoare_seq with (fun ex st => st X = 4).
+  intros ex st h P. omega.
+  apply hoare_seq with (fun ex st h => st X = 4).
   apply hoare_seq_exn.
   eapply hoare_consequence_post. apply hoare_throw.
-  intros ex st P.
+  intros ex st h P.
   inversion P. clear P.
-  unfold map in H0. unfold aeval in H0. rewrite H in H0.
+  unfold fold_right in H0. unfold aeval in H0. rewrite H in H0.
   split. assumption. congruence.
   eapply hoare_consequence_pre. apply hoare_asgn.
-  intros ex st P.
+  intros ex st h P.
   unfold assn_sub. unfold aeval. reflexivity.
   apply hoare_asgn.
-  intros ex st P. unfold assn_sub. reflexivity.
+  intros ex st h P. unfold assn_sub. reflexivity.
 Qed.
