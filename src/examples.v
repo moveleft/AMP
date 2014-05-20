@@ -3,27 +3,55 @@ Require Export Hoare.
 (*******************
  * EXAMPLE 1       *
  *******************)
-
-Definition body : com := 
-  Y ::= APlus (AId X) (ANum 1).
+Definition body := Z ::= APlus (AId X) (AId Y).
 
 Definition env : program :=
   fun id =>
     if eq_funid_dec F id
-    then (body, cons X nil, (APlus (AId X) (ANum 1)))
-    else (CSkip, nil, ANum 0)
+    then Some(body, cons X (cons Y nil), AId Z)
+    else None
     .
-
-Lemma body_p : forall X Y,
-  {{ assn_sub Y ((APlus (AId X) (ANum 1))) (fun e st h => st Y = st X + 1) }}
-    Y ::= APlus (AId X) (ANum 1)
-  {{ (fun e st h => st Y = st X + 1) }} env.
+    
+Theorem prog_correct :
+  {{fun e st h => True}}
+    CCall F X (cons (ANum 1) (cons (ANum 2) nil))
+  {{fun e st h => st X = 3}} env.
 Proof.
-  intros X Y.
-  apply hoare_consequence_post with (Q' := fun e st h => st Y = st X + 1 /\ e = None).
-  eapply hoare_asgn.
-  intro; intros.
-  destruct H; assumption.
+  eapply hoare_consequence_pre.
+  apply hoare_call with (params := cons X (cons Y nil)) (Q := fun e st h => st Z = st X + st Y)
+                  (body := body) (rexp := AId Z)
+                  (P := fun e st h => st X = 1 /\ st Y = 2).
+  unfold env; reflexivity.
+  unfold body.
+  remember (fun (ex : option exn) st (h : heap) => st Z = st X + st Y /\ st X = 1 /\ st Y = 2) as Q.
+  eapply hoare_consequence_pre with (P' := assn_sub Z (APlus (AId X) (AId Y)) Q).
+  eapply hoare_consequence_post with (Q' := fun ex st h => Q ex st h /\ ex = None).
+  apply hoare_asgn.
+  intro. intros.
+  rewrite HeqQ in H.
+  destruct H; destruct H; destruct H1.
+  split; try assumption.
+  rewrite H1 in H. rewrite H2 in H.
+  unfold aeval.
+  rewrite H. reflexivity.
+  
+  intro. intros.
+  unfold assn_sub. simpl.
+  assert (update st Z (st X + st Y) X = st X).
+  apply update_retrieve_dif; unfold Z, X; intro; congruence.
+  assert (update st Z (st X + st Y) Y = st Y).
+  apply update_retrieve_dif; unfold Z, Y; intro; congruence.
+  assert (update st Z (st X + st Y) Z = st X + st Y).
+  apply update_retrieve.
+  rewrite HeqQ, H0, H1, H2.
+  destruct H.
+  split; try reflexivity; split; assumption.
+  
+  intro. intros.
+  unfold zip_state; simpl.
+  split.
+  apply update_retrieve_dif; unfold Y,X; intro; congruence.
+  apply update_retrieve.
 Qed.
 
 (* Theorem prog_correct :

@@ -248,8 +248,18 @@ Proof.
   destruct eq_id_dec; [ reflexivity | congruence].
 Qed.
 
+Lemma update_retrieve_dif : forall n1 x1 x2 (st : state),
+  x1 <> x2 ->
+  (update st x1 n1) x2 = st x2.
+Proof.
+	intros. unfold update.
+	destruct eq_id_dec.
+	subst. congruence.
+	reflexivity.
+Qed.
+
 Theorem hoare_call : forall (program : program) f X args P Q body params rexp r,
-	program f = (body,params,rexp) ->
+	program f = Some(body,params,rexp) ->
 	{{ P }}
 	  body
 	{{ fun e st h => Q e st h /\ r = aeval st rexp }} program ->
@@ -270,7 +280,7 @@ Proof.
 Qed.
 
 Theorem hoare_call_exn : forall (program : program) f X args P body params rexp ex,
-	program f = (body,params,rexp) ->
+	program f = Some(body,params,rexp) ->
 	{{ P }}
 	  body
 	{{ fun e st h => e = ex }} program ->

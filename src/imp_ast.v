@@ -23,6 +23,7 @@ Proof.
    Case "n1 <> n2".
      right. intros contra. inversion contra. apply Hneq. apply H0.
 Defined.
+
 Lemma eq_id : forall (T:Type) x (p q:T), 
               (if eq_id_dec x x then p else q) = p. 
 Proof.
