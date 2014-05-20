@@ -31,16 +31,27 @@ This is written:
 \end{equation}
 \end{notation}
 
-\begin{definition}
+\begin{defn}\label{def:state-update}
 Let $\sigma'$ be the state which is the result of updating the state $\sigma$ with $X = n$, where $X$ is an identifier and $n$ a natural number. It holds that
 
 \begin{equation}
 \begin{split}
-\sigma' = \sigma[\sfrac{X}{n}] =>\\
-\sigma'(X) = n \wedge (\forall Y.\; Y \neq X => \sigma'(Y) = \sigma(Y))
+&\sigma' = \sigma[\sfrac{X}{n}] =>\\
+&\sigma'(X) = n \wedge (\forall Y.\; Y \neq X => \sigma'(Y) = \sigma(Y))
 \end{split}
 \end{equation}
-\end{definition}
+\end{defn}
+
+\begin{defn}\label{def:state-list-update}
+Let $\sigma'$ be the state which is the result of updating the state $\sigma$ with $X_i = n_i$ for all $(X : \verb|id|) \in \tilde{X}$ and $n \in (\tilde{n} \cup \mathbb{N})$. It holds that
+
+\begin{equation}
+\begin{split}
+&\sigma' = \sigma[\sfrac{\tilde{X}}{\tilde{n}}] =>\\
+&(\forall X_i \in \tilde{X}.\; \sigma'(X_i) = n_i) \wedge (\forall Y.\; Y \notin \tilde{X} => \sigma'(Y) = \sigma(Y))
+\end{split}
+\end{equation}
+\end{defn}
 
 Below follows the operational semantics for all commands in IMP+, with explanatory text where it is relevant.
 
@@ -109,6 +120,8 @@ As previously stated, a function is defined by a triple containing a code block,
 When a function is called, the arguments of the call are evaluated and a new state is constructed by assigning the argument values to the parameters (in linear order) of the function, in the empty state. The body is executed in the constructed state. The return expression is evaluated in the state the execution of the body terminates in. The return value are stored in the variable for the same scope(state) of the call.
 
 Note, the return expression is evaluated and stored in the specified variable regardless of whether an exception was the reason for the termination of the body or not. However, if the body terminates with an exception, then the call terminates in the same exception.
+
+The heap is the same in both the scope of the call and the body of the called function. Any effect on the heap in the body will persist after the call terminates, even if it terminates with an exception. (But the catch clause will discard any changes made to the heap in the corresponding try block)
 
 \begin{equation}
 \frac
