@@ -1,9 +1,11 @@
+%!TEX root = ../report.tex
+
 \subsection{Hoare Logic}
 To reason about a code block we introduce Hoare logic.
 
 Hoare triples are the core of Hoare logic, it allows us to describe the effects of executing a piece of code. The Hoare triple has the form $\{P\}\;c\;\{Q\}$ where $c : \verb|com|$ and $P$ and $Q$ are assertions.
 
-In an assertion, $alpha$, we need to be able to reason about the state. When adding exceptions we also need to reason about the exceptional state. And, finally when introducing separation logic we will need to be able to reason about the heap. Thus an assertion is a function from heap to exception to state to \verb|Prop|.
+In an assertion, $\alpha$, we need to be able to reason about the state. When adding exceptions we also need to reason about the exceptional state. And, finally when introducing separation logic we will need to be able to reason about the heap. Thus an assertion is a function from heap to exception to state to \verb|Prop|.
 
 \begin{equation}\label{eqn:alpha-type}
 \alpha: \omega \rightarrow \epsilon \rightarrow \sigma \rightarrow \verb|Prop|
@@ -11,7 +13,7 @@ In an assertion, $alpha$, we need to be able to reason about the state. When add
 
 
 \subsection{Specification Logic}
-Let $\rho$ be a function space such that $\rho : \{f \; | \; f: funid \rightarrow func\}$. $\rho$ contains all the functions a program consists of, and it does not change during the execution of the program.
+Let $\rho$ be the function space, $\rho : \{f \; | \; f: funid \rightarrow func\}$, that contains all the functions a program consists of.
 
 The specification logic allows us to reason about function calls and has the form:
 
