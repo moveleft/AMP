@@ -1,9 +1,9 @@
 Require Export imp_ast.
-Require Import MapInterface.
+Require Export MapInterface MapNotations SepAlgMap MapFacts.
 
 Definition state := id -> nat.
 Definition program := funid -> com * list  id * aexp.
-(*Definition heap := Map [nat, nat].*)
+Definition heap := Map [nat, nat].
 
 Inductive status : Type :=
   | SContinue : status

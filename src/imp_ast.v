@@ -23,6 +23,13 @@ Proof.
    Case "n1 <> n2".
      right. intros contra. inversion contra. apply Hneq. apply H0.
 Defined.
+Lemma eq_id : forall (T:Type) x (p q:T), 
+              (if eq_id_dec x x then p else q) = p. 
+Proof.
+  intros. 
+  destruct (eq_id_dec x x); try reflexivity. 
+  apply ex_falso_quodlibet; auto.
+Qed.
 
 Theorem eq_funid_dec : forall id1 id2 : funid, {id1 = id2} + {id1 <> id2}.
 Proof.

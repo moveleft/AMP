@@ -1,12 +1,10 @@
 Require Export imp.
 Require Import FunctionalExtensionality.
 
-Definition Assertion := option exn -> state -> Prop.
+Definition Assertion := option exn -> state -> heap -> Prop.
 
 Definition assert_implies (P Q : Assertion) : Prop :=
-  forall ex st, P ex st -> Q ex st.
-
-(*Definition safe c st h := ~ (ceval c st h empty_state h).*)
+  forall ex st h, P ex st h -> Q ex st h.
 
 Notation "P ->> Q" :=
   (assert_implies P Q) (at level 80) : hoare_spec_scope.
@@ -15,25 +13,38 @@ Open Scope hoare_spec_scope.
 Notation "P <<->> Q" :=
   (P ->> Q /\ Q ->> P) (at level 80) : hoare_spec_scope.
   
-(*Definition hoare_triple
-           (P:Assertion) (c:com) (Q:Assertion) : program -> Prop :=
-  fun env =>
-    forall st st' ex,
-         safe c st h /\ forall st' h', ceval c env st h st' h' ex ->
-         P None st h->
-         Q ex st' h'.*)
-
 Definition hoare_triple
            (P:Assertion) (c:com) (Q:Assertion) : program -> Prop :=
   fun env =>
-    forall st st' ex,
-         ceval c env st st' ex ->
-         P None st ->
-         Q ex st'.
+    forall st ex h st' h',
+         ceval c env st h st' h' ex ->
+         P None st h ->
+         Q ex st' h'.
 
 Notation "{{ P }}  c  {{ Q }}" :=
   (hoare_triple P c Q) (at level 90, c at next level)
   : hoare_spec_scope.
+
+Definition emp : Assertion :=
+  fun ex st h => Empty h.
+
+Definition point_to_val (x : id)(v : aexp) : Assertion :=
+  fun ex st h => find (st x) h = Some (aeval st v) /\ forall l l', st x = l' -> l' <> l -> find l h = None.
+
+Definition look_up_val (e v : aexp) : Assertion :=
+  fun ex st h => find (aeval st e) h = Some (aeval st v).
+
+Definition ass_val (x:id)(v:aexp) : Assertion :=
+  fun ex st h => st x = (aeval st v).
+
+Notation "x '|->' v" :=
+  (point_to_val x v) (at level 80).
+
+Notation "e '|~>' v" := 
+  (look_up_val e v) (at level 80).
+
+Notation "x '|*~>' v" :=
+  (ass_val x v) (at level 80).
 
 Theorem hoare_consequence_pre : forall (P P' Q : Assertion) c env,
   {{P'}} c {{Q}} env ->
@@ -41,7 +52,7 @@ Theorem hoare_consequence_pre : forall (P P' Q : Assertion) c env,
   {{P}} c {{Q}} env.
 Proof.
   intros P P' Q c env Hhoare Himp.
-  intros st st' ex' Hc HP. apply (Hhoare st st' ex').
+  intros st ex h st' h' Hc HP. apply (Hhoare st ex h st' h').
   assumption. apply Himp. assumption.
 Qed.
 
@@ -51,9 +62,9 @@ Theorem hoare_consequence_post : forall (P Q Q' : Assertion) c env,
   {{P}} c {{Q}} env.
 Proof.
   intros P Q Q' c env Hhoare Himp.
-  intros st st' ex' Hc HP.
+  intros st ex h st' h' Hc HP.
   apply Himp.
-  apply (Hhoare st st' ex').
+  apply (Hhoare st ex h st' h').
   assumption. assumption.
 Qed.
 
@@ -62,20 +73,11 @@ Qed.
 Definition assn_sub X a P : Assertion :=
   fun ex st => P ex (update st X (aeval st a)).
 
-Notation "P [ X |-> a ]" := (assn_sub X a P) (at level 10).
-
-(* TODO used?
-Definition assn_sub_list' xs axs P : Assertion :=
-  fun (st : state) =>
-    let st' := zip_state st st xs axs in
-    P st'.
-*)
-
 Theorem hoare_asgn : forall Q X a env,
-  {{Q [X |-> a]}} (X ::= a) {{fun ex st => Q ex st /\ ex = None}} env.
+  {{assn_sub X a Q}} (X ::= a) {{fun ex st h => Q ex st h /\ ex = None}} env.
 Proof.
   unfold hoare_triple.
-  intros Q X a env st st' ex' HE HQ.
+  intros Q X a env st ex h st' h' HE HQ.
   inversion HE. subst. split.
   unfold assn_sub in HQ. assumption.
   reflexivity.
@@ -84,10 +86,10 @@ Qed.
 (*** SKIP ***)
 
 Theorem hoare_skip : forall P env,
-  {{P}} SKIP {{fun ex st => P ex st /\ ex = None}} env.
+  {{P}} SKIP {{fun ex st h => P ex st h /\ ex = None}} env.
 Proof.
   intros.
-  intros st st' ex' Hc HP.
+  intros st ex h st' h' Hc HP.
   inversion Hc; subst.
   split. assumption. reflexivity.
 Qed.
@@ -96,68 +98,68 @@ Qed.
 
 Theorem hoare_seq : forall (P Q R : Assertion) c1 c2 env,
   {{Q}} c2 {{R}} env ->
-  {{P}} c1 {{fun ex st => Q ex st /\ ex = None}} env ->
+  {{P}} c1 {{fun ex st h => Q ex st h /\ ex = None}} env ->
   {{P}} c1 ;; c2 {{R}} env.
 Proof.
   intros.
-  intros st st' ex' Hc HP.
+  intros st ex h st' h' Hc HP.
   inversion Hc; subst.
   Case "Standard sequence".
     specialize (H3 env).
-    specialize (H8).
-    apply (H st'0 st'). assumption.
-    apply (H0 st st'0); assumption.
+    specialize (H10).
+    apply (H st'0 ex h'0 st' h'). assumption.
+    apply (H0 st None h st'0 h'0); assumption.
   Case "Exception in c1 (contradiction)".
-    apply H0 in H7. specialize (H7 HP).
-    inversion H7. congruence.
+    apply H0 in H9. specialize (H9 HP).
+    inversion H9. congruence.
 Qed.
 
 Theorem hoare_seq_exn : forall (P Q : Assertion) c1 c2 env,
-  {{P}} c1 {{fun ex st => Q ex st /\ ex <> None}} env ->
+  {{P}} c1 {{fun ex st h => Q ex st h /\ ex <> None}} env ->
   {{P}} c1 ;; c2 {{Q}} env.
 Proof.
   intros.
-  intros st st' ex Hc HP.
+  intros st ex h st' h' Hc HP.
   inversion Hc; subst.
   Case "Standard sequence (contradiction)".
     apply H in H2. specialize (H2 HP).
     inversion H2. contradiction H1. reflexivity.
   Case "Exception in c1".
-    apply (H st st' (Some ex0)); assumption.
+    apply (H st (Some ex0) h st' h'); assumption.
 Qed.
 
 (*** IF THEN ELSE ***)
 
 Definition bassn b : Assertion :=
-  fun _ st => (beval st b = true).
-Lemma bexp_eval_true : forall b st ex,
-  beval st b = true -> (bassn b) ex st.
+  fun _ st _ => (beval st b = true).
+Lemma bexp_eval_true : forall b st ex h,
+  beval st b = true -> (bassn b) ex st h.
 Proof.
-  intros b ex st Hbe.
+  intros b ex st h Hbe.
   unfold bassn. assumption.
 Qed.
-Lemma bexp_eval_false : forall b st ex,
-  beval st b = false -> ~ ((bassn b) ex st).
+Lemma bexp_eval_false : forall b st ex h,
+  beval st b = false -> ~ ((bassn b) ex st h).
 Proof.
-  intros b ex st Hbe contra.
+  intros b ex st h Hbe contra.
   unfold bassn in contra.
   rewrite -> contra in Hbe. inversion Hbe.
 Qed.
 
-Theorem hoare_if : forall (P Q : Assertion)  b c1 c2 env,
-  {{fun ex st => P ex st /\ bassn b ex st}} c1 {{Q}} env ->
-  {{fun ex st => P ex st /\ ~(bassn b ex st)}} c2 {{Q}} env ->
+Theorem hoare_if : forall (P Q : Assertion) b c1 c2 env,
+  {{fun ex st h => P ex st h /\ bassn b ex st h}} c1 {{Q}} env ->
+  {{fun ex st h => P ex st h /\ ~(bassn b ex st h)}} c2 {{Q}} env ->
   {{P}} IFB b THEN c1 ELSE c2 FI {{Q}} env.
 Proof.
   intros.
-  intros st st' ex' Hc HP.
+  intros st ex h st' h' Hc HP.
   inversion Hc; subst.
   Case "If true".
-    apply (H st st' ex').
+    apply (H st ex h st' h').
     assumption. split. assumption.
     apply bexp_eval_true. assumption.
   Case "If false".
-    apply (H0 st st' ex').
+    apply (H0 st ex h st' h').
     assumption. split. assumption.
     apply bexp_eval_false. assumption.
 Qed.
@@ -165,21 +167,21 @@ Qed.
 (*** WHILE ***)
 
 Theorem hoare_while : forall P b c env,
-  {{fun ex st => P ex st /\ bassn b ex st}} c {{P}} env ->
-  {{P}} WHILE b DO c END {{fun ex st => P ex st /\ (ex = None -> ~(bassn b ex st))}} env.
+  {{fun ex st h => P ex st h /\ bassn b ex st h}} c {{P}} env ->
+  {{P}} WHILE b DO c END {{fun ex st h => P ex st h /\ (ex = None -> ~(bassn b ex st h))}} env.
 Proof.
   intros.
-  intros st st' ex' Hc HP.
+  intros st ex h st' h' Hc HP.
   remember (WHILE b DO c END) as wcom eqn:Hwcom.
   induction Hc; try inversion Hwcom; subst; clear Hwcom.
   Case "While End".
     split. assumption. intros. apply bexp_eval_false. assumption.
   Case "While Loop".
     apply (H4 env H). reflexivity.
-    apply (H st st'). apply H1.
+    apply (H st None h st' h'). apply H1.
     split. assumption. apply bexp_eval_true. assumption.
   Case "While Exception".
-    split. apply (H st st' (Some ex)). assumption.
+    split. apply (H st (Some ex) h st' h'). assumption.
     split. assumption. apply bexp_eval_true. assumption.
     intros. apply bexp_eval_false. congruence.
 Qed.
@@ -189,16 +191,16 @@ Qed.
 Theorem hoare_throw : forall P e aexps env,
   {{P}}
     THROW e, aexps
-  {{fun ex st => P None st /\ ex = (Some (Exn (e, (map (fun a => aeval st a) aexps)))) }} env.
+  {{fun ex st h => P None st h /\ ex = (Some (Exn (e, (fold_right (fun a acc => cons (aeval st a) acc) nil aexps)))) }} env.
 Proof.
   intros.
-  intros st st' ex' Hc HP.
+  intros st ex h st' h' Hc HP.
   inversion Hc; subst.
   split. assumption. reflexivity.
 Qed.
 
 Theorem hoare_try : forall (P Q : Assertion) c1 c2 e ids env,
-  {{P}} c1 {{fun ex st => Q ex st /\ match ex with
+  {{P}} c1 {{fun ex st h => Q ex st h /\ match ex with
                                        | Some (Exn (e', _)) => e <> e'
                                        | None => True
                                      end
@@ -206,40 +208,40 @@ Theorem hoare_try : forall (P Q : Assertion) c1 c2 e ids env,
   {{P}} TRY c1 CATCH e, ids DO c2 END {{Q}} env.
 Proof.
   intros.
-  intros st st' ex' Hc HP.
+  intros st ex h st' h' Hc HP.
   inversion Hc; subst.
   Case "Try".
-    apply (H st st' None); assumption.
+    apply (H st None h st' h'); assumption.
   Case "Catch (contradiction)".
-    apply H in H8. specialize (H8 HP).
-    inversion H8. congruence.
+    apply H in H10. specialize (H10 HP).
+    inversion H10. congruence.
   Case "Try exception".
-    apply (H st st'); assumption.
+    apply (H st (Some (Exn (e0, ns))) h st' h'); assumption.
 Qed.
 
 Theorem hoare_try_exn : forall (P Q : Assertion) c1 c2 e ns ids env,
-  {{fun ex st => exists st', P ex st' /\ st = (update_many st' ids ns)}} c2 {{Q}} env ->
-  {{P}} c1 {{fun ex st => ex = (Some (Exn (e, ns)))}} env ->
+  {{fun ex st h => exists st', P ex st' h /\ st = (update_many st' ids ns)}} c2 {{Q}} env ->
+  {{P}} c1 {{fun ex st h => ex = (Some (Exn (e, ns)))}} env ->
   {{P}} TRY c1 CATCH e, ids DO c2 END {{Q}} env.
 Proof.
   intros.
-  intros st st' ex' Hc HP.
+  intros st ex h st' h' Hc HP.
   inversion Hc; subst.
   Case "Try (contradiction)".
-    apply H0 in H9. specialize (H9 HP).
-    inversion H9.
+    apply H0 in H11. specialize (H11 HP).
+    inversion H11.
   Case "Catch".
-    apply (H (update_many st ids ns0) st'). assumption.
+    apply (H (update_many st ids ns0) ex h st' h'). assumption.
     apply ex_intro with (st).
     split. assumption.
     assert (ns = ns0).
     SCase "Proof of assertion".
-      specialize (H0 st st'0 (Some (Exn (e, ns0)))).
-      specialize (H0 H9 HP). congruence. 
+      specialize (H0 st (Some (Exn (e, ns0))) h st'0 h'0).
+      specialize (H0 H11 HP). congruence. 
     rewrite H1. reflexivity.
   Case "Try exception (contradiction)".
-    apply H0 in H10. specialize (H10 HP).
-    inversion H10. subst. congruence.
+    apply H0 in H12. specialize (H12 HP).
+    inversion H12. subst. congruence.
 Qed.
 
 (*** Call ***)
@@ -256,17 +258,17 @@ Theorem hoare_call : forall (program : program) f X args P Q body params rexp r,
 	program f = (body,params,rexp) ->
 	{{ P }}
 	  body
-	{{ fun e st => Q e st /\ r = aeval st rexp }} program ->
-	{{ fun e st => P e (zip_state st empty_state params args) }}
+	{{ fun e st h => Q e st h /\ r = aeval st rexp }} program ->
+	{{ fun e st h => P e (zip_state st empty_state params args) h }}
 	  CCall f X args
-    {{ fun e st => st X = r }} program
+    {{ fun e st h => st X = r }} program
 	.
 Proof.
   unfold hoare_triple.
   intros.
   inversion H1; rewrite H6 in H; inversion H; subst.
   remember (update st X (aeval st'' rexp)) as st'''.
-  specialize (H0 _ _ _ H16 H2).
+  specialize (H0 _ _ _ _ _ H18 H2).
   destruct H0.
   subst.
   rewrite update_retrieve.
@@ -277,10 +279,10 @@ Theorem hoare_call_exn : forall (program : program) f X args P body params rexp 
 	program f = (body,params,rexp) ->
 	{{ P }}
 	  body
-	{{ fun e st => e = ex }} program ->
-	{{ fun e st => P e (zip_state st empty_state params args) }}
+	{{ fun e st h => e = ex }} program ->
+	{{ fun e st h => P e (zip_state st empty_state params args) h }}
 	  CCall f X args
-    {{ fun e st => e = ex }} program
+    {{ fun e st h => e = ex }} program
 	.
 Proof.
   intro.
@@ -290,24 +292,16 @@ Proof.
   remember (update st X (aeval st'' rexp)) as st'''.
   unfold hoare_triple in H0.
   remember ((zip_state st empty_state params args)) as st''''.
-  apply (H0 st'''' st'').
+  apply (H0 st'''' _ h st'' h').
   assumption.
   assumption.
 Qed.
 
-(*Theorem hoare_alloc : forall x,
-  {{ emp }} x <-# ALLOC {{ (x |-> ANum 0) }}.
+Theorem hoare_alloc : forall x env,
+  {{ emp }} x <-# ALLOC {{ (x |-> ANum 0) }} env.
 Proof.
-  split.
-  unfold safe.
-  unfold not.
-  intros.
-  inversion H0.
-  assert (not_in_add : forall (m:heap) (a e :nat),
-  ~ In a (add a e m) -> False).
-  admit.
-  apply not_in_add in H5.
-  apply H5.
+  intros x env st ex h st' h' H.
+  inversion H.
   intros.
   unfold point_to_val.
   split.
@@ -322,45 +316,23 @@ Proof.
   intros.
   inversion H0.
   subst.
-  unfold update in H2.
-  rewrite eq_id in H2.
+  unfold update in H10.
+  rewrite eq_id in H10.
   assert (diff_addr : forall (m:heap) (a b e :nat), a<>b -> find b (add a e m) = None).
   admit.
   rewrite diff_addr.
   reflexivity.
-  apply H2.
+  apply H10.
 Qed.
 
-Theorem hoare_read : forall e v x,
-  {{ e |~> v }} x <-* [ e ] {{ x |*~> v }}.
+(*Theorem hoare_read : forall e v x env,
+  {{ e |~> v }} x <-* [ e ] {{ x |*~> v }} env.
 Proof.
-  intros.
-  split.
-  unfold safe.
-  unfold not.
-  intros.
-  inversion H0.
-  assert (update_val : forall (m:heap) (a v:nat) st (x:id), 
-  update st x v = empty_state -> False).
-  admit.
-  apply update_val in H3.
-  apply H3.
-  apply h.
-  apply addr.
-  unfold look_up_val in H.
-  rewrite <- H6 in H3.
-  rewrite H3 in H.
-  assert (find_exsit : forall (m:heap)(a v:nat),
-  find a m = Some v -> ~ In a m -> False).
-  admit.
-  apply find_exsit in H.
-  apply H.
-  apply H8.
-  intros.
+  intros a b x env st ex h st' h' H.
   unfold ass_val.
-  inversion H0.
+  inversion H.
   unfold look_up_val in H.
-  rewrite H3 in H.
+  rewrite H2 in H9.
   rewrite <-H7 in H8.
   rewrite H in H8.
   assert (same_val : forall st v v', Some(aeval st v) = Some(aeval st v') -> v=v').
