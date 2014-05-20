@@ -38,3 +38,7 @@ e \neq e' & \mbox{if} \; \varepsilon = (e', \_)
 \begin{equation}
 \frac{\vdash \{P\} \; c_1 \; \{\lambda \varepsilon \sigma. \varepsilon = (e, \tilde{n})\} \qquad \vdash \{\lambda \varepsilon \sigma. \exists \sigma'. (P(\varepsilon, \sigma') \wedge \sigma = \sigma'[\sfrac{\tilde{X}}{\tilde{n}}])\} \; c_2 \; \{Q\}}{\vdash \{P\} \; (TRY\; c_1\; CATCH\; e, \tilde{X}\; DO\; c_2\; END) \; \{Q\}}
 \end{equation}
+
+\begin{equation}
+F = (c,\tilde{p},r) \wedge \left\{P\right\} c \left\{Q \wedge w = r\right\} \vdash \left\{\tilde{v} = \tilde{a} \wedge P(emp[\sfrac{\tilde{v}}{\tilde{p}}])\right\}CALL \; F \; X \; \tilde{a} \left\{X = w\right\}
+\end{equation}

@@ -5,7 +5,15 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
+\let\proof\relax
 \usepackage{amsmath,xfrac,amssymb}
+\let\endproof\relax
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem*{notation}{Notation}
+
+\theoremstyle{notation}
 
 % The type command.
 \newcommand{\type}[1] {
