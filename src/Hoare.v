@@ -291,11 +291,13 @@ Proof.
   assumption.
 Qed.
 
-Theorem hoare_alloc : forall x,
-  {{ emp }} x <-# ALLOC {{ x |-> ANum 0 }}.
+(*** HEAP ***)
+
+Theorem hoare_alloc : forall x env,
+  {{ emp }} x <-# ALLOC {{ x |-> ANum 0 }} env.
 Proof.
   split.
-  inversion H0. 
+  inversion H. 
   subst.
   rewrite add_eq_o.
   simpl. 
@@ -304,7 +306,7 @@ Proof.
   rewrite eq_id.
   reflexivity.
   intros.
-  inversion H0.
+  inversion H.
   subst.
   unfold update in H2.
   rewrite eq_id in H2.
@@ -315,8 +317,8 @@ Proof.
   apply H2.
 Qed.
 
-Theorem hoare_read : forall e v x,
-  {{ e |~> v }} x <-* [ e ] {{ x |*~> v }}.
+(*Theorem hoare_read : forall e v x env,
+  {{ e |~> v }} x <-* [ e ] {{ x |*~> v }} env.
 Proof.
   intros e v x st.
   intros.
@@ -388,4 +390,4 @@ Proof.
   apply empty_find_in in H4.
   apply empty_find_in.
   apply H4.
-Qed.
+Qed.*)
