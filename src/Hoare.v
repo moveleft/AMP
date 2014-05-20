@@ -291,13 +291,9 @@ Proof.
   assumption.
 Qed.
 
-Theorem hoare_alloc : forall x env,
-  {{ emp }} x <-# ALLOC {{ (x |-> ANum 0) }} env.
+Theorem hoare_alloc : forall x,
+  {{ emp }} x <-# ALLOC {{ x |-> ANum 0 }}.
 Proof.
-  intros x env st ex h st' h' H.
-  inversion H.
-  intros.
-  unfold point_to_val.
   split.
   inversion H0. 
   subst.
@@ -310,23 +306,24 @@ Proof.
   intros.
   inversion H0.
   subst.
-  unfold update in H10.
-  rewrite eq_id in H10.
+  unfold update in H2.
+  rewrite eq_id in H2.
   assert (diff_addr : forall (m:heap) (a b e :nat), a<>b -> find b (add a e m) = None).
   admit.
   rewrite diff_addr.
   reflexivity.
-  apply H10.
+  apply H2.
 Qed.
 
-(*Theorem hoare_read : forall e v x env,
-  {{ e |~> v }} x <-* [ e ] {{ x |*~> v }} env.
+Theorem hoare_read : forall e v x,
+  {{ e |~> v }} x <-* [ e ] {{ x |*~> v }}.
 Proof.
-  intros a b x env st ex h st' h' H.
+  intros e v x st.
+  intros.
   unfold ass_val.
-  inversion H.
+  inversion H0.
   unfold look_up_val in H.
-  rewrite H2 in H9.
+  rewrite H3 in H.
   rewrite <-H7 in H8.
   rewrite H in H8.
   assert (same_val : forall st v v', Some(aeval st v) = Some(aeval st v') -> v=v').
@@ -348,17 +345,7 @@ Qed.
 Theorem hoare_write : forall e v v',
   {{ e |~> v }} [ e ] <-@ v' {{ e |~> v' }}.
 Proof.
-  intros.
-  split.
-  unfold safe.
-  unfold not.
-  intros.
-  inversion H0.
-  assert (not_change_st : forall st,
-  st = empty_state -> False).
-  admit.
-  apply not_change_st in H7.
-  apply H7.
+  intros e v v' st.
   intros.
   unfold look_up_val.
   inversion H0.
@@ -369,27 +356,11 @@ Proof.
   rewrite add_remove.
   reflexivity.
 Qed.
- 
+
 Theorem hoare_free : forall x v,
   {{ x |-> v }} FREE x {{ emp }}.
 Proof.
-  intros.
-  split.
-  unfold safe.
-  unfold not.
-  intros.
-  inversion H0.
-  assert (remove_false : forall (m:heap) (e v : nat),
-  find e (remove e h) = Some v -> False).
-  admit.
-  apply remove_false in H3.
-  apply H3.
-  apply h.
-  assert (not_addr : forall (x:id)(e:nat),
-  empty_state x = e -> False).
-  admit.
-  apply not_addr in H2.
-  apply H2.
+  intros x v st.
   intros.
   unfold emp.
   unfold Empty.
@@ -412,11 +383,9 @@ Proof.
   admit.
   apply not_mapsto_in_iff in H1.
   apply H1.
-  assert (empty_find_in : forall (m:heap) (a:nat), find a m = None -> is_empty m = true).
+  assert (empty_find_in : forall (m:heap) (a:nat), find a m = None <-> is_empty m = true).
   admit.
   apply empty_find_in in H4.
-  assert (empty_map : forall (m:heap) (a:nat), is_empty m = true -> find a m = None).
-  admit.
-  apply empty_map.
+  apply empty_find_in.
   apply H4.
-Qed.*)
+Qed.
