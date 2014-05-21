@@ -34,7 +34,7 @@ Notation "'WHILE' b 'DO' c 'END'" :=
   (CWhile b c) (at level 80, right associativity).
 Notation "'IFB' c1 'THEN' c2 'ELSE' c3 'FI'" :=
   (CIf c1 c2 c3) (at level 80, right associativity).
-Notation "x <-# 'ALLOC'" :=
+Notation "x <-: 'ALLOC'" :=
   (CAlloc x) (at level 80).
 Notation "x '<-*' '[' a ']'" :=
   (CRead x a) (at level 80).
@@ -71,7 +71,7 @@ Inductive ceval : com -> state -> heap -> state -> heap -> Prop :=
       ceval (WHILE b DO c END) st h st'' h''
   | E_Alloc : forall st x addr h,
       ~ In addr h ->
-      ceval (x <-# ALLOC) st h (update st x addr) (add addr 0 h)
+      ceval (x <-: ALLOC) st h (update st x addr) (add addr 0 h)
   | E_Read : forall st x a addr v h,
       aeval st a = addr ->
       find addr h = Some (aeval st v)->
@@ -130,7 +130,7 @@ Notation "x '|*~>' v" :=
   (ass_val x v) (at level 80).
 
 Theorem hoare_alloc : forall x,
-  {{ emp }} x <-# ALLOC {{ x |-> ANum 0 }}.
+  {{ emp }} x <-: ALLOC {{ x |-> ANum 0 }}.
 Proof.
   split.
   inversion H0. 
