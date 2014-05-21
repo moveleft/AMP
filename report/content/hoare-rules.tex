@@ -1,4 +1,29 @@
+%!TEX root = ../report.tex
+
 \section{Hoare Rules}
+
+Each of the Hoare rules in this section have been proved in Coq. The proofs can be found ./src/Hoare.v .
+
+\begin{defn}
+
+Let $e$ be address to an allocated cell on the heap and $e'$ the value stored in the cell.
+
+\begin{equation}
+e \mapsto e'
+\end{equation}
+
+To state that an address points to an allocated cell without caring about the value, we write
+\begin{equation}
+e \mapsto \textbf{-}
+\end{equation}
+
+\end{defn}
+
+\begin{defn}
+\verb|emp| is defined to be an assertion which holds for the empty heap.
+
+\verb|empty| is defined to be the empty state. However, a state is a (complete) function space from natural numbers. When referring to an empty state, we actually refer to a state, $\sigma$, such that $\forall n \in \mathbb{N}.\; \sigma(n) = 0$.
+\end{defn}
 
 \begin{equation}\label{eqn:hoare-cons-pre}
 \frac{\vdash\{P'\} \; c \; \{Q\} \qquad P \Rightarrow P'}{\vdash\{P\} \; c \; \{Q\}}
@@ -49,4 +74,25 @@ e \neq e' & \mbox{if} \; \varepsilon = (e', \_)
 
 \begin{equation}
 F = (c,\tilde{p},r) \wedge \left\{P\right\} c \left\{Q \wedge w = r\right\} \vdash \left\{\tilde{v} = \tilde{a} \wedge P(emp[\sfrac{\tilde{v}}{\tilde{p}}])\right\}\textbf{CALL} \; F \; X \; \tilde{a} \left\{X = w\right\}
+\end{equation}
+
+\begin{equation}
+\frac
+{}
+{\vdash \{ \texttt{emp} \}\; \textbf{ALLOC}\; X \;\{X \mapsto 0\}}
+\end{equation}
+
+\begin{equation}
+\frac{}
+{\vdash \{\; \lambda\varepsilon\;\sigma\;\omega.(a,\sigma)\Downarrow\alpha \wedge \omega(\alpha) = v\}\; a \rightarrow X \;\{ X = v \}}
+\end{equation}
+
+\begin{equation}
+\frac{}
+{\vdash \{ a_1 \mapsto X \}\; a_1 \leftarrow a_2 \;\{ a_1 \mapsto a_2 \}}
+\end{equation}
+
+\begin{equation}
+\frac{}
+{\vdash \{X \mapsto \textbf{-}\}\textbf{FREE}\;X \{\texttt{emp} \}}
 \end{equation}

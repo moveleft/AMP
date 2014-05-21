@@ -131,27 +131,8 @@
 			"file": "report.tex",
 			"settings":
 			{
-				"buffer_size": 952,
+				"buffer_size": 944,
 				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "\\subsubsection{Function Calls}\n\nCreating even moderately complex programs requires a way to structure the code. In programming languages functions are used to structure the code. In turn the functions often are organised through the usage of classes, modules or similar concepts.\n\nExtending IMP with function calls allows a program to be structured into small pieces of code, with a single purpose. To implement function calls we introduce scope, such that each function can only read and write to its own state. This is similar to the widely used stack frames, but differ in that the state of a function is not a stack but a set of key-value pairs.\n\nWhen a function is called, its body is executed in a state which contains only the parameters and their values. The body of the function may create new entries in the state. When the function has executed the state is discarded.\n",
-			"file": "content/ci-function-calls.tex",
-			"file_size": 886,
-			"file_write_time": 130448343484123717,
-			"settings":
-			{
-				"buffer_size": 880,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/C/Users/Simon/AppData/Roaming/Sublime Text 3/Packages/LaTeXTools/Default (Windows).sublime-keymap",
-			"settings":
-			{
-				"buffer_size": 13858,
-				"line_ending": "Unix"
 			}
 		}
 	],
@@ -376,11 +357,18 @@
 	},
 	"file_history":
 	[
+		"/D/projects/AMP/report/report.sublime-project",
+		"/D/projects/AMP/report/references.tex",
+		"/D/projects/AMP/report/content/logic.tex",
+		"/D/projects/AMP/report/content/hoare-rules.tex",
+		"/D/projects/AMP/report/content/operational-semantics.tex",
+		"/D/projects/AMP/report/content/types-and-commands.tex",
+		"/D/projects/AMP/report/report.tex",
+		"/C/Users/Simon/AppData/Roaming/Sublime Text 3/Packages/LaTeXTools/Default (Windows).sublime-keymap",
+		"/D/projects/AMP/report/content/tc-heap.tex",
+		"/D/projects/AMP/report/content/ci-function-calls.tex",
 		"/C/Users/Simon/AppData/Roaming/Sublime Text 3/Packages/User/LaTeXTools.sublime-settings",
 		"/D/projects/AMP/report/content/ci-exception-handling.tex",
-		"/D/projects/AMP/report/report.sublime-project",
-		"/D/projects/AMP/report/content/operational-semantics.tex",
-		"/D/projects/AMP/report/content/ci-function-calls.tex",
 		"/C/Users/Simon/AppData/Roaming/Sublime Text 3/Packages/LaTeXTools/README.markdown",
 		"/C/Users/Simon/Downloads/Esohead.lua",
 		"/C/Users/Simon/Downloads/Esohead (1).lua",
@@ -496,14 +484,7 @@
 		"/D/projects/Monsenso/Webapp/public/staff/new-staff-modal.htm",
 		"/D/projects/Monsenso/Webapp/app/controllers/AuthController.php",
 		"/D/projects/Monsenso/Webapp/app/services/validators/NewMedicineValidator.php",
-		"/D/projects/Monsenso/Webapp/app/services/validators/NewUserValidator.php",
-		"/D/projects/Monsenso/Webapp/app/filters.php",
-		"/D/projects/Monsenso/Webapp/app/controllers/BaseController.php",
-		"/D/projects/Monsenso/Webapp/app/services/validators/PrescribedMedicineDocumentValidator.php",
-		"/D/projects/Monsenso/Webapp/app/views/admin/general-actions.blade.php",
-		"/D/projects/Monsenso/Webapp/public/general-actions/disorder-modal.htm",
-		"/D/projects/Monsenso/Webapp/public/general-actions/action-modal.htm",
-		"/D/projects/Monsenso/Webapp/public/plugins/animate/source/rotateOut.css"
+		"/D/projects/Monsenso/Webapp/app/services/validators/NewUserValidator.php"
 	],
 	"find":
 	{
@@ -601,7 +582,7 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 0,
 			"sheets":
 			[
 				{
@@ -610,43 +591,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 952,
+						"buffer_size": 944,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								490,
-								490
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/LaTeX/LaTeX.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 1,
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "content/ci-function-calls.tex",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 880,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								880,
-								880
+								563,
+								563
 							]
 						],
 						"settings":
@@ -658,35 +611,6 @@
 						"zoom_level": 1.0
 					},
 					"stack_index": 0,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "/C/Users/Simon/AppData/Roaming/Sublime Text 3/Packages/LaTeXTools/Default (Windows).sublime-keymap",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 13858,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								0,
-								0
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/JavaScript/JSON.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 3240.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 2,
 					"type": "text"
 				}
 			]
@@ -762,6 +686,10 @@
 		"height": 0.0,
 		"selected_items":
 		[
+			[
+				"rep",
+				"report.tex"
+			],
 			[
 				"charts",
 				"public\\patient-charts\\patient-charts.js"
@@ -1269,10 +1197,6 @@
 			[
 				"patientdetails",
 				"public\\patient-details\\patient-details.js"
-			],
-			[
-				"pat",
-				"docs\\rest-api\\patient-details.md"
 			]
 		],
 		"width": 0.0

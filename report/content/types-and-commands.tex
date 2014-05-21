@@ -1,3 +1,5 @@
+%!TEX root = ../report.tex
+
 \section{Types and Commands}
 
 \begin{notation}
@@ -42,8 +44,12 @@ Below follows the definitions of arithmetic and boolean expressions, as well as 
 	\textbf{TRY}\; \verb|com|\; \textbf{CATCH}\; \verb|exid|, \tilde{id}\; \textbf{DO}\; \verb|com|\; \textbf{END} \;|\; & (try-catch) \\&
 	\textbf{CALL}\; \verb|funid|\; \verb|id|\; \tilde{aexp} \;|\; & (call) \\&
 	\textbf{ALLOC}\;\verb|id| \;|\; & (allocate) \\&
-	\verb|id|\leftarrow*\;\verb|aexp| \;|\; & (read) \\&
-	\verb|aexp|\leftarrow@\;\verb|aexp| \;|\; & (write) \\&
+	\verb|aexp| \rightarrow \verb|id|\;|\; & (read) \\&
+	\verb|aexp|\leftarrow\;\verb|aexp| \;|\; & (write) \\&
 	\textbf{FREE}\;\verb|id| & (free)
 \end{alignedat}
 \end{equation}
+
+{\scriptsize
+Note, to increase the clarity some of the notation for allocation, read and write differs from the notation used in the Coq code. The notation used in the Coq code are \verb|id <-# Alloc|, \verb|id <-* [id]|, and \verb|[aexp] <-@ aexp|
+}
