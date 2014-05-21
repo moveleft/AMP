@@ -1,18 +1,6 @@
-\section{Discussion}
+\section{Verified Example}
 
-\subsection{Design Choices}
-The operational semantics for SEQUENCE carries the entire burden of propagating exceptions from one command to the next, in case the post-state of one, and thus the implicit pre-state of the next is exceptional. There are a few reasons for doing it this way:
-
-\begin{itemize}
-\item It simplifies the evaluation relation, since there is no need to explicitly model the concept of an exceptional pre-state
-\item We avoid having to add an additional rule for every command that makes it explicitly behave as SKIP in the presence of an exception
-\end{itemize}
-
-This way, any command that can be put in a sequence will implicitly be skipped if the post-state of the first command is exceptional.
-
-\subsection{Verified Examples}
-
-\subsubsection{Caught and Propagated Exception}
+blabla \ref{lst:imp-plus-ex} proposition \ref{prop:program-correct}
 
 \begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:hoare_ex_asgn,caption=A small program demonstrating a try-catch statement.]
 { 3 = 3                         }      $\text{This is trivially true, but necessary due to}$
@@ -47,3 +35,15 @@ END
 { X = 20 $\wedge$ Y = 17 $\wedge\quad\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon=\bot$  }      $\text{Follows from the catch Hoare rule (\ref{eqn:hoare-catch}).}$
                                         $\text{This is our desired end state.}$
 \end{lstlisting}
+
+\section{Discussion}
+
+\subsection{Design Choices}
+The operational semantics for SEQUENCE carries the entire burden of propagating exceptions from one command to the next, in case the post-state of one, and thus the implicit pre-state of the next is exceptional. There are a few reasons for doing it this way:
+
+\begin{itemize}
+\item It simplifies the evaluation relation, since there is no need to explicitly model the concept of an exceptional pre-state
+\item We avoid having to add an additional rule for every command that makes it explicitly behave as SKIP in the presence of an exception
+\end{itemize}
+
+This way, any command that can be put in a sequence will implicitly be skipped if the post-state of the first command is exceptional.
