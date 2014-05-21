@@ -7,7 +7,7 @@ The three features we have implemented in IMP+ are:
 \begin{itemize}
 \item A memory heap, realized through the introduction of a separation logic to the current implementation of IMP
 \item Function calls, i.e. self-contained pieces of code with a local state that can be run with a dedicated command from inside itself or other pieces of code
-\item Exception handling, which allows try-catch statements to “save” the program from an exceptional state that has occurred as the result of the throw command
+\item Exception handling, which allows try-catch statements to "save" the program from an exceptional state that has occurred as the result of the throw command
 \end{itemize}
 
 The version of IMP we have built upon is implemented inside the formal proof management language Coq. We have extended this implementation, and as such our final product takes the form of a number of Coq source files.
@@ -16,11 +16,11 @@ The version of IMP we have built upon is implemented inside the formal proof man
 (* Body of the function F *)
 Y ::= X;;
 TRY
-  Y ::= X + 1;;
-  THROW T, [10 - Y];;
+  Y ::= 4;;
+  THROW T, [21 - Y];;
   THROW U, []
 CATCH T, [Z] DO
-  X ::= X + Z
+  X ::= Y + Z
 END
 
 (* The program entry point *)
@@ -43,18 +43,21 @@ Formal definitions of arithmetic and boolean expressions can be found in appendi
 
 \subsection{Function calls}
 
-Creating even moderately complex programs requires a way to structure the code. In programming languages, functions serve this purpose. In addition, functions are often organised through the usage of class or module constructs and libraries.
+Creating even moderately complex programs requires a way to structure the code. In programming languages, functions serve this purpose. In addition, functions are often organized through the usage of class or module constructs and libraries.
 
-Extending IMP with function calls allows a program to be structured into small pieces of code with a single purpose. To implement function calls we introduce scope, such that each function can only read and write to its own state. This is similar to the widely used stack frames, but differ in that the state of a function is not a stack but a set of key-value pairs.
-
-When a function is called, its body is executed in a state which contains only the parameters and their values. The body of the function may create new entries in the state. When the function has executed, the local state is discarded, and only its return value is put into the state of the calling code block.
+Extending IMP with function calls allows a program to be structured into small pieces of code with a single purpose. To implement function calls we introduce scope, such that each function can only read and write to its own state. This is similar to the widely used stack frames, but differ in that the state of a function is not a stack but a function space.
 
 \subsection{Exception handling}
 
-The benefit of extending IMP with exception handling lies in allowing the program to raise and respond to exceptional events during execution. These exceptions are intended to be used in response to events that typically require special processing outside the normal flow of the program’s execution.
+The benefit of extending IMP with exception handling lies in allowing the program to raise and respond to exceptional events during execution. These exceptions are intended to be used in response to events that typically require special processing outside the normal flow of the program's execution.
 
 To this end, we introduce two concepts: the throwing of exceptions, as well as its inverse, catching them again. We also introduce the concept of an exceptional state. The program enters an exceptional state the moment an exception is thrown, and leaves it only when that exact type of exception is caught again.
 
 When the program is in an exceptional state, all commands are semantically identical to \verb|SKIP|. This means that a control block such as a loop, if-statement or function is immediately exited upon encountering an exception (at least conceptually, see section \ref{sec:opsem} \nameref{sec:opsem} for details). The exception escapes through all such constructs until it is either caught or the program exits in this exceptional state.
 
 When an exception is thrown, it can be associated with a list of arithmetic expressions that will be evaluated in the state of the program at the time of the exception. The resulting list of values will be passed on to where the exception is caught, where they can be assigned to a list of variables and used in the handling logic. This is useful for transmitting information about the exceptional event itself, as the handling logic will otherwise execute from the state that the program was in \emph{before} the code block that threw the exception.
+
+\subsection{Heap}
+The goal of the separation logic is to facilitate reasoning about shared mutable data structures, i.e., structures where updatable fields can be referenced from more than one point [1].  And the separation logic gives a local reasoning.
+
+Extending the imp language with heap, we define syntax and operational semantics  for 4 foundational constructs: allocate, read, write and free in the imp language for manipulating the shared mutable state and heap with also hoare rules for these.
