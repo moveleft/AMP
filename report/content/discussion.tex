@@ -25,8 +25,8 @@ TRY
   { $\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon$ = (T, [17])          }      $\text{I.e. the exception from before is propagated.}$
 CATCH T, [Z] DO
   { $\lambda \varepsilon\:\sigma\:\omega.\:\exists \sigma'.(\sigma(Y)=\sigma(X)\wedge\sigma=\sigma'[\sfrac{Z}{17}])$ } $\Rightarrow$ $\text{Follows from the catch Hoare rule (\ref{eqn:hoare-catch}).}$
-                                        $\text{The state in which it holds that}$
-                                        $X=5\wedge Y=5\text{ will do as a witness}$
+                                        $\text{The state in which X and Y are both}$
+                                        $\text{bound to 5 will do as a witness}$
                                         $\text{for the existential quantifier.}$
   { X = 5 $\wedge$ Y = 5 $\wedge$ Z = 17      } $\Rightarrow$    $\text{The rule of consequence leads us to this.}$
   { Y + Z = 22 $\wedge$ Y = 5 $\wedge$ Z = 17 }       $\text{Rule of consequence again.}$
