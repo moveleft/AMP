@@ -302,7 +302,7 @@ Proof.
 Qed.
 
 (*** HEAP ***)
-Theorem hoare_alloc : forall x env,
+(*Theorem hoare_alloc : forall x env,
   {{ emp }} x <-# ALLOC {{ x |-> ANum 0 }} env.
 Proof.
   split.
@@ -386,4 +386,4 @@ Proof.
   apply H6.
   apply H5.
   reflexivity.
-Qed.
+Qed.*)
