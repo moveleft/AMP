@@ -63,5 +63,20 @@ CALL F X [1;2]
 { X = 3 }
 \end{lstlisting}
 
-\subsection{Seperation Logic}
+\subsection{Separation Logic}
 
+\begin{defn}
+The notation $P * R$ (separating conjunction) means that $P$ and $R$ holds for disjoint portions of a heap.
+\end{defn}
+
+\subsubsection{Frame rule.}
+To reason about the heap we need the frame rule, given in theorem \ref{the:frame-rule}, however we did not have time to include it in our logic.
+
+\begin{theorem}\label{the:frame-rule}
+If the command $c$ does not modify any free variable in $R$ then it holds that.
+\begin{equation}
+\frac
+{\{P\}\;c\;\{Q\}}
+{\{P * R\}\; c \; \{Q * R\}}
+\end{equation}
+\end{theorem}
