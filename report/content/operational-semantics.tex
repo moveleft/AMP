@@ -57,7 +57,7 @@ Let $\sigma'$ be the state which is the result of updating the state $\sigma$ wi
 
 Below follows the operational semantics for all commands in IMP+, with explanatory text where it is relevant.
 
-The skip command has the same semantics as in IMP. It has no effect on the state nor the heap and can not throw an exception.
+The skip command has the same semantics as in IMP. It has no effect on the state nor the heap and cannot throw an exception.
 \begin{equation}
 \frac{}{(\textbf{SKIP}, \rho, \sigma, \omega) \Downarrow (\sigma, \bot, \omega)}
 \end{equation}
@@ -67,7 +67,7 @@ The assignment has the same semantics as in IMP. It updates the state such that 
 \frac{(a, \sigma) \Downarrow n \qquad \sigma' = \sigma[\sfrac{X}{n}]}{((X ::= a), \rho, \sigma, \omega) \Downarrow (\sigma', \bot, \omega)}
 \end{equation}
 
-The if command has the same semantics as in IMP, though it can throw an exception iff the executed branch throws on. It is one of the two branching commands available in IMP+. The then-branch is executed iff the guard evaluates to true. Equivelently, the else-branch is executed iff the guard evaluates to false. The if command terminates in the same state, exception and heap as the executed branch. This is covered be operational semantic \ref{eqn:op-if-true} and \ref{eqn:op-if-false}.
+The $if$ command has the same semantics as in IMP, though it can throw an exception iff the executed branch throws one. It is one of the two branching commands available in IMP+. The then-branch is executed iff the guard evaluates to true. Equivalently, the else-branch is executed iff the guard evaluates to false. The if command terminates in the same state, exception and heap as the executed branch. This is covered by equation \ref{eqn:op-if-true} and \ref{eqn:op-if-false}.
 \begin{equation}\label{eqn:op-if-true}
 \frac{(b, \sigma) \Downarrow true \qquad (c_1, \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega')}{((\textbf{IFB}\; b\; \textbf{THEN}\; c_1\; \textbf{ELSE}\; c_2\; \textbf{FI}), \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega')}
 \end{equation}
@@ -120,11 +120,11 @@ The last case (\ref{eqn:op-catch}) for $try-catch$ is the interesting one. The c
 \frac{(c_1, \rho, \sigma, \omega) \Downarrow (\sigma', (e, \tilde{n}), \omega') \qquad (c_2, \rho, \sigma[\sfrac{\tilde{X}}{\tilde{n}}], \omega) \Downarrow (\sigma'', \varepsilon, \omega'')}{((\textbf{TRY}\; c_1\; \textbf{CATCH}\; e,\; \tilde{X}\; \textbf{DO}\; c_2\; \textbf{END}), \rho, \sigma, \omega) \Downarrow (\sigma'', \varepsilon, \omega'')}
 \end{equation}
 
-The call command consists of two identifiers, one for the function to call and one for the variable the return value is stored in, and a list of arithmetic expressions which are the arguments to the function.
+The call command consists of two identifiers, one for the function to call and one for the variable that the return value is stored in, and a list of arithmetic expressions which are the arguments to the function.
 
-As previously stated, a function is defined by a triple containing a code block, the body, a list of identifiers for the parameters, and an arithmetic expression (the return expression).
+A function is defined by a triple containing a code block, the body, a list of identifiers for the parameters, and an arithmetic expression (the return expression).
 
-When a function is called, the arguments of the call are evaluated and a new state is constructed by assigning the argument values to the parameters of the function (in linear order), in the empty state. The body is executed in the constructed state. The return expression is evaluated in the state the execution of the body terminates in. The return value are stored in the variable for the same scope(state) of the call.
+When a function is called, the arguments of the call are evaluated and a new state is constructed by assigning the argument values to the parameters of the function (in linear order), in the empty state. The body is executed in the constructed state. The return expression is evaluated in the state the execution of the body terminates in. The return value are stored in the variable for the same scope (state) of the call.
 
 Note, the return expression is evaluated and stored in the specified variable regardless of whether an exception was the reason for the termination of the body or not. However, if the body terminates with an exception, then the call also terminates in the same exception.
 

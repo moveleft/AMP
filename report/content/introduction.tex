@@ -1,7 +1,7 @@
 %!TEX root = ../report.tex
 
 \section{Introduction}
-The purpose of this project has been to extend the language IMP, as implemented during the exercise chapters found in Software Foundations, with three new features, we will refer to the new language as IMP+. Furthermore, the purpose of the project were to provide the necessary formal constructs for verifying programs written in IMP+. So IMP+ is a superset of IMP, but for the fact that we have excluded the (while-) break command.
+The purpose of this project has been to extend the language IMP, as implemented during the exercise chapters found in Software Foundations[\cite{soft}], with three new features, we will refer to the new language as IMP+. Furthermore, the purpose of the project was to provide the necessary formal constructs for verifying programs written in IMP+. Thus, IMP+ is a superset of IMP, but for the fact that we have excluded the (while-) break command.
 
 The three features we have implemented in IMP+ are:
 \begin{itemize}
@@ -22,7 +22,7 @@ The outline of this report is
 \item Discussion; discusses interesting points and shortcomings in our implementation of IMP+ and logic.
 \end{itemize}
 
-Listing \ref{lst:imp-plus-ex} shows a program written in IMP+. We will later in the Discussion section verify the progom.
+Listing \ref{lst:imp-plus-ex} shows a program written in IMP+. This example will be verified in the Discussion section at the end of the report, following the formal definitions of operational semantics and Hoare rules.
 
 \begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:imp-plus-ex,caption=A program written in IMP+ demonstrating assignment and throw/catch.]
 (* Body of the function F *)
