@@ -133,7 +133,7 @@ Inductive ceval : com -> program -> state -> heap -> state -> heap -> option exn
 (* Heap *)
   | E_Alloc : forall st x addr h env,
       ~ In addr h ->
-      ceval (x <-# ALLOC) env st h (update st x addr) (add addr 0 h) None
+      ceval (x <-: ALLOC) env st h (update st x addr) (add addr 0 h) None
   | E_Read : forall st x a addr v h env,
       aeval st a = addr ->
       find addr h = Some (aeval st v)->

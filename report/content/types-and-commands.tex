@@ -43,7 +43,7 @@ Below follows the definitions of arithmetic and boolean expressions, as well as 
 	\textbf{THROW}\; \verb|exid|, \tilde{aexp} \;|\; & (throw) \\&
 	\textbf{TRY}\; \verb|com|\; \textbf{CATCH}\; \verb|exid|, \tilde{id}\; \textbf{DO}\; \verb|com|\; \textbf{END} \;|\; & (try-catch) \\&
 	\textbf{CALL}\; \verb|funid|\; \verb|id|\; \tilde{aexp} \;|\; & (call) \\&
-	\textbf{ALLOC}\;\verb|id| \;|\; & (allocate) \\&
+	\verb|id|\leftarrow:\;\textbf{ALLOC}\;|\; & (allocate) \\&
 	\verb|aexp| \rightarrow \verb|id|\;|\; & (read) \\&
 	\verb|aexp|\leftarrow\;\verb|aexp| \;|\; & (write) \\&
 	\textbf{FREE}\;\verb|id| & (free)

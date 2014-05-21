@@ -77,7 +77,7 @@ e \neq e' & \mbox{if} \; \varepsilon = (e', \_)
 \frac{\vdash \{P\} \; c_1 \; \{\lambda \varepsilon\:\sigma\:\omega. \varepsilon = (e, \tilde{n})\} \qquad \vdash \{\lambda \varepsilon\:\sigma\:\omega. \exists \sigma'. (P(\varepsilon, \sigma', \omega) \wedge \sigma = \sigma'[\sfrac{\tilde{X}}{\tilde{n}}])\} \; c_2 \; \{Q\}}{\vdash \{P\} \; (\textbf{TRY}\; c_1\; \textbf{CATCH}\; e, \tilde{X}\; \textbf{DO}\; c_2\; \textbf{END}) \; \{Q\}}
 \end{equation}
 
-\begin{equation}
+\begin{equation}\label{eqn:hoare-call}
 F = (c,\tilde{p},r) \wedge \left\{P\right\} c \left\{Q \wedge w = r\right\} \vdash \left\{\tilde{v} = \tilde{a} \wedge P(\texttt{empty}[\sfrac{\tilde{v}}{\tilde{p}}])\right\}\textbf{CALL} \; F \; X \; \tilde{a} \left\{X = w\right\}
 \end{equation}
 

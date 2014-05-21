@@ -1,7 +1,7 @@
 %!TEX root = ../report.tex
 
 \section{Introduction}
-The purpose of this project has been to extend the language IMP, as implemented during the exercise chapters found in Software Foundations, with three new features, a language we will refer to as IMP+ for the remainder of this report. Furthermore, to provide the necessary formal constructs for validating programs written in IMP+.
+The purpose of this project has been to extend the language IMP, as implemented during the exercise chapters found in Software Foundations, with three new features, we will refer to the new language as IMP+. Furthermore, the purpose of the project were to provide the necessary formal constructs for validating programs written in IMP+. So IMP+ is a superset of IMP, but for the fact that we have excluded the (while-) break command.
 
 The three features we have implemented in IMP+ are:
 \begin{itemize}
@@ -10,7 +10,9 @@ The three features we have implemented in IMP+ are:
 \item Exception handling, which allows try-catch statements to "save" the program from an exceptional state that has occurred as the result of the throw command
 \end{itemize}
 
-The version of IMP we have built upon is implemented inside the formal proof management language Coq. We have extended this implementation, and as such our final product takes the form of a number of Coq source files.
+We have built upon the IMP implementation expressed in the formal proof management language Coq. We have extended the implementation, and as such our final product takes the form of a number of Coq source files.
+
+outline
 
 \begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:imp-plus-ex,caption=A program written in IMP+ demonstrating assignment and throw/catch.]
 (* Body of the function F *)
@@ -23,17 +25,15 @@ CATCH T, [Z] DO
   X ::= Y + Z
 END
 
-(* The program entry point *)
-X ::= 5;;
-WHILE X < 10 DO
-  CALL F X [X]
-END
-
 (* The environment, containing a single function F witch
-   takes a parameter and has the body defined at the top.
+   takes a parameter and has the body defined above.
    The return value is the value of X, in the scope of the 
    body after its execution *)
 $\rho$ = {F $\mapsto$ (body, [X], X)}
+
+(* The program entry point *)
+X ::= 5;;
+CALL F X [X]
 \end{lstlisting}
 
 \subsection{Basics of IMP}

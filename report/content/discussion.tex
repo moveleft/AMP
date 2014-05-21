@@ -1,39 +1,53 @@
 \section{Verified Example}
 
-blabla \ref{lst:imp-plus-ex} proposition \ref{prop:program-correct}
+Following the definition of all Hoare rules, we will now prove the statement given in proposition \ref{prop:program-correct} correct, by decorating the program we saw in listing \ref{lst:imp-plus-ex} with formal assertions. The proof is also given in Coq code in ./src/examples.v (the theorem named $cx\_prog\_correct$).
 
-\begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:hoare_ex_asgn,caption=A small program demonstrating a try-catch statement.]
-{ 3 = 3                         }      $\text{This is trivially true, but necessary due to}$
+\begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:hoare_ex_asgn,caption=Decorated variant of the program from listing \ref{lst:imp-plus-ex}.]
+$\textbf{Body of F}$
+
+{ X = X                         }      $\text{This is trivially true, but necessary due to}$
                                        $\text{how the assignment Hoare rule (\ref{eqn:hoare-assign}) works.}$
-X ::= 3;;                              $\text{Updates the state with X = 3 per the}$
+Y ::= X;;                              $\text{Updates the state with Y = X per the}$
                                        $\text{operational semantics for assignment (\ref{eqn:op-assign}).}$
-{ X = 3 $\wedge\quad\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon=\bot$            }      $\text{Trivially true; the state has just been updated}$
-                                       $\text{such that X = 3.}$
+{ Y = X $\wedge\quad\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon=\bot$            }      $\text{This is now our precondition for the try-catch.}$
 TRY
-  { X = 3 $\wedge\quad\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon=\bot$          } $\Rightarrow$   $\text{Precondition as per the catch Hoare rule (\ref{eqn:hoare-catch}).}$
+  { Y = X $\wedge\quad\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon=\bot$          } $\Rightarrow$   $\text{Precondition as per the catch Hoare rule (\ref{eqn:hoare-catch}).}$
   { 4 = 4 $\wedge\quad\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon=\bot$          }      $\text{Implies this by rule of consequence, which is}$
                                        $\text{trivially true.}$
-X ::= 4;;                              $\text{Updates the state with X = 4 per the}$
+  Y ::= 4;;                            $\text{Updates the state with X = 4 per the}$
                                        $\text{operational semantics for assignment (\ref{eqn:op-assign}).}$
-  { X = 4 $\wedge\quad\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon=\bot$          }
-  THROW T, [21 - X];;                  $\text{Puts the program in an exceptional state as}$
+  { Y = 4 $\wedge\quad\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon=\bot$          }      $\text{Per the assignment Hoare rule (\ref{eqn:hoare-assign}).}$
+  THROW T, [21 - Y];;                  $\text{Puts the program in an exceptional state as}$
                                        $\text{per the operational semantics for throw (\ref{eqn:op-throw}).}$
   { $\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon$ = (T, [17])          }      $\text{Follows from the Hoare rule for throw (\ref{eqn:hoare-throw}).}$
   THROW U, []                          $\text{This statement is skipped by way of the}$
                                        $\text{exception sequence Hoare rule (\ref{eqn:hoare-seq-exn}).}$
   { $\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon$ = (T, [17])          }      $\text{I.e. the exception from before is propagated.}$
-CATCH T, [Y] DO
-  { $\lambda \varepsilon\:\sigma\:\omega.\:\exists \sigma'.(\sigma(X)=3\wedge\sigma=\sigma'[\sfrac{Y}{17}])$ } $\Rightarrow$    $\text{Follows from the catch Hoare rule (\ref{eqn:hoare-catch}).}$
-                                       $\text{Any state in which it holds that X = 3}$
-                                       $\text{will do as a witness for the existential}$
-                                       $\text{quantifier.}$
-  { X = 3 $\wedge$ Y = 17              } $\Rightarrow$    $\text{The rule of consequence leads us to this.}$
-  { X + Y = 20 $\wedge$ Y = 17         }       $\text{Per the assignment Hoare rule (\ref{eqn:hoare-assign}).}$
-  X ::= X + Y                           $\text{Updates the state with X = 20}$
-  { X = 20 $\wedge$ Y = 17 $\wedge\quad\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon=\bot$}
+CATCH T, [Z] DO
+  { $\lambda \varepsilon\:\sigma\:\omega.\:\exists \sigma'.(\sigma(Y)=\sigma(X)\wedge\sigma=\sigma'[\sfrac{Z}{17}])$ } $\Rightarrow$ $\text{Follows from the catch Hoare rule (\ref{eqn:hoare-catch}).}$
+                                        $\text{The state in which it holds that}$
+                                        $X=5\wedge Y=5\text{ will do as a witness}$
+                                        $\text{for the existential quantifier.}$
+  { X = 5 $\wedge$ Y = 5 $\wedge$ Z = 17      } $\Rightarrow$    $\text{The rule of consequence leads us to this.}$
+  { Y + Z = 22 $\wedge$ Y = 5 $\wedge$ Z = 17 }       $\text{Rule of consequence again.}$
+  X ::= Y + Z                           $\text{Updates the state with X = 22}$
+  { X = 22 $\wedge$ Y = 5 $\wedge$ Z = 17 $\wedge\quad\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon=\bot$} $\text{Per the assignment Hoare rule (\ref{eqn:hoare-assign}).}$
 END
-{ X = 20 $\wedge$ Y = 17 $\wedge\quad\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon=\bot$  }      $\text{Follows from the catch Hoare rule (\ref{eqn:hoare-catch}).}$
-                                        $\text{This is our desired end state.}$
+{ X = 22 $\wedge$ Y = 5 $\wedge$ Z = 17 $\wedge\quad\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon=\bot$} $\Rightarrow$ $\text{Follows from the catch Hoare rule (\ref{eqn:hoare-catch}).}$
+{(X = 22 $\wedge$ Y = 5 $\wedge$ Z = 17 $\wedge\quad\lambda \varepsilon\:\sigma\:\omega.\:\varepsilon=\bot$)$\wedge$ 22 = X}
+                                         $\text{The above follows from the rule of consequence,}$
+                                         $\text{and is required as post-condition of the function}$
+                                         $\text{body for the call Hoare rule (\ref{eqn:hoare-call}).}$
+
+$\textbf{Program entry point}$
+
+{ 5 = 5      } $\text{Precondition for assignment Hoare rule (\ref{eqn:hoare-assign}).}$
+X ::= 5;;      $\text{The state is updated with X = 5.}$
+{ X = 5      } $\text{Precondition for the call Hoare rule (\ref{eqn:hoare-call}).}$
+CALL F X [X]   $\text{The value of X is passed as a parameter, and the return expression}$
+               $\text{of the function body is bound to X, as by semantics for call (\ref{eqn:op-call}).}$
+{ X = 22    }  $\text{Postcondition as per the call Hoare rule (\ref{eqn:hoare-call}).}$
+               $\text{Our desired end-state as by proposition \ref{prop:program-correct}.}$
 \end{lstlisting}
 
 \section{Discussion}

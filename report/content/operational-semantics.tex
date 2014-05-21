@@ -128,7 +128,7 @@ Note, the return expression is evaluated and stored in the specified variable re
 
 The heap is the same in both the scope of the call and the body of the called function. Any effect on the heap in the body will persist after the call terminates, even if it terminates with an exception. But, in case of an exception, the catch clause will still discard any changes made to the heap in the corresponding try block.
 
-\begin{equation}
+\begin{equation}\label{eqn:op-call}
 \frac
 {(\tilde{a},\sigma) \Downarrow \tilde{v} \quad \sigma''= emp[\sfrac{\tilde{v}}{\tilde{p}}] \quad (c, \rho, \sigma'', \omega) \Downarrow (\sigma''', \varepsilon, \omega') \quad (r,\sigma''') \Downarrow w \quad \sigma' = \sigma[\sfrac{X}{w}] \quad \rho(f) = (c, \tilde{p}, r)}
 {((\textbf{CALL}\; F \; X  \; \tilde{a}), \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega')}
