@@ -2,9 +2,33 @@
 
 Following the definition of all Hoare rules, we will now prove the statement given in proposition \ref{prop:program-correct} correct, by decorating the program we saw in listing \ref{lst:imp-plus-ex} with formal assertions. The proof is also given in Coq code in ./src/examples.v (the theorem named $cx\_prog\_correct$).
 
+This way, any command that can be put in a sequence will implicitly be skipped if the post-state of the first command is exceptional.
+
+\subsection{Function calls}
+The operational semantic and rule for a call introduced in this report provide the tools to verify a program, containing functions and calls, written in IMP+. An example of such a program is the one shown in listing \ref{lst:imp-plus-ex}.
+
+However, the semantics and rules are not enough to make it practical to verify a program. The program, in listing \ref{lst:sum-recursive}, can be verified using our logic, but to do so every one of the 20 recursive calls need to be proven separately.
+
+\begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:sum-recursive,caption={A program calculating the sum of 10 and 20, using recursion}.]
+(* Body of the function F *)
+CALL F X [X + 1; Y - 1]
+
+(* The environment, containing a single function F witch
+   takes a parameter and has the body defined above.
+   The return value is the value of X, in the scope of the 
+   body after its execution *)
+$\rho$ = {F $\mapsto$ (body, [X, Y], X)}
+
+(* The program entry point *)
+CALL F X [10;20]
+\end{lstlisting}
+
+\subsection{Verified Examples}
+
+\subsubsection{Caught and Propagated Exception}
+
 \begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:hoare_ex_asgn,caption=Decorated variant of the program from listing \ref{lst:imp-plus-ex}.]
 $\textbf{Body of F}$
-
 { X = X                         }      $\text{This is trivially true, but necessary due to}$
                                        $\text{how the assignment Hoare rule (\ref{eqn:hoare-assign}) works.}$
 Y ::= X;;                              $\text{Updates the state with Y = X per the}$
