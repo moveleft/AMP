@@ -128,7 +128,7 @@ Note, the return expression is evaluated and stored in the specified variable re
 
 The heap is the same in both the scope of the call and the body of the called function. Any effect on the heap in the body will persist after the call terminates, even if it terminates with an exception. But, in case of an exception, the catch clause will still discard any changes made to the heap in the corresponding try block.
 
-\begin{equation}
+\begin{equation}\label{eqn:op-call}
 \frac
 {(\tilde{a},\sigma) \Downarrow \tilde{v} \quad \sigma''= emp[\sfrac{\tilde{v}}{\tilde{p}}] \quad (c, \rho, \sigma'', \omega) \Downarrow (\sigma''', \varepsilon, \omega') \quad (r,\sigma''') \Downarrow w \quad \sigma' = \sigma[\sfrac{X}{w}] \quad \rho(f) = (c, \tilde{p}, r)}
 {((\textbf{CALL}\; F \; X  \; \tilde{a}), \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega')}
@@ -151,17 +151,17 @@ The read command is defined only for a heap which have a cell allocated with the
 The write command is defined only for a heap which have a cell allocated with the address, that the first specified aritmetic expression evaluates to. The value of the cell located at the address as updated with the value the secind arithmetic expression evaluates to.
 \begin{equation}
 \frac
-{(a,\sigma)\Downarrow m \qquad (a',\sigma)\Downarrow v \qquad \omega'=(\omega\backslash\{m\mapsto\omega(m)\})\cup\{m\mapsto v\}}
+{(a,\sigma)\Downarrow m \qquad (a',\sigma)\Downarrow v \qquad \omega'=(\omega\setminus\{m\mapsto\omega(m)\})\cup\{m\mapsto v\}}
 {((a\leftarrow\;a'), \rho, \sigma, \omega) \Downarrow (\sigma, \bot, \omega')}
 \end{equation}
 
 The free command is defined only for a heap which have a cell allocated with the address stored in the specified variable. The cell are deallocated and no read, write or free command can access the cell untill the allocation command has (re)allocated the particular cell.
 \begin{equation}
 \frac
-{\sigma(X)=m \qquad \omega(m)\neq\bot \qquad \omega'=\omega\backslash\{m\mapsto\omega(m)\}}
+{\sigma(X)=m \qquad \omega(m)\neq\bot \qquad \omega'=\omega\setminus\{m\mapsto\omega(m)\}}
 {((\textbf{FREE}\;X), \rho, \sigma, \omega) \Downarrow (\sigma, \bot, \omega')}
 \end{equation}
 
-\begin{prop}
-Given all the operational semantics, the IMP+ program in listing \ref{lst:imp-plus-ex} with X = 22.
+\begin{prop}\label{prop:program-correct}
+Given all operational sematics shown in this chapter, we postulate that the IMP+ program from listing \ref{lst:imp-plus-ex} ends in a state where it holds that $X = 22$.
 \end{prop}
