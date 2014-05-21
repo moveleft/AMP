@@ -3,7 +3,7 @@
 \subsection{Hoare Logic}
 To reason about a code block we introduce Hoare logic. To this end we define an \verb|assertion| to be a predicate, $P$, which takes a state, an exception, and a heap.
 
-Hoare triples are the core of Hoare logic, it allows us to describe the effects of executing a piece of code. It has the form $\{P\}\;c\;\{Q\}$ where $P,Q : \verb|assertion|$ and $c : \verb|com|$.
+Hoare triples are the core of Hoare logic. They allow us to describe the effects of executing a piece of code. A Hoare triple has the form $\{P\}\;c\;\{Q\}$ where $P,Q : \verb|assertion|$ and $c : \verb|com|$.
 Equation \ref{eqn:hoare_triple_def} defines the Hoare triple.
 
 \begin{equation}\label{eqn:hoare_triple_def}
@@ -57,7 +57,7 @@ Z := X + Y
 $\rho$ = $\{$F $\rightarrow$ (Z := X + Y, [X, Y], Z)$\}$
 \end{lstlisting}
 
-\begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:spec-ex-prog,caption=A program which call the function F and stores the result in X]
+\begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:spec-ex-prog,caption=A program which calls the function F and stores the result in X]
 { 3 = 3 }
 CALL F X [1;2]
 { X = 3 }
@@ -70,7 +70,7 @@ The notation $P * R$ (separating conjunction) means that $P$ and $R$ holds for d
 \end{defn}
 
 \subsubsection{Frame rule.}
-To reason about the heap we need the frame rule, given in theorem \ref{the:frame-rule}, however we did not have time to include it in our logic.
+To reason about the heap we need the frame rule, given in theorem \ref{the:frame-rule}. However, we did not have time to include it in our logic.
 
 \begin{theorem}\label{the:frame-rule}
 If the command $c$ does not modify any free variable in $R$ then it holds that.

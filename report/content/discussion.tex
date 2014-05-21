@@ -3,7 +3,7 @@
 \subsection{Design Choices}
 
 \subsubsection{Exception Handling.}
-The operational semantics for SEQUENCE carries the entire burden of propagating exceptions from one command to the next, in case the post-state of one, and thus the implicit pre-state of the next is exceptional. There are a few reasons for doing it this way:
+The operational semantics for $sequence$ carries the entire burden of propagating exceptions from one command to the next, in case the post-state of one, and thus the implicit pre-state of the next is exceptional. There are a few reasons for doing it this way:
 
 \begin{itemize}
 \item It simplifies the evaluation relation, since there is no need to explicitly model the concept of an exceptional pre-state
@@ -33,7 +33,7 @@ CALL F X [10;20]
 
 \subsection{Proof of Proposition \ref{prop:program-correct}}
 
-Following the definition of all Hoare rules, we will now prove the statement given in proposition \ref{prop:program-correct} correct, by decorating the program we saw in listing \ref{lst:imp-plus-ex} with formal assertions. The proof is also given in Coq code in ./src/examples.v (the theorem named $cx\_prog\_correct$).
+We will now prove the statement given in proposition \ref{prop:program-correct} correct, by decorating the program we saw in listing \ref{lst:imp-plus-ex} with formal assertions. The proof is also given in Coq code in ./src/examples.v (the theorem named $cx\_prog\_correct$).
 
 \begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:hoare_ex_asgn,caption=Decorated variant of the program from listing \ref{lst:imp-plus-ex}.]
 $\textbf{Body of F}$
@@ -83,7 +83,7 @@ CALL F X [X]   $\text{The value of X is passed as a parameter, and the return ex
 \end{lstlisting}
 
 \subsection{Informal Justification of Admitted Subgoals}
-A number of subgoals in the Coq code for the Hoare rules regarding separation logic has been admitted. The goals are named as here, where an informal justification for their correctness follows.
+A number of subgoals in the Coq code for the Hoare rules specific to heap operations has been admitted. These are found in the file \verb|./sep-src/Hoare.v|. The goals are named the same as here, where an informal justification for their correctness follows.
 
 \begin{equation}
 \begin{split}
