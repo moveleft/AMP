@@ -1,10 +1,18 @@
-\section{Verified Example}
+\section{Discussion}
 
-Following the definition of all Hoare rules, we will now prove the statement given in proposition \ref{prop:program-correct} correct, by decorating the program we saw in listing \ref{lst:imp-plus-ex} with formal assertions. The proof is also given in Coq code in ./src/examples.v (the theorem named $cx\_prog\_correct$).
+\subsection{Design Choices}
+
+\subsubsection{Exception Handling}
+The operational semantics for SEQUENCE carries the entire burden of propagating exceptions from one command to the next, in case the post-state of one, and thus the implicit pre-state of the next is exceptional. There are a few reasons for doing it this way:
+
+\begin{itemize}
+\item It simplifies the evaluation relation, since there is no need to explicitly model the concept of an exceptional pre-state
+\item We avoid having to add an additional rule for every command that makes it explicitly behave as SKIP in the presence of an exception
+\end{itemize}
 
 This way, any command that can be put in a sequence will implicitly be skipped if the post-state of the first command is exceptional.
 
-\subsection{Function calls}
+\subsubsection{Function calls}
 The operational semantic and rule for a call introduced in this report provide the tools to verify a program, containing functions and calls, written in IMP+. An example of such a program is the one shown in listing \ref{lst:imp-plus-ex}.
 
 However, the semantics and rules are not enough to make it practical to verify a program. The program, in listing \ref{lst:sum-recursive}, can be verified using our logic, but to do so every one of the 20 recursive calls need to be proven separately.
@@ -23,9 +31,9 @@ $\rho$ = {F $\mapsto$ (body, [X, Y], X)}
 CALL F X [10;20]
 \end{lstlisting}
 
-\subsection{Verified Examples}
+\subsection{Proof of proposition \ref{prop:program-correct}}
 
-\subsubsection{Caught and Propagated Exception}
+Following the definition of all Hoare rules, we will now prove the statement given in proposition \ref{prop:program-correct} correct, by decorating the program we saw in listing \ref{lst:imp-plus-ex} with formal assertions. The proof is also given in Coq code in ./src/examples.v (the theorem named $cx\_prog\_correct$).
 
 \begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:hoare_ex_asgn,caption=Decorated variant of the program from listing \ref{lst:imp-plus-ex}.]
 $\textbf{Body of F}$
@@ -73,15 +81,3 @@ CALL F X [X]   $\text{The value of X is passed as a parameter, and the return ex
 { X = 22    }  $\text{Postcondition as per the call Hoare rule (\ref{eqn:hoare-call}).}$
                $\text{Our desired end-state as by proposition \ref{prop:program-correct}.}$
 \end{lstlisting}
-
-\section{Discussion}
-
-\subsection{Design Choices}
-The operational semantics for SEQUENCE carries the entire burden of propagating exceptions from one command to the next, in case the post-state of one, and thus the implicit pre-state of the next is exceptional. There are a few reasons for doing it this way:
-
-\begin{itemize}
-\item It simplifies the evaluation relation, since there is no need to explicitly model the concept of an exceptional pre-state
-\item We avoid having to add an additional rule for every command that makes it explicitly behave as SKIP in the presence of an exception
-\end{itemize}
-
-This way, any command that can be put in a sequence will implicitly be skipped if the post-state of the first command is exceptional.
