@@ -27,6 +27,18 @@ e \mapsto \textbf{-}
 \verb|empty| is defined to be the empty state. However, a state is a (complete) function space from natural numbers. When referring to an empty state, we actually refer to a state, $\sigma$, such that $\forall n \in \mathbb{N}.\; \sigma(n) = 0$.
 \end{defn}
 
+\begin{defn}
+Let \verb|disjoint| be a function $(\varepsilon\times\texttt{exid})\rightarrow(\top\cup\bot)$, given by the following equation (used specifically with rule \ref{eqn:hoare-try}):
+\begin{equation}
+\texttt{disjoint}(\varepsilon, e) = \begin{cases}
+\top & \mbox{if} \; \varepsilon = \bot \\
+e \neq e' & \mbox{if} \; \varepsilon = (e', \_)
+\end{cases}
+\end{equation}
+\end{defn}
+
+Below follows the two rules of consequence. One for the pre-condition of a triple (\ref{eqn:hoare-cons-pre}) and one for the post-condition (\ref{eqn:hoare-cons-post}).
+
 \begin{equation}\label{eqn:hoare-cons-pre}
 \frac{\vdash\{P'\} \; c \; \{Q\} \qquad P \Rightarrow P'}{\vdash\{P\} \; c \; \{Q\}}
 \end{equation}
@@ -34,6 +46,8 @@ e \mapsto \textbf{-}
 \begin{equation}\label{eqn:hoare-cons-post}
 \frac{\vdash\{P\} \; c \; \{Q'\} \qquad Q \Rightarrow Q'}{\vdash\{P\} \; c \; \{Q\}}
 \end{equation}
+
+We will now present the various Hoare rules required for formally verifying programs written in IMP+.
 
 \begin{equation}\label{eqn:hoare-assign}
 \frac{}{\vdash \{Q[\sfrac{X}{a}]\} \; (X ::= a) \; \{Q \wedge \lambda \varepsilon\:\sigma\:\omega. \varepsilon = \bot\}}
@@ -58,16 +72,6 @@ e \mapsto \textbf{-}
 \begin{equation}\label{eqn:hoare-throw}
 \frac{\tilde{a}, \sigma \Downarrow \tilde{n}}{\vdash \{P\} \; (\textbf{THROW}\; e, \tilde{a}) \; \{P \wedge \lambda \varepsilon\:\sigma\:\omega. \varepsilon = (e, \tilde{n})\}}
 \end{equation}
-
-\begin{defn}
-Let \verb|disjoint| be a function $(\varepsilon\times\texttt{exid})\rightarrow(\top\cup\bot)$, given by the following equation:
-\begin{equation}
-\texttt{disjoint}(\varepsilon, e) = \begin{cases}
-\top & \mbox{if} \; \varepsilon = \bot \\
-e \neq e' & \mbox{if} \; \varepsilon = (e', \_)
-\end{cases}
-\end{equation}
-\end{defn}
 
 \begin{equation}\label{eqn:hoare-try}
 \frac{\vdash \{P\} \; c_1 \; \{Q \wedge \lambda \varepsilon\:\sigma\:\omega. \texttt{disjoint}(\varepsilon, e)\}}{\vdash \{P\} \; (\textbf{TRY}\; c_1\; \textbf{CATCH}\; e, \tilde{X}\; \textbf{DO}\; c_2\; \textbf{END}) \; \{Q\}}

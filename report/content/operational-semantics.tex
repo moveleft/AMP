@@ -100,7 +100,7 @@ The operational semantics for the while-loop have been extended with a case (\re
 \frac{(b, \sigma) \Downarrow true \qquad (c, \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega') \qquad \varepsilon \neq \bot}{((\textbf{WHILE}\; b\; \textbf{DO}\; c\; \textbf{END}), \rho, \sigma, \omega) \Downarrow (\sigma', \varepsilon, \omega')}
 \end{equation}
 
-The throw command puts the program in an exceptional state. The thrown exception is given by a pair
+The throw command puts the program in an exceptional state. The thrown exception is given by a pair $(\verb|exid|\times\tilde{N})$, where the name is the one specified in the throw command, and the list of natural numbers results from evaluating the given list of arithmetic expressions in the current state.
 
 \begin{equation}\label{eqn:op-throw}
 \frac{(\tilde{a}, \sigma) \Downarrow \tilde{n}}{((\textbf{THROW}\; e,\; \tilde{a}), \rho, \sigma, \omega) \Downarrow (\sigma, (e, \tilde{n}), \omega)}
