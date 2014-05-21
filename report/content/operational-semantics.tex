@@ -138,7 +138,7 @@ The allocation command is define only for a heap which have space for a new cell
 \begin{equation}
 \frac
 {\omega(m)=\bot \qquad \omega'=\omega\cup\{m \mapsto 0\} \qquad \sigma' = \sigma[\sfrac{X}{m}]}
-{((\textbf{ALLOC}\;X), \rho, \sigma, \omega) \Downarrow (\sigma', \bot, \omega')}
+{((X\leftarrow:\;\textbf{ALLOC}\;), \rho, \sigma, \omega) \Downarrow (\sigma', \bot, \omega')}
 \end{equation}
 
 The read command is defined only for a heap which have a cell allocated with the address, that the specified aritmetic expression evaluates to. It looks up the cell at the address and stores the cell's value in the specified variable.
