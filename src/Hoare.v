@@ -304,7 +304,7 @@ Qed.
 (*** HEAP ***)
 
 Theorem hoare_alloc : forall x env,
-  {{ emp }} x <-# ALLOC {{ x |-> ANum 0 }} env.
+  {{ emp }} x <-: ALLOC {{ x |-> ANum 0 }} env.
 Proof.
   split.
   inversion H. 
