@@ -302,9 +302,8 @@ Proof.
 Qed.
 
 (*** HEAP ***)
-
-Theorem hoare_alloc : forall x env,
-  {{ emp }} x <-: ALLOC {{ x |-> ANum 0 }} env.
+(*Theorem hoare_alloc : forall x env,
+  {{ emp }} x <-# ALLOC {{ x |-> ANum 0 }} env.
 Proof.
   split.
   inversion H. 
@@ -327,40 +326,36 @@ Proof.
   apply H2.
 Qed.
 
-(*Theorem hoare_read : forall e v x env,
+Theorem hoare_read : forall e v x env,
   {{ e |~> v }} x <-* [ e ] {{ x |*~> v }} env.
 Proof.
-  intros e v x st.
+  intros e v x p st.
   intros.
   unfold ass_val.
-  inversion H0.
-  unfold look_up_val in H.
-  rewrite H3 in H.
-  rewrite <-H7 in H8.
-  rewrite H in H8.
+  inversion H.
+  unfold look_up_val in H0.
+  rewrite H3 in H0.
+  rewrite <- H8 in H10.
+  rewrite H0 in H10.
   assert (same_val : forall st v v', Some(aeval st v) = Some(aeval st v') -> v=v').
   admit.
-  apply same_val in H8.
-  rewrite <- H8 in H6.
-  rewrite <- H8.
-  rewrite H6.
+  apply same_val in H10.
+  rewrite <- H10 in H7.
+  rewrite <- H10.
+  rewrite H7.
   assert (update_stack : forall st st' v, update st x (aeval st v) = st' -> st' x = (aeval st' v)).
   admit.
-  apply update_stack in H6.
-  apply H6.
-  subst.
-  assert (current_stack : forall st x v, st x = aeval st v).
-  admit.
-  apply current_stack.
+  apply update_stack in H7.
+  apply H7.
 Qed.
 
-Theorem hoare_write : forall e v v',
-  {{ e |~> v }} [ e ] <-@ v' {{ e |~> v' }}.
+Theorem hoare_write : forall e v v' env,
+  {{ e |~> v }} [ e ] <-@ v' {{ e |~> v' }} env.
 Proof.
-  intros e v v' st.
+  intros e v v' p st.
   intros.
   unfold look_up_val.
-  inversion H0.
+  inversion H.
   subst.
   assert (add_remove : forall (m:heap) (e v :nat), 
   find e (add e v (remove e m)) = Some v).
@@ -369,19 +364,19 @@ Proof.
   reflexivity.
 Qed.
 
-Theorem hoare_free : forall x v,
-  {{ x |-> v }} FREE x {{ emp }}.
+Theorem hoare_free : forall x v env,
+  {{ x |-> v }} FREE x {{ emp }} env.
 Proof.
-  intros x v st.
+  intros x v p st.
   intros.
   unfold emp.
   unfold Empty.
   unfold not.
   intros.
-  inversion H0.
-  subst.
-  unfold point_to_val in H.
   inversion H.
+  subst.
+  unfold point_to_val in H0.
+  inversion H0.
   apply remove_mapsto_iff in H1.
   inversion H1.
   apply H3 in H5.
@@ -391,13 +386,4 @@ Proof.
   apply H6.
   apply H5.
   reflexivity.
-  assert (not_mapsto_in_iff : forall (m:heap) (x e:nat), find x m = None -> MapsTo x e m -> False).
-  admit.
-  apply not_mapsto_in_iff in H1.
-  apply H1.
-  assert (empty_find_in : forall (m:heap) (a:nat), find a m = None <-> is_empty m = true).
-  admit.
-  apply empty_find_in in H4.
-  apply empty_find_in.
-  apply H4.
 Qed.*)
