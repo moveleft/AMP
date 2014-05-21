@@ -1,4 +1,5 @@
 Require Export Hoare.
+Require Import FunctionalExtensionality.
 
 (*******************
  * EXAMPLE 1       *
@@ -50,8 +51,101 @@ Proof.
   intro. intros.
   unfold zip_state; simpl.
   split.
-  apply update_retrieve_dif; unfold Y,X; intro; congruence.
+  apply update_retrieve_dif; unfold Y,X; intro. congruence.
   apply update_retrieve.
+Qed.
+
+(* Complex example *)
+(* Body of the function F *)
+Definition cx_body :=
+Y ::= AId X;;
+TRY
+  Y ::= ANum 4;;
+  THROW T, cons (AMinus (ANum 21) (AId Y)) nil;;
+  THROW U, nil
+CATCH T, cons Z nil DO
+  X ::= APlus (AId Y) (AId Z)
+END
+.
+
+(* The environment, containing a single function F witch
+   takes a parameter and has the body defined above.
+   The return value is the value of X, in the scope of the 
+   body after its execution *)
+Definition cx_env :=
+fun id =>
+    if eq_funid_dec F id
+    then Some(cx_body, cons X nil, AId X)
+    else None
+.
+
+(* The program entry point *)
+Theorem cx_prog_correct :
+{{ fun _ _ _ => True }}
+X ::= ANum 5;;
+CCall F X (cons (AId X) nil)
+{{ fun _ st _ => st X = 22 }} cx_env
+.
+Proof.
+  apply hoare_seq with (Q := fun _ st _ => st X = 5).
+  eapply hoare_consequence_pre.
+  apply hoare_call with (params := cons X nil) (Q := fun e st h => st X = 22)
+                    (body := cx_body) (rexp := AId X)
+                    (P := fun e st h => st X = 5).
+  reflexivity.
+  unfold cx_body.
+  Case "Sequence".
+    eapply hoare_seq with (Q := fun _ st _ => st Y = 5).
+    SCase "Try".
+      eapply hoare_try_exn with (ns := cons 17 nil).
+      SSCase "Catch".
+        apply hoare_consequence_post with (fun ex st h => (st X = 22 /\ st Z = 17) /\ ex = None).
+        eapply hoare_consequence_pre.
+        apply hoare_asgn.
+        intro; intros.
+        unfold assn_sub, aeval, update.
+        inversion H; inversion H0.
+        unfold eq_id_dec, update_many in *; simpl in *.
+        assert(update x Z 17 Y = x Y).
+          apply update_retrieve_dif; unfold not, Y, Z; intro; congruence.
+        rewrite H2, H3, H1, update_retrieve.
+        split; reflexivity.
+        intro; intros.
+        destruct H; destruct H.
+        simpl; rewrite H; split; reflexivity.
+      apply hoare_seq with (Q := fun _ st _ => st Y = 4).
+      apply hoare_seq_exn.
+      eapply hoare_consequence_post.
+      apply hoare_throw.
+      intro; intros.
+      inversion H. split.
+      rewrite H1.
+      unfold fold_right, aeval; rewrite H0; reflexivity.
+      unfold not; intro; congruence.
+      eapply hoare_consequence_pre.
+      apply hoare_asgn.
+      intro; intros.
+      unfold assn_sub; rewrite update_retrieve; reflexivity.
+    apply hoare_consequence_post with (Q' := fun ex st _ => (st Y = 5 /\ st X = 5) /\ ex = None).
+    eapply hoare_consequence_pre.
+    apply hoare_asgn.  
+    intro; intros.
+    unfold assn_sub.
+    assert(update st Y (aeval st (AId X)) Y = st X).
+      apply update_retrieve.
+    assert(update st Y (aeval st (AId X)) X = st X).
+      apply update_retrieve_dif; unfold not, X, Y; intro; congruence.
+    split; assumption.
+    intro; intros.
+    destruct H; destruct H.
+    split; assumption.
+    intro; intros.
+    unfold zip_state.
+    rewrite update_retrieve; simpl; rewrite H; reflexivity.
+    eapply hoare_consequence_pre.
+    apply hoare_asgn.
+    intro;intros.
+    unfold assn_sub; rewrite update_retrieve; reflexivity.
 Qed.
 
 (* Theorem prog_correct :
