@@ -138,10 +138,6 @@ Inductive ceval : com -> program -> state -> heap -> state -> heap -> option exn
       aeval st a = addr ->
       find addr h = Some (aeval st v)->
       ceval (x <-* [ a ]) env st h (update st x (aeval st v)) h None
-  | E_ReadError : forall st x a addr h env,
-      aeval st a = addr ->
-      ~ In addr h->
-      ceval (x <-* [ a ]) env st h st h None
   | E_Write : forall st a b addr value v h env,
       aeval st a = addr ->
       aeval st b = value ->
@@ -151,8 +147,4 @@ Inductive ceval : com -> program -> state -> heap -> state -> heap -> option exn
       st x = addr ->
       find addr h = Some (aeval st v) ->
       ceval (FREE x) env st h st (remove addr h) None
-  | E_FreeError : forall st (h:heap) addr (v:aexp) (x:id) env,
-      st x = addr ->
-      find addr h = None ->
-      ceval (FREE x) env st h st h None
   where "c1 '/' st ',' h '||' st' ',' h'" := (forall env, (ceval c1 env st h st' h' None)).
