@@ -2,11 +2,11 @@
 
 \section{Hoare Rules}
 
-Every Hoare rule in this section has been proven formally in Coq, with the exception of rules \ref{eqn:hoare-alloc}, \ref{eqn:hoare-read}, \ref{eqn:hoare-write} and \ref{eqn:hoare-free}. The proofs can be found ./src/Hoare.v .
+Every Hoare rule in this section has been proven formally in Coq (The proofs can be found \verb|./src/Hoare.v|), with the exception of rules \ref{eqn:hoare-alloc}, \ref{eqn:hoare-read}, \ref{eqn:hoare-write} and \ref{eqn:hoare-free} which have been proven for a version of IMP that has not been extended with exceptions and function calls. The proofs for those four rules can be found in \verb|./sep-src/Hoare.v|.
 
 \begin{defn}
 
-Let $e$ be address to an allocated cell on the heap and $e'$ the value stored in the cell.
+Let $e$ be address af an allocated cell on the heap and $e'$ the value stored in the cell.
 
 \begin{equation}
 e \mapsto e'
