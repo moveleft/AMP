@@ -3,12 +3,12 @@
 \section{Types and Commands}
 
 \begin{notation}
-A tilde abive a symbol indicates a list. For example, $\tilde{n}$ could be a list of natural numbers.
+A tilde above a symbol indicates a list. For example, $\tilde{n}$ could be a list of natural numbers.
 \end{notation}
 
 Arithmetic expressions, boolean expressions and commands in IMP are given by the types \verb|aexp|, \verb|bexp| and \verb|com|, respectively. In addition, we have introduced three new concepts to IMP: exceptions, heap and functions.
 
-Variables, exceptions, and functions are identified by instances of the types \verb|id|, \verb|exid| and \verb|funid|, respectively. Values are given as all natural numbers $v\in\mathbb{N}$. A tilde above a symbol indicates a list.
+Variables, exceptions, and functions are identified by instances of the types \verb|id|, \verb|exid| and \verb|funid|, respectively. Values are given as all natural numbers $v\in\mathbb{N}$.
 
 A state $\sigma$ is a function space $\verb|id| \rightarrow \mathbb{N}$
 
@@ -51,5 +51,5 @@ Below follows the definitions of arithmetic and boolean expressions, as well as 
 \end{equation}
 
 {\scriptsize
-Note, to increase the clarity some of the notation for allocation, read and write differs from the notation used in the Coq code. The notation used in the Coq code are \verb|id <-# Alloc|, \verb|id <-* [id]|, and \verb|[aexp] <-@ aexp|
+Note, to increase clarity, some of the notation for allocation, read and write differs from the syntax in the Coq code. The syntax used in Coq is \verb|id <-# ALLOC|, \verb|id <-* [id]|, and \verb|[aexp] <-@ aexp|
 }
