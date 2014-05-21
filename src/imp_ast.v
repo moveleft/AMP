@@ -97,7 +97,7 @@ Notation "'THROW' ex ',' aexps" :=
   (CThrow ex aexps) (at level 60).
 Notation "'TRY' c1 'CATCH' ex ',' ids 'DO' c2 'END'" :=
   (CTry c1 ex ids c2) (at level 80, right associativity).
-Notation "x <-# 'ALLOC'" :=
+Notation "x <-: 'ALLOC'" :=
   (CAlloc x) (at level 40).
 Notation "x '<-*' '[' a ']'" :=
   (CRead x a) (at level 40).
