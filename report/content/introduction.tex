@@ -1,12 +1,12 @@
 %!TEX root = ../report.tex
 
 \section{Introduction}
-The purpose of this project has been to extend the language IMP, as implemented during the exercise chapters found in Software Foundations, with three new features, we will refer to the new language as IMP+. Furthermore, the purpose of the project were to provide the necessary formal constructs for validating programs written in IMP+. So IMP+ is a superset of IMP, but for the fact that we have excluded the (while-) break command.
+The purpose of this project has been to extend the language IMP, as implemented during the exercise chapters found in Software Foundations, with three new features, we will refer to the new language as IMP+. Furthermore, the purpose of the project were to provide the necessary formal constructs for verifying programs written in IMP+. So IMP+ is a superset of IMP, but for the fact that we have excluded the (while-) break command.
 
 The three features we have implemented in IMP+ are:
 \begin{itemize}
 \item A memory heap, realized through the introduction of a separation logic to the current implementation of IMP
-\item Function calls, i.e. self-contained pieces of code with a local state that can be run with a dedicated command from inside itself or other pieces of code
+\item Functions and calls, self-contained pieces of code with a local state that can be called any block of code.
 \item Exception handling, which allows try-catch statements to "save" the program from an exceptional state that has occurred as the result of the throw command
 \end{itemize}
 
@@ -19,8 +19,10 @@ The outline of this report is
 \item Operational Semantics; describes the operational semantics.
 \item Logic; introduces our logic.
 \item Hoare Rules; introduces the Hoare rules in our logic.
-\item Discussion; discusses shortcomings in our implementation of IMP+ and logic.
+\item Discussion; discusses interesting points and shortcomings in our implementation of IMP+ and logic.
 \end{itemize}
+
+Listing \ref{lst:imp-plus-ex} shows a program written in IMP+. We will later in the Discussion section verify the progom.
 
 \begin{lstlisting}[mathescape=true,keepspaces=true,label=lst:imp-plus-ex,caption=A program written in IMP+ demonstrating assignment and throw/catch.]
 (* Body of the function F *)
@@ -45,13 +47,13 @@ CALL F X [X]
 \end{lstlisting}
 
 \subsection{Basics of IMP}
-IMP is a Turing-complete imperative language. The version of it that we are concerned with is the one implemented in Coq as part of the exercise chapters in Software Foundations. It consists of two types of expressions, arithmetic and boolean, in addition to commands (i.e. statements). Arithmetic and boolean expressions are evaluated recursively, and commands are evaluated with an inductive relation.
+IMP is a Turing-complete imperative language. The version of it that we are concerned with is the one implemented in Coq as part of the exercise chapters in Software Foundations. It consists of commands (i.e. statements) and two types of expressions, arithmetic and boolean. Arithmetic and boolean expressions are evaluated recursively, and commands are evaluated with an inductive relation.
 
-Formal definitions of arithmetic and boolean expressions can be found in appendix X. Definitions of the various commands as well as the operational semantics for the entirety of IMP+ follow in a later chapter, which will shed more light on the details of how each individual command is evaluated.
+Formal definitions of arithmetic and boolean expressions can be found in section \ref{sec:types-com} \nameref{sec:types-com}. Definitions of the various commands as well as the operational semantics for the entirety of IMP+ follow in a later chapter, which will shed more light on the details of how each individual command is evaluated.
 
 \subsection{Function calls}
 
-Creating even moderately complex programs requires a way to structure the code. In programming languages, functions serve this purpose. In addition, functions are often organized through the usage of class or module constructs and libraries.
+Creating even moderately complex programs requires a way to structure the code. In programming languages, functions serve this purpose. Though functions are often organized through the usage of class or module constructs, such constructs are not part of IMP+.
 
 Extending IMP with function calls allows a program to be structured into small pieces of code with a single purpose. To implement function calls we introduce scope, such that each function can only read and write to its own state. This is similar to the widely used stack frames, but differ in that the state of a function is not a stack but a function space.
 
@@ -59,13 +61,15 @@ Extending IMP with function calls allows a program to be structured into small p
 
 The benefit of extending IMP with exception handling lies in allowing the program to raise and respond to exceptional events during execution. These exceptions are intended to be used in response to events that typically require special processing outside the normal flow of the program's execution.
 
-To this end, we introduce two concepts: the throwing of exceptions, as well as its inverse, catching them again. We also introduce the concept of an exceptional state. The program enters an exceptional state the moment an exception is thrown, and leaves it only when that exact type of exception is caught again.
+To this end, we introduce two concepts: the throwing of exceptions, as well as its inverse, catching them. We also introduce the concept of an exceptional state. The program enters an exceptional state the moment an exception is thrown, and leaves it only when that exact type of exception is caught again.
 
-When the program is in an exceptional state, all commands are semantically identical to \verb|SKIP|. This means that a control block such as a loop, if-statement or function is immediately exited upon encountering an exception (at least conceptually, see section \ref{sec:opsem} \nameref{sec:opsem} for details). The exception escapes through all such constructs until it is either caught or the program exits in this exceptional state.
+When the program is in an exceptional state, all commands are semantically identical to \verb|SKIP|. This means that a control block such as a loop, if-statement or function is immediately exited upon encountering an exception (at least conceptually, see section \ref{sec:opsem} \nameref{sec:opsem} for details). The exception escapes through all  constructs until it is either caught or the program exits in this exceptional state.
 
-When an exception is thrown, it can be associated with a list of arithmetic expressions that will be evaluated in the state of the program at the time of the exception. The resulting list of values will be passed on to where the exception is caught, where they can be assigned to a list of variables and used in the handling logic. This is useful for transmitting information about the exceptional event itself, as the handling logic will otherwise execute from the state that the program was in \emph{before} the code block that threw the exception.
+When an exception is thrown, it can be associated with a list of arithmetic expressions that will be evaluated in the immediate state of the program. The resulting list of values will be passed on to where the exception is caught, where they can be assigned to a list of variables and used in the handling logic. This is useful for transmitting information about the exceptional event itself, as the handling logic will otherwise execute from the state that the program was in \emph{before} the code block that threw the exception.
 
 \subsection{Heap}
-The goal of the separation logic is to facilitate reasoning about shared mutable data structures, i.e., structures where updatable fields can be referenced from more than one point [1].  And the separation logic gives a local reasoning.
+In computer science, separation logic [\cite{wiki-sep}] is an extension of Hoare logic [\cite{wiki-hoare}], a way of reasoning about programs. The separation logic is for local reasoning on the shared, mutable data structures. In order to extend the imperative programming language (Imp) with shared mutable state and heap.
+
+The goal of the separation logic is to facilitate reasoning about shared mutable data structures, i.e., structures where updatable fields can be referenced from more than one point [\cite{wiki-sep}].  And the separation logic gives a local reasoning.
 
 Extending the imp language with heap, we define syntax and operational semantics  for 4 foundational constructs: allocate, read, write and free in the imp language for manipulating the shared mutable state and heap with also hoare rules for these.
